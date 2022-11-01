@@ -1,0 +1,137 @@
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {
+  Avatar,
+  Box,
+  Container,
+  FormControlLabel,
+  Grid,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import LockIcon from "@mui/icons-material/Lock";
+import LoginIcon from "@mui/icons-material/Login";
+import Checkbox from "@mui/material/Checkbox";
+import { AvatarBox, StyledBtn, FormBox } from "../../util/CommonComponents";
+import { logInFB } from "../../firebase/firebase-config";
+import { authLogIn } from "../../features/auth/authSlice";
+
+const Login = () => {
+  const theme = useTheme();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const [checked, setChecked] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const label = { inputProps: { "aria-label": "controlled" } };
+  const checkHandler = (event) => {
+    setChecked(event.target.checked);
+  };
+
+  const ForgotPassword = (
+    <Box
+      sx={{
+        marginBottom: "-1.5rem",
+        display: "flex",
+        justifyContent: "flex-end",
+      }}
+    >
+      <Typography variant="h7">Forgot Password?</Typography>
+    </Box>
+  );
+
+  const checkBox = (
+    <Checkbox
+      {...label}
+      checked={checked}
+      onChange={checkHandler}
+      color="greenColor"
+      text="test"
+    />
+  );
+
+  const loginHandler = async () => {
+    try {
+      await logInFB(emailRef.current.value, passwordRef.current.value);
+      dispatch(authLogIn());
+      navigate("/profile");
+    } catch {
+      setErrorMsg("Error Logging In!");
+    }
+  };
+
+  return (
+    <Container maxWidth="lg">
+      <FormBox
+        sx={{ background: theme.palette.offWhiteColor.main, boxShadow: 3 }}
+      >
+        <AvatarBox>
+          <Avatar
+            sx={{
+              m: 1,
+              color: "offWhiteColor.main",
+              bgcolor: "greenColor.main",
+            }}
+          >
+            <LockIcon />
+          </Avatar>
+          <Typography variant="h5" color="blueColor.main">
+            Login
+          </Typography>
+        </AvatarBox>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              name="email"
+              id="email"
+              label="Email"
+              required
+              fullWidth
+              autoFocus
+              inputRef={emailRef}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              name="password"
+              type="password"
+              id="password"
+              label="Password"
+              required
+              fullWidth
+              inputRef={passwordRef}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            {ForgotPassword}
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <FormControlLabel label="Remember me.." control={checkBox} />
+          </Grid>
+
+          <Grid item xs={12}>
+            <StyledBtn
+              sx={{ fontSize: "1.1rem", width: "100%" }}
+              variant="contained"
+              onClick={loginHandler}
+            >
+              Login
+              <LoginIcon sx={{ marginLeft: "0.5rem" }} />
+            </StyledBtn>
+            <Box sx={{ display: "flex", justifyContent: "center", mt: "1rem" }}>
+              <Typography variant="h6" color="red">
+                {errorMsg}
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
+      </FormBox>
+    </Container>
+  );
+};
+
+export default Login;
