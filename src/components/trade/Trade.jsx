@@ -7,6 +7,8 @@ import SnapShot from "./SnapShot";
 import StockDetails from "./StockDetails";
 import StockChart from "./StockChart";
 import CompanyNews from "./CompanyNews";
+import StockPurchaser from "./PurchaseWidget";
+import PurchaseWidget from "./PurchaseWidget";
 // import StockPurchaser from "./StockPurchaser";
 
 const Trade = () => {
@@ -96,8 +98,8 @@ const Trade = () => {
             <SnapShot stockData={stockStats} />
             <StockDetails stockData={stockStats} />
           </DetailStack>
+          <PurchaseWidget symbol={stockSymbol} />
           <StockChart symbol={stockSymbol} />
-          <CompanyNews symbol={stockSymbol} />
         </TradeStack>
       )}
     </Container>

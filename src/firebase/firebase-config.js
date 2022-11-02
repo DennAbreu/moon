@@ -6,9 +6,9 @@ import {
   signOut,
 } from "firebase/auth";
 import { useEffect, useState } from "react";
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
+import { addNewUserDB } from "./databaseHandler";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -20,7 +20,7 @@ const firebaseConfig = {
   appId: "1:804491469644:web:49460cad3b1cd43b0a25e9",
 };
 
-// Initialize Firebase app
+// Initialize Firebase app & database
 const app = initializeApp(firebaseConfig);
 export const db = getDatabase(app);
 export const auth = getAuth();
@@ -35,7 +35,6 @@ export function logOutFB() {
 }
 
 export function logInFB(email, password) {
-  console.log("we logged in bby");
   return signInWithEmailAndPassword(auth, email, password);
 }
 
@@ -50,4 +49,8 @@ export function useAuth() {
   }, []);
 
   return currentUser;
+}
+
+export function retUserID() {
+  return auth.currentUser.uid;
 }

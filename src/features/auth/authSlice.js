@@ -20,12 +20,12 @@ export const authSlice = createSlice({
 
 function login(state) {
   state.authStatus = true;
-  console.log("authStatus", state.authStatus);
+  console.log("Logged In?", state.authStatus);
 }
 
 function logout(state) {
   state.authStatus = false;
-  console.log("authStatus", state.authStatus);
+  console.log("Logged Out?", state.authStatus);
 }
 
 function signup(state) {

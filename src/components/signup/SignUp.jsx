@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -13,13 +14,16 @@ import {
 import LockIcon from "@mui/icons-material/Lock";
 import { AvatarBox, StyledBtn, FormBox } from "../../util/CommonComponents";
 import { validationSchema } from "../../util/ValidationSchema";
-import { signUpFB } from "../../firebase/firebase-config";
 import { authLogIn } from "../../features/auth/authSlice";
+import { retUserID, signUpFB, useAuth } from "../../firebase/firebase-config";
+import { addNewUserDB } from "../../firebase/databaseHandler";
+import { Box } from "@mui/system";
 
 const SignUp = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState("");
 
   const {
     register,
@@ -30,18 +34,16 @@ const SignUp = () => {
   const signUpHandler = async (data) => {
     //Firebase authentification
     //Sets auth status  in Redux auth slice.
+    //creates new entry in banking database for new users
     //useNavigate hook to go to Profile page upon successful signup.
     try {
       await signUpFB(data.email, data.password);
+      addNewUserDB(retUserID(), data.name, data.email);
       dispatch(authLogIn());
       navigate("/profile");
     } catch {
-      console.log("Error in the SignupFB Function");
+      setErrorMsg("Error Signing Up!");
     }
-    /*TODO:
-      newUserBankSetup(userID/email);
-      setup table in other database using auth.id as key
-    */
   };
 
   return (
@@ -147,6 +149,15 @@ const SignUp = () => {
             >
               Sign Up
             </StyledBtn>
+          </Grid>
+          <Grid item xs={12}>
+            <Box
+              sx={{ display: "flex", justifyContent: "center", mt: "0.1rem" }}
+            >
+              <Typography variant="h6" color="red">
+                {errorMsg}
+              </Typography>
+            </Box>
           </Grid>
         </Grid>
       </FormBox>

@@ -1,5 +1,7 @@
-import NavHamburgerMenu from "./NavHamburgerMenu";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import MoonLogo from "../../assets/MoonLogo.png";
+import NavHamburgerMenu from "./NavHamburgerMenu";
 import {
   AppBar,
   Box,
@@ -9,11 +11,9 @@ import {
   Toolbar,
   useTheme,
 } from "@mui/material";
-import { StyledBtn } from "../../util/CommonComponents";
-import { Link } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { StyledBtn } from "../../util/CommonComponents";
 import { logOutFB } from "../../firebase/firebase-config";
-import { useDispatch, useSelector } from "react-redux";
 import { authLogOut } from "../../features/auth/authSlice";
 
 const Navbar = () => {
@@ -99,36 +99,6 @@ const Navbar = () => {
     >
       Log Out
     </StyledBtn>
-  );
-  const oldBtns = (
-    <>
-      {" "}
-      <StyledBtn
-        component={Link}
-        to={"/signup"}
-        sx={{ fontSize: userLoginSize }}
-        variant="contained"
-      >
-        Sign Up
-      </StyledBtn>
-      <StyledBtn
-        component={Link}
-        to={"/login"}
-        sx={{ fontSize: userLoginSize }}
-        variant="contained"
-      >
-        Log In
-      </StyledBtn>
-      <StyledBtn
-        component={Link}
-        to={"/login"}
-        sx={{ fontSize: userLoginSize }}
-        variant="contained"
-        onClick={logOutHandler}
-      >
-        Log Out
-      </StyledBtn>
-    </>
   );
 
   return (
