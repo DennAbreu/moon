@@ -12,7 +12,7 @@ import {
   useTheme,
 } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
-import { AvatarBox, StyledBtn, FormBox } from "../../util/CommonComponents";
+import { AvatarBox, ButtonStyled, FormBox } from "../../util/CommonComponents";
 import { validationSchema } from "../../util/ValidationSchema";
 import { authLogIn } from "../../features/auth/authSlice";
 import { retUserID, signUpFB, useAuth } from "../../firebase/firebase-config";
@@ -140,7 +140,7 @@ const SignUp = () => {
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <StyledBtn
+            <ButtonStyled
               component={Link}
               to={"/profile"}
               sx={{ fontSize: "1.1rem", width: "100%" }}
@@ -148,7 +148,7 @@ const SignUp = () => {
               onClick={handleSubmit(signUpHandler)}
             >
               Sign Up
-            </StyledBtn>
+            </ButtonStyled>
           </Grid>
           <Grid item xs={12}>
             <Box

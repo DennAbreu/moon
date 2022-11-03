@@ -1,21 +1,26 @@
 import { useEffect, useState } from "react";
-import { Container, Stack, styled, Typography, useTheme } from "@mui/material";
+import {
+  Container,
+  Paper,
+  Stack,
+  styled,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { apiKey } from "../../util/helperUtil";
-
 import SearchBar from "./SearchBar";
 import SnapShot from "./SnapShot";
 import StockDetails from "./StockDetails";
 import StockChart from "./StockChart";
-import CompanyNews from "./CompanyNews";
-import StockPurchaser from "./PurchaseWidget";
 import PurchaseWidget from "./PurchaseWidget";
-// import StockPurchaser from "./StockPurchaser";
+// import CompanyNews from "./CompanyNews";
 
 const Trade = () => {
   const theme = useTheme();
   const [stockSymbol, setStockSymbol] = useState(undefined);
   const [stockStats, setStockStats] = useState({
     symbol: stockSymbol,
+    companyName: "",
     currPrice: 0,
     changeAmt: 0,
     perChange: 0,
@@ -40,19 +45,20 @@ const Trade = () => {
     // justifyContent: "center",
   });
 
-  const emptyStockSymbolMssg = (
-    <Container
+  const nullSymbolMessage = (
+    <Paper
       sx={{
         marginTop: "1rem",
-        width: "fit-content",
-        borderRadius: 15,
+        display: "flex",
+        width: "auto",
+        justifyContent: "space-evenly",
         background: theme.palette.blueColor.main,
       }}
     >
-      <Typography variant="h6" color={"white"}>
-        Please enter a symbol.
+      <Typography variant="h5" color="white">
+        Please enter a symbol in the search bar!
       </Typography>
-    </Container>
+    </Paper>
   );
 
   const stockSymbolHandler = (symbol) => {
@@ -85,20 +91,27 @@ const Trade = () => {
         console.log(error);
       });
     }
+
+    //Fetch company name....
+    // const fetchCompanyName = async () => {};
   }, [stockSymbol]);
 
   return (
     <Container>
       <SearchBar onSymbolSearch={stockSymbolHandler} />
       {stockSymbol === undefined ? (
-        emptyStockSymbolMssg
+        nullSymbolMessage
       ) : (
         <TradeStack direction={"column"} spacing={2}>
           <DetailStack direction={{ md: "column", lg: "row" }} spacing={1}>
             <SnapShot stockData={stockStats} />
             <StockDetails stockData={stockStats} />
           </DetailStack>
-          <PurchaseWidget symbol={stockSymbol} />
+          {/* <Stack direction={"row"}>
+            <PurchaseWidget stockData={stockStats} />
+            <StockChart symbol={stockSymbol} />
+          </Stack> */}
+          <PurchaseWidget stockData={stockStats} />
           <StockChart symbol={stockSymbol} />
         </TradeStack>
       )}

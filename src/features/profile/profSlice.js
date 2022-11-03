@@ -1,6 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { retTotalStockList } from "../../firebase/databaseHandler";
 
 const initialState = {
+  name: "",
+  userID: "",
+  email: "",
+  bankTotal: 0,
+  amountInvested: 0,
+  availableFunds: 0,
   stockList: [],
 };
 
@@ -13,8 +20,8 @@ export const profSlice = createSlice({
   },
 });
 
-function setStockList() {
-  return 0;
+function setStockList(userID, state) {
+  return (state.stockList = retTotalStockList(userID));
 }
 
 function setName() {

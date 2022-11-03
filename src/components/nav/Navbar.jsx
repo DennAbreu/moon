@@ -12,7 +12,7 @@ import {
   useTheme,
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { StyledBtn } from "../../util/CommonComponents";
+import { ButtonStyled } from "../../util/CommonComponents";
 import { logOutFB } from "../../firebase/firebase-config";
 import { authLogOut } from "../../features/auth/authSlice";
 
@@ -70,27 +70,27 @@ const Navbar = () => {
 
   const noUserSignIn = (
     <>
-      <StyledBtn
+      <ButtonStyled
         component={Link}
         to={"/signup"}
         sx={{ fontSize: userLoginSize }}
         variant="contained"
       >
         Sign Up
-      </StyledBtn>
-      <StyledBtn
+      </ButtonStyled>
+      <ButtonStyled
         component={Link}
         to={"/login"}
         sx={{ fontSize: userLoginSize }}
         variant="contained"
       >
         Log In
-      </StyledBtn>
+      </ButtonStyled>
     </>
   );
 
   const logOutBtn = (
-    <StyledBtn
+    <ButtonStyled
       component={Link}
       to={"/login"}
       sx={{ fontSize: userLoginSize }}
@@ -98,7 +98,7 @@ const Navbar = () => {
       onClick={logOutHandler}
     >
       Log Out
-    </StyledBtn>
+    </ButtonStyled>
   );
 
   return (

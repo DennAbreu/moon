@@ -1,5 +1,9 @@
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, Fab, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/system";
+
+const blueColor = "#03314b";
+const greenColor = "#1dcc98";
+const offWhite = "#F7FFF7";
 
 export const FormBox = styled(Box)({
   borderRadius: 15,
@@ -13,11 +17,31 @@ export const FormBox = styled(Box)({
   padding: "0px 15px 15px 15px",
 });
 
-export const StyledBtn = styled(Button)({
+export const ButtonStyled = styled(Button)({
   backgroundColor: "#1dcc98",
+  color: "white",
   "&:hover": {
-    backgroundColor: "white",
-    color: "#03314b",
+    backgroundColor: offWhite,
+    color: greenColor,
+  },
+});
+
+export const ButtonStyled2 = styled(Button)({
+  backgroundColor: greenColor,
+  color: "white",
+  fontSize: "1.5em",
+  "&:hover": {
+    backgroundColor: blueColor,
+    color: "white",
+  },
+});
+
+export const FabStyled = styled(Fab)({
+  backgroundColor: greenColor,
+  color: "white",
+  "&:hover": {
+    backgroundColor: "blueColor",
+    color: "green",
   },
 });
 
@@ -25,4 +49,15 @@ export const AvatarBox = styled(Stack)({
   marginBottom: "1rem",
   display: "flex",
   alignItems: "center",
+});
+
+export const BlueTextLabel = styled(Typography)({
+  color: blueColor,
+  fontSize: "1.2em",
+});
+
+export const GreenTextLabel = styled(Typography)({
+  color: greenColor,
+  fontSize: "1.2em",
+  // fontSize: { xs: "0.5em", lg: "1.2em" },
 });

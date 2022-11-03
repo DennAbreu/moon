@@ -14,7 +14,7 @@ import {
 import LockIcon from "@mui/icons-material/Lock";
 import LoginIcon from "@mui/icons-material/Login";
 import Checkbox from "@mui/material/Checkbox";
-import { AvatarBox, StyledBtn, FormBox } from "../../util/CommonComponents";
+import { AvatarBox, ButtonStyled, FormBox } from "../../util/CommonComponents";
 import { logInFB } from "../../firebase/firebase-config";
 import { authLogIn } from "../../features/auth/authSlice";
 
@@ -114,14 +114,14 @@ const Login = () => {
           </Grid>
 
           <Grid item xs={12}>
-            <StyledBtn
+            <ButtonStyled
               sx={{ fontSize: "1.1rem", width: "100%" }}
               variant="contained"
               onClick={loginHandler}
             >
               Login
               <LoginIcon sx={{ marginLeft: "0.5rem" }} />
-            </StyledBtn>
+            </ButtonStyled>
             <Box sx={{ display: "flex", justifyContent: "center", mt: "1rem" }}>
               <Typography variant="h6" color="red">
                 {errorMsg}
