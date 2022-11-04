@@ -14,7 +14,7 @@ import {
 import LockIcon from "@mui/icons-material/Lock";
 import LoginIcon from "@mui/icons-material/Login";
 import Checkbox from "@mui/material/Checkbox";
-import { AvatarBox, ButtonStyled, FormBox } from "../../util/CommonComponents";
+import { AvatarBox, ButtonStyled, FormBox } from "../../util/CustomComponents";
 import { logInFB } from "../../firebase/firebase-config";
 import { authLogIn } from "../../features/auth/authSlice";
 

@@ -2,15 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { ExpandMore } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import {
-  Accordion,
-  AccordionDetails,
   AccordionSummary,
   Box,
   Grid,
   Stack,
-  styled,
   TextField,
   Typography,
   useTheme,
@@ -20,43 +16,35 @@ import {
   GreenTextLabel,
   ButtonStyled2,
   FabStyled,
-} from "../../util/CommonComponents";
+  StyledAccordion,
+  StyledDetails,
+} from "../../util/CustomComponents";
 import { useAuth } from "../../firebase/firebase-config";
+import { purchaseStock } from "../../util/stockPurchaseHandler";
 // import { apiKey } from "../util/helperUtil";
 
 const PurchaseWidget = (props) => {
   const theme = useTheme();
-  const currUser = useAuth();
   const [sharesAmt, setSharesAmt] = useState(1);
   const [priceUpdate, setPriceUpdate] = useState(props.stockData.currPrice);
   const [expanded, setExpanded] = useState(false);
   const subButtonRef = useRef();
   const addButtonRef = useRef();
+  //TODO: Change back to useAuth after testing.
+  // const currUser = useAuth();
+  const currUser = true;
   const gridSpacingLG = 5;
   const gridSpacingXS = 12;
   const perChange = -1;
   const perChangeColor = perChange < 0 ? "#FF0000" : "#00ff00";
 
-  const [signedIn, setSignedIn] = useState(true);
-
   const stockCurrPrice = props.stockData.currPrice;
+  const symbol = props.stockData.symbol;
   const availableFunds = 75000;
   const sharesOwned = 10;
   const initInvestment = 500;
   const currSharesValue = props.stockData.currPrice * sharesOwned;
   const netGain = (currSharesValue - initInvestment) / initInvestment;
-
-  const StyledAccordion = styled(Accordion)({
-    background: theme.palette.blueColor.main,
-    marginTop: "0.5rem",
-    marginBottom: "0.5rem",
-    width: "50%",
-    borderRadius: 5,
-  });
-
-  const StyledDetails = styled(AccordionDetails)({
-    background: theme.palette.offWhiteColor.main,
-  });
 
   const onChangeHandler = (e) => {
     setSharesAmt(Number(e.target.value));
@@ -80,12 +68,16 @@ const PurchaseWidget = (props) => {
     }
   };
 
-  const testClick = (e) => {
+  const printClick = (e) => {
     console.log("sharesAmt", sharesAmt);
   };
 
-  const expansionHandler = (e) => {
-    e.preventDefault();
+  const testClick = (e) => {
+    console.log("TestBtnClicked");
+    purchaseStock(symbol, sharesAmt, availableFunds, priceUpdate);
+  };
+
+  const expansionHandler = () => {
     setExpanded(!expanded);
   };
 
@@ -178,7 +170,7 @@ const PurchaseWidget = (props) => {
               <TextField
                 id="stockReq"
                 inputProps={{ min: 0, style: { textAlign: "center" } }}
-                defaultValue={sharesAmt}
+                value={sharesAmt}
                 onChange={onChangeHandler}
               />
               <Box sx={{ ml: "0.5rem", display: "flex", alignItems: "center" }}>
@@ -193,16 +185,22 @@ const PurchaseWidget = (props) => {
                 </FabStyled>
               </Box>
               <ButtonStyled2
-                onClick={testClick}
+                onClick={printClick}
                 sx={{ width: "50%", ml: "1rem" }}
               >
                 Buy
               </ButtonStyled2>
               <ButtonStyled2
-                onClick={testClick}
+                onClick={printClick}
                 sx={{ width: "50%", ml: "1rem" }}
               >
                 Sell
+              </ButtonStyled2>
+              <ButtonStyled2
+                onClick={testClick}
+                sx={{ width: "50%", ml: "1rem" }}
+              >
+                TEST
               </ButtonStyled2>
             </Stack>
             <Box sx={{ mt: "1rem", display: "flex", justifyContent: "center" }}>

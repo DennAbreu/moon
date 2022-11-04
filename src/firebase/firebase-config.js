@@ -7,11 +7,9 @@ import {
 } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
-import { addNewUserDB } from "./databaseHandler";
 
 // Your web app's Firebase configuration
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyBIVmIt65xkyT2Nt3_Eeg-coFFILxZN2ZU",
   authDomain: "moon-5863d.firebaseapp.com",
   projectId: "moon-5863d",
@@ -21,8 +19,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase app & database
-const app = initializeApp(firebaseConfig);
-export const db = getDatabase(app);
+export const app = initializeApp(firebaseConfig);
 export const auth = getAuth();
 
 //functions for firebase authentication //

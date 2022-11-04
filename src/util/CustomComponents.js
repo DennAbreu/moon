@@ -1,9 +1,17 @@
-import { Box, Button, Fab, Stack, Typography } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  Box,
+  Button,
+  Fab,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { styled } from "@mui/system";
 
 const blueColor = "#03314b";
 const greenColor = "#1dcc98";
-const offWhite = "#F7FFF7";
+const offWhiteColor = "#F7FFF7";
 
 export const FormBox = styled(Box)({
   borderRadius: 15,
@@ -21,7 +29,7 @@ export const ButtonStyled = styled(Button)({
   backgroundColor: "#1dcc98",
   color: "white",
   "&:hover": {
-    backgroundColor: offWhite,
+    backgroundColor: offWhiteColor,
     color: greenColor,
   },
 });
@@ -60,4 +68,16 @@ export const GreenTextLabel = styled(Typography)({
   color: greenColor,
   fontSize: "1.2em",
   // fontSize: { xs: "0.5em", lg: "1.2em" },
+});
+
+export const StyledAccordion = styled(Accordion)({
+  background: blueColor,
+  marginTop: "0.5rem",
+  marginBottom: "0.5rem",
+  width: "50%",
+  borderRadius: 5,
+});
+
+export const StyledDetails = styled(AccordionDetails)({
+  background: offWhiteColor,
 });

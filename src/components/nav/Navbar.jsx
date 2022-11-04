@@ -12,7 +12,7 @@ import {
   useTheme,
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { ButtonStyled } from "../../util/CommonComponents";
+import { ButtonStyled } from "../../util/CustomComponents";
 import { logOutFB } from "../../firebase/firebase-config";
 import { authLogOut } from "../../features/auth/authSlice";
 

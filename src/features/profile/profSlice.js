@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { retTotalStockList } from "../../firebase/databaseHandler";
+import {
+  retBankAmount,
+  retInvestedAmt,
+  retTotalDBStockList,
+} from "../../firebase/databaseHandler";
 
 const initialState = {
   name: "",
@@ -15,18 +19,52 @@ export const profSlice = createSlice({
   name: "profile",
   initialState,
   reducers: {
+    profSetNewUser: setNewProfileState,
     profSetName: setName,
+    profSetBank: setBank,
+    profSetAmtInvested: setAmtInvested,
+    profSetAvailableFunds: setAvailableFunds,
     profSetStockList: setStockList,
   },
 });
 
-function setStockList(userID, state) {
-  return (state.stockList = retTotalStockList(userID));
+function setNewProfileState(state, action) {
+  state.userID = action.payload.id;
+  state.name = action.payload.name;
+  state.bankTotal = 2000;
+  state.amountInvested = 0;
+  state.availableFunds = 2000;
+
+  console.log("State.UserID from SetProfileState: ", state.userID);
+  console.log("State.bankTotal from SetProfileState: ", state.bankTotal);
 }
 
-function setName() {
-  return 1;
+function setName(state) {
+  // state.name = retBankAmount(state.userID);
 }
 
-export const { profSetName, profSetStockList } = profSlice.actions;
+function setBank(state) {
+  state.bankTotal = retBankAmount(state.userID);
+}
+
+function setAmtInvested(state) {
+  state.amountInvested = retInvestedAmt(state.userID);
+}
+
+function setAvailableFunds(state) {
+  //
+}
+function setStockList(state) {
+  state.stockList = retTotalDBStockList(state.userID);
+}
+
+export const {
+  profSetNewUser,
+  profSetName,
+  profSetBank,
+  profSetAmtInvested,
+  profSetAvailableFunds,
+  profSetStockList,
+} = profSlice.actions;
+
 export default profSlice.reducer;

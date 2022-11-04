@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
+  Box,
   Avatar,
   Container,
   Grid,
@@ -12,12 +13,12 @@ import {
   useTheme,
 } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
-import { AvatarBox, ButtonStyled, FormBox } from "../../util/CommonComponents";
+import { AvatarBox, ButtonStyled, FormBox } from "../../util/CustomComponents";
 import { validationSchema } from "../../util/ValidationSchema";
-import { authLogIn } from "../../features/auth/authSlice";
-import { retUserID, signUpFB, useAuth } from "../../firebase/firebase-config";
+import { retUserID, signUpFB } from "../../firebase/firebase-config";
 import { addNewUserDB } from "../../firebase/databaseHandler";
-import { Box } from "@mui/system";
+import { authLogIn } from "../../features/auth/authSlice";
+import { profSetNewUser } from "../../features/profile/profSlice";
 
 const SignUp = () => {
   const theme = useTheme();
@@ -32,14 +33,39 @@ const SignUp = () => {
   } = useForm({ resolver: yupResolver(validationSchema) });
 
   const signUpHandler = async (data) => {
-    //Firebase authentification
-    //Sets auth status  in Redux auth slice.
-    //creates new entry in banking database for new users
+    var newUserId;
     //useNavigate hook to go to Profile page upon successful signup.
     try {
+      //Firebase authentification
       await signUpFB(data.email, data.password);
-      addNewUserDB(retUserID(), data.name, data.email);
+      //Creates new user in banking database
+      newUserId = retUserID();
+      addNewUserDB(newUserId, data.name, data.email);
+      //Sets auth status in Auth redux store
       dispatch(authLogIn());
+      //sets data in Profile redux store
+      dispatch(profSetNewUser({ name: data.name, id: newUserId }));
+      //Auto naviagates to profile.
+      navigate("/profile");
+    } catch {
+      setErrorMsg("Error Signing Up!");
+    }
+  };
+
+  const testClickHandler = async (data) => {
+    console.log("Test Button Clicked");
+    var tEmail = "test45@gmail.com";
+    var tPw = 123123;
+    var tName = "Testy";
+    var payLoadObj = {};
+
+    try {
+      await signUpFB(tEmail, tPw);
+      var newUserId = retUserID();
+      addNewUserDB(newUserId, tName, tEmail);
+      dispatch(authLogIn());
+      payLoadObj = { name: tName, id: newUserId };
+      dispatch(profSetNewUser(payLoadObj));
       navigate("/profile");
     } catch {
       setErrorMsg("Error Signing Up!");
@@ -148,6 +174,18 @@ const SignUp = () => {
               onClick={handleSubmit(signUpHandler)}
             >
               Sign Up
+            </ButtonStyled>
+            <ButtonStyled
+              sx={{
+                mt: "1rem",
+                background: "red",
+                fontSize: "1.1rem",
+                width: "100%",
+              }}
+              variant="contained"
+              onClick={testClickHandler}
+            >
+              TEST
             </ButtonStyled>
           </Grid>
           <Grid item xs={12}>

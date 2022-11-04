@@ -1,10 +1,12 @@
 import { ref, set, update } from "firebase/database";
-import { db as databaseRef } from "./firebase-config";
+import { getDatabase } from "firebase/database";
+import { app } from "./firebase-config";
+
+const databaseRef = getDatabase(app);
 
 //Initial amounts when creating new entry in database.
 var bank = 2000;
 var invested = 0;
-var available = bank;
 var stocks = "empty";
 
 //New User: write to database for the first time
@@ -15,30 +17,37 @@ export function addNewUserDB(userID, name, email) {
     email,
     bank,
     invested,
-    available,
     stocks,
   });
 }
 
-export function updateStockList(userID, newList) {
-  //TODO: Work on this.
+export function updateBankAmount(userID, newBankAmt) {
   update(ref(databaseRef, `/${userID}`), {
-    stocks: newList,
+    bank: newBankAmt,
   });
 }
 
 export function retBankAmount(userID) {
-  //This wil return the totla bank amount from DB.
+  return 80000;
 }
 
-export function retTotalInvested(userID) {
+export function updateInvestedAmount(userID) {
+  // adds up invested amt from each stock
+}
+export function retInvestedAmt(userID) {
   //This wil return the totla invested  amount from DB.
 }
 
-export function retTotalStockList(userID) {
-  //This wil return the stockList from DB.
+export function updateDBStockList(userID, enteredStockList) {
+  //TODO: Work on this.
+  update(ref(databaseRef, `/${userID}`), {
+    stocks: enteredStockList,
+  });
+
+  //update invested amount everytime stockList is updated...
+  updateInvestedAmount(userID);
 }
 
-export function updateBankTotal(userID) {
-  //This will update Bank Total,
+export function retTotalDBStockList(userID) {
+  //This wil return the stockList from DB.
 }
