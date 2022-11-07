@@ -15,8 +15,9 @@ import LockIcon from "@mui/icons-material/Lock";
 import LoginIcon from "@mui/icons-material/Login";
 import Checkbox from "@mui/material/Checkbox";
 import { AvatarBox, ButtonStyled, FormBox } from "../../util/CustomComponents";
-import { logInFB } from "../../firebase/firebase-config";
+import { logInFB, retUserID } from "../../firebase/firebase-config";
 import { authLogIn } from "../../features/auth/authSlice";
+import { profSetPrevUser } from "../../features/profile/profSlice";
 
 const Login = () => {
   const theme = useTheme();
@@ -55,15 +56,26 @@ const Login = () => {
   );
 
   const loginHandler = async () => {
+    var currUserId;
     try {
+      //Firebase Authentication
       await logInFB(emailRef.current.value, passwordRef.current.value);
+      //Uses userID to populate Redux Profile Store
+      currUserId = retUserID();
+      dispatch(profSetPrevUser({ id: currUserId }));
+      //Redux Auth Store Set.
       dispatch(authLogIn());
+      //Navigates to profile
       navigate("/profile");
     } catch {
       setErrorMsg("Error Logging In!");
     }
   };
 
+  const testClickHandler = () => {
+    var currUserId = retUserID();
+    console.log(currUserId?.uid);
+  };
   return (
     <Container maxWidth="lg">
       <FormBox
@@ -120,6 +132,19 @@ const Login = () => {
               onClick={loginHandler}
             >
               Login
+              <LoginIcon sx={{ marginLeft: "0.5rem" }} />
+            </ButtonStyled>
+            <ButtonStyled
+              sx={{
+                mt: "1rem",
+                background: "red",
+                fontSize: "1.1rem",
+                width: "100%",
+              }}
+              variant="contained"
+              onClick={testClickHandler}
+            >
+              Test
               <LoginIcon sx={{ marginLeft: "0.5rem" }} />
             </ButtonStyled>
             <Box sx={{ display: "flex", justifyContent: "center", mt: "1rem" }}>

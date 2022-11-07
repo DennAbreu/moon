@@ -3,6 +3,7 @@ import {
   retBankAmount,
   retInvestedAmt,
   retTotalDBStockList,
+  retUserName,
 } from "../../firebase/databaseHandler";
 
 const initialState = {
@@ -20,6 +21,7 @@ export const profSlice = createSlice({
   initialState,
   reducers: {
     profSetNewUser: setNewProfileState,
+    profSetPrevUser: setPrevUserProfileState,
     profSetName: setName,
     profSetBank: setBank,
     profSetAmtInvested: setAmtInvested,
@@ -33,10 +35,25 @@ function setNewProfileState(state, action) {
   state.name = action.payload.name;
   state.bankTotal = 2000;
   state.amountInvested = 0;
-  state.availableFunds = 2000;
+  state.availableFunds = state.bankTotal - state.amountInvested;
+  state.stockList = retTotalDBStockList(action.payload.id);
 
-  console.log("State.UserID from SetProfileState: ", state.userID);
-  console.log("State.bankTotal from SetProfileState: ", state.bankTotal);
+  console.log("UserID from SetProfileState: ", state.userID);
+  console.log("BankTotal from SetProfileState: ", state.bankTotal);
+  console.log("StockList from SetProfileState: ", state.stockList);
+}
+
+function setPrevUserProfileState(state, action) {
+  state.userID = action.payload.id;
+  state.name = retUserName(action.payload.id);
+  state.bankTotal = retBankAmount(action.payload.id);
+  state.amountInvested = retInvestedAmt(action.payload.id);
+  state.availableFunds = state.bankTotal - state.amountInvested;
+  state.stockList = retTotalDBStockList(action.payload.id);
+
+  console.log("UserID from PrevUser: ", state.userID);
+  console.log("BankTotal from PrevUser: ", state.bankTotal);
+  console.log("StockList from PrevUser: ", state.stockList);
 }
 
 function setName(state) {
@@ -60,6 +77,7 @@ function setStockList(state) {
 
 export const {
   profSetNewUser,
+  profSetPrevUser,
   profSetName,
   profSetBank,
   profSetAmtInvested,

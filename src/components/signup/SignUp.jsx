@@ -16,7 +16,10 @@ import LockIcon from "@mui/icons-material/Lock";
 import { AvatarBox, ButtonStyled, FormBox } from "../../util/CustomComponents";
 import { validationSchema } from "../../util/ValidationSchema";
 import { retUserID, signUpFB } from "../../firebase/firebase-config";
-import { addNewUserDB } from "../../firebase/databaseHandler";
+import {
+  addNewUserDB,
+  retTotalDBStockList,
+} from "../../firebase/databaseHandler";
 import { authLogIn } from "../../features/auth/authSlice";
 import { profSetNewUser } from "../../features/profile/profSlice";
 
@@ -41,11 +44,11 @@ const SignUp = () => {
       //Creates new user in banking database
       newUserId = retUserID();
       addNewUserDB(newUserId, data.name, data.email);
-      //Sets auth status in Auth redux store
-      dispatch(authLogIn());
       //sets data in Profile redux store
       dispatch(profSetNewUser({ name: data.name, id: newUserId }));
-      //Auto naviagates to profile.
+      //Sets auth status in Auth redux store
+      dispatch(authLogIn());
+      //navigates to profile.
       navigate("/profile");
     } catch {
       setErrorMsg("Error Signing Up!");
@@ -54,7 +57,8 @@ const SignUp = () => {
 
   const testClickHandler = async (data) => {
     console.log("Test Button Clicked");
-    var tEmail = "test45@gmail.com";
+    var rNum = Math.floor(Math.random() * 100);
+    var tEmail = `test${rNum}@gmail.com`;
     var tPw = 123123;
     var tName = "Testy";
     var payLoadObj = {};
@@ -64,12 +68,18 @@ const SignUp = () => {
       var newUserId = retUserID();
       addNewUserDB(newUserId, tName, tEmail);
       dispatch(authLogIn());
-      payLoadObj = { name: tName, id: newUserId };
+      payLoadObj = { name: `Test${rNum}`, id: newUserId };
       dispatch(profSetNewUser(payLoadObj));
       navigate("/profile");
     } catch {
       setErrorMsg("Error Signing Up!");
     }
+  };
+
+  const printTestHandler = () => {
+    var newUserId = retUserID();
+    const testVal = retTotalDBStockList(newUserId);
+    console.log("Test Email Print:", testVal);
   };
 
   return (
@@ -186,6 +196,19 @@ const SignUp = () => {
               onClick={testClickHandler}
             >
               TEST
+            </ButtonStyled>
+            <ButtonStyled
+              sx={{
+                mt: "1rem",
+                background: "Yellow",
+                color: "black",
+                fontSize: "1.1rem",
+                width: "100%",
+              }}
+              variant="contained"
+              onClick={printTestHandler}
+            >
+              Print
             </ButtonStyled>
           </Grid>
           <Grid item xs={12}>

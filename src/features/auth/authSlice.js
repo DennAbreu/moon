@@ -25,7 +25,7 @@ function login(state) {
 
 function logout(state) {
   state.authStatus = false;
-  console.log("Logged Out?", state.authStatus);
+  console.log("Logged In?", state.authStatus);
 }
 
 function signup(state) {

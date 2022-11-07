@@ -21,6 +21,7 @@ import {
 } from "../../util/CustomComponents";
 import { useAuth } from "../../firebase/firebase-config";
 import { purchaseStock } from "../../util/stockPurchaseHandler";
+import { useSelector } from "react-redux";
 // import { apiKey } from "../util/helperUtil";
 
 const PurchaseWidget = (props) => {
@@ -38,13 +39,21 @@ const PurchaseWidget = (props) => {
   const perChange = -1;
   const perChangeColor = perChange < 0 ? "#FF0000" : "#00ff00";
 
+  // const stockCurrPrice = props.stockData.currPrice;
+  // const symbol = props.stockData.symbol;
+  // const availableFunds = 75000;
+  // const sharesOwned = 10;
+  // const initInvestment = 500;
+  // const currSharesValue = props.stockData.currPrice * sharesOwned;
+  // const netGain = (currSharesValue - initInvestment) / initInvestment;
+
   const stockCurrPrice = props.stockData.currPrice;
   const symbol = props.stockData.symbol;
-  const availableFunds = 75000;
+  const amtInvested = useSelector((state) => state.prof.amountInvested);
+  const availableFunds = useSelector((state) => state.prof.availableFunds);
   const sharesOwned = 10;
-  const initInvestment = 500;
   const currSharesValue = props.stockData.currPrice * sharesOwned;
-  const netGain = (currSharesValue - initInvestment) / initInvestment;
+  const netGain = (currSharesValue - amtInvested) / amtInvested;
 
   const onChangeHandler = (e) => {
     setSharesAmt(Number(e.target.value));
@@ -130,7 +139,7 @@ const PurchaseWidget = (props) => {
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
                 <GreenTextLabel>
-                  {initInvestment.toLocaleString("en-US", {
+                  {amtInvested.toLocaleString("en-US", {
                     style: "currency",
                     currency: "USD",
                   })}
