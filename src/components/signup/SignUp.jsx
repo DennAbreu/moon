@@ -41,13 +41,13 @@ const SignUp = () => {
     try {
       //Firebase authentification
       await signUpFB(data.email, data.password);
+      //Sets auth status in Auth redux store
+      dispatch(await authLogIn());
       //Creates new user in banking database
       newUserId = retUserID();
-      addNewUserDB(newUserId, data.name, data.email);
+      await addNewUserDB(newUserId, data.name, data.email);
       //sets data in Profile redux store
-      dispatch(profSetNewUser({ name: data.name, id: newUserId }));
-      //Sets auth status in Auth redux store
-      dispatch(authLogIn());
+      dispatch(await profSetNewUser({ name: data.name, id: newUserId }));
       //navigates to profile.
       navigate("/profile");
     } catch {
@@ -66,20 +66,31 @@ const SignUp = () => {
     try {
       await signUpFB(tEmail, tPw);
       var newUserId = retUserID();
-      addNewUserDB(newUserId, tName, tEmail);
-      dispatch(authLogIn());
+      await addNewUserDB(newUserId, tName, tEmail);
+      dispatch(await authLogIn());
       payLoadObj = { name: `Test${rNum}`, id: newUserId };
-      dispatch(profSetNewUser(payLoadObj));
+      dispatch(await profSetNewUser(payLoadObj));
       navigate("/profile");
     } catch {
       setErrorMsg("Error Signing Up!");
     }
   };
 
-  const printTestHandler = () => {
-    var newUserId = retUserID();
-    const testVal = retTotalDBStockList(newUserId);
-    console.log("Test Email Print:", testVal);
+  const sameUserHandler = async (data) => {
+    var tEmail = `test620@gmail.com`;
+    var tPw = 123123;
+    var tName = "Test User";
+
+    try {
+      await signUpFB(tEmail, tPw);
+      var newUserId = retUserID();
+      await addNewUserDB(newUserId, tName, tEmail);
+      dispatch(await profSetNewUser({ name: tName, id: newUserId }));
+      dispatch(await authLogIn());
+      navigate("/profile");
+    } catch {
+      setErrorMsg("Error Signing Up!");
+    }
   };
 
   return (
@@ -206,9 +217,9 @@ const SignUp = () => {
                 width: "100%",
               }}
               variant="contained"
-              onClick={printTestHandler}
+              onClick={sameUserHandler}
             >
-              Print
+              SameUser
             </ButtonStyled>
           </Grid>
           <Grid item xs={12}>

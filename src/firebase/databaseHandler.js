@@ -1,5 +1,6 @@
 import { onValue, ref, set, update } from "firebase/database";
 import { getDatabase } from "firebase/database";
+import { useState } from "react";
 import { app } from "./firebase-config";
 
 export const databaseRef = getDatabase(app);
@@ -24,15 +25,16 @@ export function addNewUserDB(userID, name, email) {
   });
 }
 
-export function retUserName(userID) {
-  //This will return the totla invested  amount from DB.
-  var retUserName;
-  const userNameRef = ref(databaseRef, `Users/${userID}`);
-  onValue(userNameRef, (snapshot) => {
+export function retName(userID) {
+  //This wil return the total stockList from DB.
+  var dbName;
+  const nameRef = ref(databaseRef, `Users/${userID}`);
+  onValue(nameRef, (snapshot) => {
     const data = snapshot.val();
-    retUserName = data.name;
+    dbName = data.name;
   });
-  return retUserName;
+
+  return dbName;
 }
 
 export function updateBankAmount(userID, newBankAmt) {
@@ -88,6 +90,7 @@ export function retTotalDBStockList(userID) {
     const data = snapshot.val();
     dbStockList = data.stocks;
   });
+
   return dbStockList;
 }
 
@@ -99,15 +102,27 @@ export function calcTotalInvestedAmt(userID, inputList) {
 
 export function retIndividualStockDetail(searchSymbol, stockList) {
   //Returns info about individual stock
-  var slLen = stockList.length;
-
   const retDetails = {
     sharesOwned: 0,
     investedAmount: 0,
   };
+  var stockArrLen = stockList.length;
 
-  if (stockList.length > 0) {
+  if (stockArrLen > 0) {
   }
 
   return retDetails;
+}
+
+export function returnAllInfo(userID) {
+  var retData;
+  const allInfoRef = ref(databaseRef, `Users/${userID}`);
+  onValue(allInfoRef, (snapshot) => {
+    const data = snapshot.val();
+    console.log("Data", data);
+    retData = {
+      name: "Dog",
+    };
+  });
+  return retData;
 }

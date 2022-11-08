@@ -18,6 +18,7 @@ import { AvatarBox, ButtonStyled, FormBox } from "../../util/CustomComponents";
 import { logInFB, retUserID } from "../../firebase/firebase-config";
 import { authLogIn } from "../../features/auth/authSlice";
 import { profSetPrevUser } from "../../features/profile/profSlice";
+import { retName } from "../../firebase/databaseHandler";
 
 const Login = () => {
   const theme = useTheme();
@@ -27,6 +28,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState("");
+  const [currUser, setCurrUser] = useState();
 
   const label = { inputProps: { "aria-label": "controlled" } };
   const checkHandler = (event) => {
@@ -60,11 +62,10 @@ const Login = () => {
     try {
       //Firebase Authentication
       await logInFB(emailRef.current.value, passwordRef.current.value);
-      //Uses userID to populate Redux Profile Store
-      currUserId = retUserID();
-      dispatch(profSetPrevUser({ id: currUserId }));
       //Redux Auth Store Set.
       dispatch(authLogIn());
+      //Uses userID to populate Redux Profile Store
+      dispatch(profSetPrevUser(retUserID()));
       //Navigates to profile
       navigate("/profile");
     } catch {
@@ -72,9 +73,27 @@ const Login = () => {
     }
   };
 
-  const testClickHandler = () => {
-    var currUserId = retUserID();
-    console.log(currUserId?.uid);
+  const testClickHandler = async () => {
+    const tEmail = "test620@gmail.com";
+    const tPw = 123123;
+    var currUserId;
+    var testName;
+    try {
+      //Firebase Authentication
+      await logInFB(tEmail, tPw);
+      //Redux Auth Store Set.
+      dispatch(authLogIn());
+      //Uses userID to populate Redux Profile Store
+      currUserId = retUserID();
+      testName = retName(currUserId);
+      dispatch(await profSetPrevUser(currUserId));
+      console.log("CurrUserID", currUserId);
+      //Navigates to profile
+      console.log("testName", testName);
+      navigate("/profile");
+    } catch {
+      setErrorMsg("Error Logging In!");
+    }
   };
   return (
     <Container maxWidth="lg">

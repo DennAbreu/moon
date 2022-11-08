@@ -1,15 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   retBankAmount,
+  retName,
   retInvestedAmt,
   retTotalDBStockList,
-  retUserName,
 } from "../../firebase/databaseHandler";
 
 const initialState = {
   name: "",
   userID: "",
-  email: "",
   bankTotal: 0,
   amountInvested: 0,
   availableFunds: 0,
@@ -27,6 +26,7 @@ export const profSlice = createSlice({
     profSetAmtInvested: setAmtInvested,
     profSetAvailableFunds: setAvailableFunds,
     profSetStockList: setStockList,
+    profResetStore: resetStore,
   },
 });
 
@@ -44,20 +44,22 @@ function setNewProfileState(state, action) {
 }
 
 function setPrevUserProfileState(state, action) {
-  state.userID = action.payload.id;
-  state.name = retUserName(action.payload.id);
-  state.bankTotal = retBankAmount(action.payload.id);
-  state.amountInvested = retInvestedAmt(action.payload.id);
+  state.userID = action.payload;
+  state.name = retName(action.payload);
+  state.bankTotal = retBankAmount(action.payload);
+  state.amountInvested = retInvestedAmt(action.payload);
   state.availableFunds = state.bankTotal - state.amountInvested;
-  state.stockList = retTotalDBStockList(action.payload.id);
+  state.stockList = retTotalDBStockList(action.payload);
 
   console.log("UserID from PrevUser: ", state.userID);
+  console.log("Name from PrevUser: ", state.name);
   console.log("BankTotal from PrevUser: ", state.bankTotal);
+  console.log("Amt Invested from PrevUser: ", state.amountInvested);
   console.log("StockList from PrevUser: ", state.stockList);
 }
 
 function setName(state) {
-  // state.name = retBankAmount(state.userID);
+  state.name = retName(state.userID);
 }
 
 function setBank(state) {
@@ -69,10 +71,19 @@ function setAmtInvested(state) {
 }
 
 function setAvailableFunds(state) {
-  //
+  state.availableFunds = state.bankTotal - state.retInvestedAmt;
 }
 function setStockList(state) {
   state.stockList = retTotalDBStockList(state.userID);
+}
+
+function resetStore(state) {
+  state.name = "";
+  state.userID = "";
+  state.bankTotal = 0;
+  state.amountInvested = 0;
+  state.availableFunds = 0;
+  state.stockList = [];
 }
 
 export const {
@@ -83,6 +94,7 @@ export const {
   profSetAmtInvested,
   profSetAvailableFunds,
   profSetStockList,
+  profResetStore,
 } = profSlice.actions;
 
 export default profSlice.reducer;

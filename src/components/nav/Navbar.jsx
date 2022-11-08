@@ -15,6 +15,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { ButtonStyled } from "../../util/CustomComponents";
 import { logOutFB } from "../../firebase/firebase-config";
 import { authLogOut } from "../../features/auth/authSlice";
+import { profResetStore } from "../../features/profile/profSlice";
 
 const Navbar = () => {
   const linkFontSize = "1.2rem";
@@ -63,6 +64,7 @@ const Navbar = () => {
     try {
       await logOutFB();
       dispatch(authLogOut());
+      dispatch(profResetStore());
     } catch {
       console.log("Error!");
     }
