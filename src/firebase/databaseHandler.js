@@ -9,8 +9,8 @@ export const databaseRef = getDatabase(app);
 var bank = 2000;
 var invested = 0;
 var stocks = [
-  { symbol: "aapl", shares: 42, amtInvested: 50000 },
-  { symbol: "gme", shares: 31, amtInvested: 32000 },
+  { symbol: "AAPL", shares: 42, amtInvested: 50000 },
+  { symbol: "GME", shares: 31, amtInvested: 32000 },
 ];
 
 //New User: write to database for the first time
@@ -50,18 +50,18 @@ export function retBankAmount(userID) {
     const data = snapshot.val();
     retBankAmt = data.bank;
   });
+  console.log("Bank Amt", retBankAmt);
   return retBankAmt;
 }
 
-export function updateInvestedAmount(userID, inputList) {
+export function updateDBInvestedAmount(userID, enteredInvAmt) {
   // adds up invested amt from each stock
-  var newInvAmt = calcTotalInvestedAmt(userID);
   update(ref(databaseRef, `Users/${userID}`), {
-    bank: newInvAmt,
+    invested: enteredInvAmt,
   });
 }
 
-export function retInvestedAmt(userID) {
+export function retInvestedAmount(userID) {
   //This will return the totla invested  amount from DB.
   var retInv;
   const invAmtRef = ref(databaseRef, `Users/${userID}`);
@@ -73,13 +73,9 @@ export function retInvestedAmt(userID) {
 }
 
 export function updateDBStockList(userID, enteredStockList) {
-  //TODO: Work on this.
-  update(ref(databaseRef, `/${userID}`), {
+  update(ref(databaseRef, `Users/${userID}`), {
     stocks: enteredStockList,
   });
-
-  //update invested amount everytime stockList is updated...
-  updateInvestedAmount(userID);
 }
 
 export function retTotalDBStockList(userID) {
@@ -92,12 +88,6 @@ export function retTotalDBStockList(userID) {
   });
 
   return dbStockList;
-}
-
-export function calcTotalInvestedAmt(userID, inputList) {
-  //Go through entire array and add up invested amount
-  var totalAmt = 0;
-  //Iterate through
 }
 
 export function retIndividualStockDetail(searchSymbol, stockList) {

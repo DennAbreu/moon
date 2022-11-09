@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   retBankAmount,
   retName,
-  retInvestedAmt,
+  retInvestedAmount,
   retTotalDBStockList,
 } from "../../firebase/databaseHandler";
 
@@ -47,7 +47,7 @@ function setPrevUserProfileState(state, action) {
   state.userID = action.payload;
   state.name = retName(action.payload);
   state.bankTotal = retBankAmount(action.payload);
-  state.amountInvested = retInvestedAmt(action.payload);
+  state.amountInvested = retInvestedAmount(action.payload);
   state.availableFunds = state.bankTotal - state.amountInvested;
   state.stockList = retTotalDBStockList(action.payload);
 
@@ -67,7 +67,7 @@ function setBank(state) {
 }
 
 function setAmtInvested(state) {
-  state.amountInvested = retInvestedAmt(state.userID);
+  state.amountInvested = retInvestedAmount(state.userID);
 }
 
 function setAvailableFunds(state) {
