@@ -15,11 +15,8 @@ import {
 import LockIcon from "@mui/icons-material/Lock";
 import { AvatarBox, ButtonStyled, FormBox } from "../../util/CustomComponents";
 import { validationSchema } from "../../util/ValidationSchema";
-import { retUserID, signUpFB } from "../../firebase/firebase-config";
-import {
-  addNewUserDB,
-  retTotalDBStockList,
-} from "../../firebase/databaseHandler";
+import { retUserID, signUpFB } from "../../firebase/authHandler";
+import { addNewUserDB, retTotalDBStockList } from "../../firebase/dbHandler";
 import { authLogIn } from "../../features/auth/authSlice";
 import { profSetNewUser } from "../../features/profile/profSlice";
 
@@ -29,6 +26,7 @@ const SignUp = () => {
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState("");
 
+  //form error handling with yupResolver and useForm hook
   const {
     register,
     handleSubmit,
@@ -37,6 +35,7 @@ const SignUp = () => {
 
   const signUpHandler = async (data) => {
     var newUserId;
+    var currList;
     //useNavigate hook to go to Profile page upon successful signup.
     try {
       //Firebase authentification
@@ -46,8 +45,15 @@ const SignUp = () => {
       //Creates new user in banking database
       newUserId = retUserID();
       await addNewUserDB(newUserId, data.name, data.email);
+      currList = retTotalDBStockList(newUserId);
       //sets data in Profile redux store
-      dispatch(await profSetNewUser({ name: data.name, id: newUserId }));
+      dispatch(
+        await profSetNewUser({
+          name: data.name,
+          id: newUserId,
+          stockList: currList,
+        })
+      );
       //navigates to profile.
       navigate("/profile");
     } catch {
@@ -85,7 +91,14 @@ const SignUp = () => {
       await signUpFB(tEmail, tPw);
       var newUserId = retUserID();
       await addNewUserDB(newUserId, tName, tEmail);
-      dispatch(await profSetNewUser({ name: tName, id: newUserId }));
+      var currList = retTotalDBStockList(newUserId);
+      dispatch(
+        await profSetNewUser({
+          name: tName,
+          id: newUserId,
+          stockList: currList,
+        })
+      );
       dispatch(await authLogIn());
       navigate("/profile");
     } catch {

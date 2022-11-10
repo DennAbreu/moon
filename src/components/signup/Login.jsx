@@ -15,10 +15,10 @@ import LockIcon from "@mui/icons-material/Lock";
 import LoginIcon from "@mui/icons-material/Login";
 import Checkbox from "@mui/material/Checkbox";
 import { AvatarBox, ButtonStyled, FormBox } from "../../util/CustomComponents";
-import { logInFB, retUserID } from "../../firebase/firebase-config";
+import { logInFB, retUserID } from "../../firebase/authHandler";
 import { authLogIn } from "../../features/auth/authSlice";
 import { profSetPrevUser } from "../../features/profile/profSlice";
-import { retName } from "../../firebase/databaseHandler";
+import { retName } from "../../firebase/dbHandler";
 
 const Login = () => {
   const theme = useTheme();
@@ -28,7 +28,6 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState("");
-  const [currUser, setCurrUser] = useState();
 
   const label = { inputProps: { "aria-label": "controlled" } };
   const checkHandler = (event) => {

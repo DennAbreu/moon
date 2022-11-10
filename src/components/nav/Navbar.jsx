@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { ButtonStyled } from "../../util/CustomComponents";
-import { logOutFB } from "../../firebase/firebase-config";
+import { logOutFB } from "../../firebase/authHandler";
 import { authLogOut } from "../../features/auth/authSlice";
 import { profResetStore } from "../../features/profile/profSlice";
 

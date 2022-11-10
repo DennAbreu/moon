@@ -1,11 +1,10 @@
 import {
-  retTotalDBStockList,
-  databaseRef,
   updateDBStockList,
   updateDBInvestedAmount,
   retBankAmount,
   updateBankAmount,
-} from "../firebase/databaseHandler";
+  updateAvailableAmount,
+} from "../firebase/dbHandler";
 
 export function isValidTransaction(availableFunds, pendingTransPrice) {
   if (availableFunds >= pendingTransPrice) return true;
@@ -15,32 +14,32 @@ export function isValidTransaction(availableFunds, pendingTransPrice) {
 
 export function retCurrStockDetails(stockSymbol, stockList) {
   //calculates how many shares
-  var listLen = stockList.length;
+  var listLen = 0 || stockList.length;
   var retDetails = {
     index: null,
     shares: 0,
-    amtInvested: 0,
+    initInvestment: 0,
   };
   for (let i = 0; i < listLen; i++) {
     if (stockList[i].symbol === stockSymbol) {
       retDetails = {
         index: i,
         shares: stockList[i].shares,
-        amtInvested: stockList[i].amtInvested,
+        initInvestment: stockList[i].initInvestment,
       };
     }
   }
   return retDetails;
 }
 
-export function calcTotalInvested(stockList) {
-  var listLen = stockList.length;
-  var newList = [...stockList];
+export function calcTotalInvested(currList) {
+  var listLen = currList.length;
+  var newList = [...currList];
   var totalInvAmt = 0;
   for (let i = 0; i < listLen; i++) {
-    totalInvAmt += newList[i].amtInvested;
+    totalInvAmt += newList[i].initInvestment;
   }
-
+  console.log("TotalInvAmt", totalInvAmt);
   return totalInvAmt;
 }
 
@@ -49,17 +48,20 @@ export async function purchaseStock(
   symbol,
   sharesPurchased,
   sharesOwned,
-  amtInvested,
+  amountInvested,
   availableFunds,
   pendingTransPrice,
   currStockList,
   stockListIndex
 ) {
   var newStockList = [...currStockList];
-  var newTotalInvAmt = 0;
   var retMssg = "error";
+  var newTotalInvestment;
+  var newAvailableAmount;
   var newShares = sharesPurchased + sharesOwned;
-  var newAmtInv = amtInvested + pendingTransPrice;
+  var newAmountInvested = Number(
+    (amountInvested + pendingTransPrice).toFixed(2)
+  );
 
   //Check to see if valid transaction.
   //return if transaction is not valid
@@ -73,24 +75,30 @@ export async function purchaseStock(
     newStockList[stockListIndex] = {
       symbol: symbol,
       shares: newShares,
-      amtInvested: newAmtInv,
+      initInvestment: newAmountInvested,
     };
   } else {
     newStockList.push({
       symbol: symbol,
       shares: sharesPurchased,
-      amtInvested: pendingTransPrice,
+      initInvestment: pendingTransPrice,
     });
   }
 
-  console.log("newStockList From Purchase", newStockList);
+  //Calculate new total invested from stockList update DB with new invested amt.
+  newTotalInvestment = await calcTotalInvested(newStockList);
+  console.log("New Total Invested:", newTotalInvestment);
+  await updateDBInvestedAmount(uID, newTotalInvestment);
+
   //update DB with new stock List.
   await updateDBStockList(uID, newStockList);
 
-  //Calculate new total invested from stockList update DB with new invested amt.
-  newTotalInvAmt = calcTotalInvested(newStockList);
-  console.log("NewTotalAmt", newTotalInvAmt);
-  await updateDBInvestedAmount(uID, newTotalInvAmt);
+  //update DB Available amount
+  var currBank = retBankAmount(uID);
+  newAvailableAmount = Number((currBank - newTotalInvestment).toFixed(2));
+  console.log("New Available Amount:", newAvailableAmount);
+
+  await updateAvailableAmount(uID, newAvailableAmount);
 
   //update Profile Redux Store...
   console.log("PurchaseFunctionObj:", {
@@ -103,6 +111,7 @@ export async function purchaseStock(
   });
 }
 
+//TODO: Go over math.
 export async function sellStock(
   uID,
   symbol,
@@ -114,26 +123,35 @@ export async function sellStock(
   currStockList,
   stockListIndex
 ) {
-  var newStockList = [...currStockList];
-  var newTotalInvAmt = 0;
-  var retMssg = "error";
-  var shareDiff = sharesOwned - sharesSold;
-  var areSharesAvail = shareDiff >= 0 ? true : false;
-  var amtInvDiff = amtInvested - pendingTransPrice;
-  var oldBankAmt = retBankAmount(uID) - amtInvested;
-  console.log("oldBankAmt", oldBankAmt);
-  var newBankAmt = oldBankAmt + pendingTransPrice;
+  var newShares = sharesOwned - sharesSold;
+  var sharesAvailable = sharesOwned - sharesSold >= 0 ? true : false;
+  //Check to see if shares are available to sell and return if not.
+  if (!sharesAvailable) return;
 
-  //Check to see if valid transaction.
-  //return if transaction is not valid
-  var isValid = isValidTransaction(availableFunds, pendingTransPrice);
-  if (!areSharesAvail) return retMssg;
+  var newStockList = [...currStockList];
+  var oldBankAmt = retBankAmount(uID);
+  var newBankAmt = oldBankAmt - amtInvested + pendingTransPrice;
+  var newTotalInvAmt;
+  var amtInvestedDiff;
+
+  //if all shares are sold then the investment amount is 0
+  if (newShares === 0) {
+    amtInvestedDiff = 0;
+  } else {
+    amtInvestedDiff = pendingTransPrice - amtInvested;
+  }
+  console.log("SellStock Obj", {
+    pendingTransPrice,
+    amtInvested,
+    oldBankAmt,
+    amtInvestedDiff,
+  });
 
   //update stockList
   newStockList[stockListIndex] = {
     symbol: symbol,
-    shares: shareDiff,
-    amtInvested: amtInvDiff,
+    shares: newShares,
+    initInvestment: amtInvestedDiff,
   };
 
   console.log("newStockList from Sales", newStockList);
@@ -143,16 +161,6 @@ export async function sellStock(
   newTotalInvAmt = calcTotalInvested(newStockList);
   console.log("NewTotalAmt", newTotalInvAmt);
   await updateDBInvestedAmount(uID, newTotalInvAmt);
-
   //update DB Bank Amount after sale...
   await updateBankAmount(uID, newBankAmt);
-
-  console.log("SalesFunctionObj:", {
-    isValid,
-    stockListIndex,
-    symbol,
-    sharesSold,
-    availableFunds,
-    pendingTransPrice,
-  });
 }

@@ -4,7 +4,7 @@ import {
   retName,
   retInvestedAmount,
   retTotalDBStockList,
-} from "../../firebase/databaseHandler";
+} from "../../firebase/dbHandler";
 
 const initialState = {
   name: "",
@@ -23,7 +23,7 @@ export const profSlice = createSlice({
     profSetPrevUser: setPrevUserProfileState,
     profSetName: setName,
     profSetBank: setBank,
-    profSetAmtInvested: setAmtInvested,
+    profSetAmountInvested: setAmountInvested,
     profSetAvailableFunds: setAvailableFunds,
     profSetStockList: setStockList,
     profResetStore: resetStore,
@@ -33,14 +33,19 @@ export const profSlice = createSlice({
 function setNewProfileState(state, action) {
   state.userID = action.payload.id;
   state.name = action.payload.name;
-  state.bankTotal = 2000;
-  state.amountInvested = 0;
-  state.availableFunds = state.bankTotal - state.amountInvested;
-  state.stockList = retTotalDBStockList(action.payload.id);
+  state.bankTotal = 2143.16;
+  state.amountInvested = 143.16;
+  state.availableFunds = 2000;
+  state.stockList = action.payload.stockList;
 
-  console.log("UserID from SetProfileState: ", state.userID);
-  console.log("BankTotal from SetProfileState: ", state.bankTotal);
-  console.log("StockList from SetProfileState: ", state.stockList);
+  console.log("Set New ProfileState Details", {
+    userID: state.userID,
+    name: state.name,
+    bankTotal: state.bankTotal,
+    amountInvested: state.amountInvested,
+    availableFunds: state.availableFunds,
+    stockList: state.stockList,
+  });
 }
 
 function setPrevUserProfileState(state, action) {
@@ -51,30 +56,33 @@ function setPrevUserProfileState(state, action) {
   state.availableFunds = state.bankTotal - state.amountInvested;
   state.stockList = retTotalDBStockList(action.payload);
 
-  console.log("UserID from PrevUser: ", state.userID);
-  console.log("Name from PrevUser: ", state.name);
-  console.log("BankTotal from PrevUser: ", state.bankTotal);
-  console.log("Amt Invested from PrevUser: ", state.amountInvested);
-  console.log("StockList from PrevUser: ", state.stockList);
+  console.log("Set Prev ProfileState Details", {
+    userID: state.userID,
+    name: state.name,
+    bankTotal: state.bankTotal,
+    amountInvested: state.amountInvested,
+    availableFunds: state.availableFunds,
+    stockList: state.stockList,
+  });
 }
 
-function setName(state) {
+function setName(state, action) {
   state.name = retName(state.userID);
 }
 
-function setBank(state) {
-  state.bankTotal = retBankAmount(state.userID);
+function setBank(state, action) {
+  state.bankTotal = action.payload.totalBank;
 }
 
-function setAmtInvested(state) {
-  state.amountInvested = retInvestedAmount(state.userID);
+function setAmountInvested(state, action) {
+  state.amountInvested = action.payload.amountInvested;
 }
 
-function setAvailableFunds(state) {
-  state.availableFunds = state.bankTotal - state.retInvestedAmt;
+function setAvailableFunds(state, action) {
+  state.availableFunds = state.bankTotal - state.amountInvested;
 }
-function setStockList(state) {
-  state.stockList = retTotalDBStockList(state.userID);
+function setStockList(state, action) {
+  state.stockList = action.payload.stockList;
 }
 
 function resetStore(state) {
@@ -91,7 +99,7 @@ export const {
   profSetPrevUser,
   profSetName,
   profSetBank,
-  profSetAmtInvested,
+  profSetAmountInvested,
   profSetAvailableFunds,
   profSetStockList,
   profResetStore,

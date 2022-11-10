@@ -9,7 +9,6 @@ import {
   Stack,
   TextField,
   Typography,
-  useTheme,
 } from "@mui/material";
 import {
   BlueTextLabel,
@@ -19,39 +18,36 @@ import {
   StyledAccordion,
   StyledDetails,
 } from "../../util/CustomComponents";
-import { useAuth } from "../../firebase/firebase-config";
 import {
   purchaseStock,
   retCurrStockDetails,
   sellStock,
-} from "../../util/stockPurchaseHandler";
+} from "../../util/transactionsHandler";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  profSetAmtInvested,
+  profSetAmountInvested,
   profSetAvailableFunds,
   profSetBank,
   profSetStockList,
 } from "../../features/profile/profSlice";
-// import { apiKey } from "../util/helperUtil";
+import {
+  retBankAmount,
+  retInvestedAmount,
+  retTotalDBStockList,
+} from "../../firebase/dbHandler";
 
 const PurchaseWidget = (props) => {
-  const theme = useTheme();
-  const [sharesAmt, setSharesAmt] = useState(1);
-  const [priceUpdate, setPriceUpdate] = useState(props.stockData.currPrice);
+  const [numShares, setNumShares] = useState(1);
+  const [pendingTransPrice, setPendingTransPrice] = useState(
+    props.stockData.currPrice
+  );
   const [expanded, setExpanded] = useState(false);
   const subButtonRef = useRef();
   const addButtonRef = useRef();
   const dispatch = useDispatch();
-  //TODO: Change back to useAuth after testing.
-  // const currUser = useAuth();
-  const currUser = true;
-  const gridSpacingLG = 5;
-  const gridSpacingXS = 12;
-  const perChange = -1;
-  const perChangeColor = perChange < 0 ? "#FF0000" : "#00ff00";
 
-  const stockCurrPrice = props.stockData.currPrice;
   const symbol = props.stockData.symbol;
+  const stockCurrPrice = props.stockData.currPrice;
   const currUserID = useSelector((state) => state.prof.userID);
   const availableFunds = useSelector((state) => state.prof.availableFunds);
   const currList = useSelector((state) => state.prof.stockList);
@@ -59,107 +55,106 @@ const PurchaseWidget = (props) => {
   const stockListIndex = currListDetails.index;
   const sharesOwned = currListDetails.shares;
   const currSharesValue = props.stockData.currPrice * sharesOwned;
-  const amtInvested = currListDetails.amtInvested;
+  const amtInvested = currListDetails.initInvestment;
   const netGain = currSharesValue - amtInvested;
   const netGainPer = (netGain / amtInvested) * 100;
+  const netGainColor = netGain < 0 ? "#FF0000" : "#00ff00";
 
-  //DELETE
-  //DELETE
-  console.log("CurrList", currList);
-
-  console.log("currListDetails", currListDetails);
+  //TODO: Change back to useAuth after testing.
+  // const currUser = useAuth();
+  const currUser = true;
+  //
+  //
+  const gridSpacingLG = 5;
+  const gridSpacingXS = 12;
 
   const onChangeHandler = (e) => {
-    setSharesAmt(Number(e.target.value));
+    setNumShares(Number(e.target.value));
   };
 
   const onClickHandler = (e) => {
     e.preventDefault();
     switch (e.currentTarget.id) {
-      case "fabSub":
-        if (sharesAmt > 1) {
-          setSharesAmt(sharesAmt - 1);
+      case "minusButton":
+        if (numShares > 1) {
+          setNumShares(numShares - 1);
         } else {
-          setSharesAmt(1);
+          setNumShares(1);
         }
-        console.log("sharesAmt", sharesAmt);
+        console.log("numShares", numShares);
         break;
-      case "fabAdd":
-        setSharesAmt(sharesAmt + 1);
-        setPriceUpdate(sharesAmt * stockCurrPrice);
-
-        console.log("sharesAmt", sharesAmt);
+      case "plusButton":
+        setNumShares(numShares + 1);
+        setPendingTransPrice(numShares * stockCurrPrice);
+        console.log("numShares", numShares);
         break;
       default:
         break;
     }
   };
 
-  const testClick = (e) => {
-    console.log("TestBtnClicked");
-    switch (e.currentTarget.id) {
-      case "buyBtn":
-        purchaseStock(
-          currUserID,
-          symbol,
-          sharesAmt,
-          sharesOwned,
-          amtInvested,
-          availableFunds,
-          priceUpdate,
-          currList,
-          stockListIndex
-        );
+  const submitHandler = async (e) => {
+    var profSliceUpdateDetails = {};
 
-        break;
-      case "sellBtn":
-        sellStock(
+    switch (e.currentTarget.id) {
+      case "buyButton":
+        await purchaseStock(
           currUserID,
           symbol,
-          sharesAmt,
+          numShares,
           sharesOwned,
           amtInvested,
           availableFunds,
-          priceUpdate,
+          pendingTransPrice,
           currList,
           stockListIndex
         );
+        setNumShares(1);
+        break;
+      case "sellButton":
+        console.log("Data Sent to SellStock", {
+          currUserID,
+          symbol,
+          numShares,
+          sharesOwned,
+          amtInvested,
+          availableFunds,
+          pendingTransPrice,
+          currList,
+          stockListIndex,
+        });
+
+        await sellStock(
+          currUserID,
+          symbol,
+          numShares,
+          sharesOwned,
+          amtInvested,
+          availableFunds,
+          pendingTransPrice,
+          currList,
+          stockListIndex
+        );
+        setNumShares(1);
+
         break;
       default:
         break;
     }
 
-    dispatch(profSetBank());
-    dispatch(profSetStockList());
-    dispatch(profSetAmtInvested());
-    dispatch(profSetAvailableFunds());
+    profSliceUpdateDetails = {
+      stockList: await retTotalDBStockList(currUserID),
+      amountInvested: await retInvestedAmount(currUserID),
+      totalBank: await retBankAmount(currUserID),
+      availableFunds:
+        profSliceUpdateDetails.totalBank -
+        profSliceUpdateDetails.amountInvested,
+    };
 
-    //PurchaseStock
-    // purchaseStock(
-    //   currUserID,
-    //   symbol,
-    //   sharesAmt,
-    //   sharesOwned,
-    //   amtInvested,
-    //   availableFunds,
-    //   priceUpdate,
-    //   currList,
-    //   stockListIndex
-    // );
-
-    // sellStock(
-    //   currUserID,
-    //   symbol,
-    //   sharesAmt,
-    //   sharesOwned,
-    //   amtInvested,
-    //   availableFunds,
-    //   priceUpdate,
-    //   currList,
-    //   stockListIndex
-    // );
-
-    // dispatch(profSetStockList());
+    dispatch(profSetStockList(profSliceUpdateDetails));
+    dispatch(profSetAmountInvested(profSliceUpdateDetails));
+    dispatch(profSetBank(profSliceUpdateDetails));
+    dispatch(profSetAvailableFunds(profSliceUpdateDetails));
   };
 
   const expansionHandler = () => {
@@ -167,8 +162,8 @@ const PurchaseWidget = (props) => {
   };
 
   useEffect(() => {
-    setPriceUpdate(sharesAmt * stockCurrPrice);
-  }, [sharesAmt, stockCurrPrice]);
+    setPendingTransPrice(numShares * stockCurrPrice);
+  }, [numShares, stockCurrPrice]);
 
   return (
     <StyledAccordion expanded={expanded} onChange={expansionHandler}>
@@ -192,11 +187,7 @@ const PurchaseWidget = (props) => {
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
                 <GreenTextLabel>
-                  {/* {availableFunds} */}
-                  {availableFunds.toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  })}
+                  ${Number(availableFunds).toFixed(2)}
                 </GreenTextLabel>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
@@ -204,10 +195,7 @@ const PurchaseWidget = (props) => {
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
                 <GreenTextLabel>
-                  {stockCurrPrice.toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  })}
+                  ${Number(stockCurrPrice).toFixed(2)}
                 </GreenTextLabel>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
@@ -221,11 +209,7 @@ const PurchaseWidget = (props) => {
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
                 <GreenTextLabel>
-                  {/* {amtInvested} */}
-                  {amtInvested.toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  })}
+                  ${Number(amtInvested).toFixed(2)}
                 </GreenTextLabel>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
@@ -233,22 +217,15 @@ const PurchaseWidget = (props) => {
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
                 <GreenTextLabel>
-                  {currSharesValue.toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  })}
+                  ${Number(currSharesValue).toFixed(2)}
                 </GreenTextLabel>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
                 <BlueTextLabel>Net Gain:</BlueTextLabel>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
-                <Typography sx={{ fontSize: "1.2em" }} color={perChangeColor}>
-                  {netGain.toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  })}
-                  ({netGainPer.toFixed(2)}% )
+                <Typography sx={{ fontSize: "1.2em" }} color={netGainColor}>
+                  ${netGain.toFixed(2)}({netGainPer.toFixed(2)}% )
                 </Typography>
               </Grid>
             </Grid>
@@ -258,7 +235,7 @@ const PurchaseWidget = (props) => {
             >
               <Box sx={{ mr: "0.5rem", display: "flex", alignItems: "center" }}>
                 <FabStyled
-                  id="fabSub"
+                  id="minusButton"
                   size="small"
                   aria-label="sub"
                   ref={subButtonRef}
@@ -270,13 +247,13 @@ const PurchaseWidget = (props) => {
               <TextField
                 id="stockReq"
                 inputProps={{ min: 0, style: { textAlign: "center" } }}
-                value={sharesAmt}
+                value={numShares}
                 onChange={onChangeHandler}
                 min={0}
               />
               <Box sx={{ ml: "0.5rem", display: "flex", alignItems: "center" }}>
                 <FabStyled
-                  id="fabAdd"
+                  id="plusButton"
                   size="small"
                   aria-label="add"
                   ref={addButtonRef}
@@ -286,24 +263,18 @@ const PurchaseWidget = (props) => {
                 </FabStyled>
               </Box>
               <ButtonStyled2
-                id="buyBtn"
-                onClick={testClick}
+                id="buyButton"
+                onClick={submitHandler}
                 sx={{ width: "50%", ml: "1rem" }}
               >
                 Buy
               </ButtonStyled2>
               <ButtonStyled2
-                id="sellBtn"
-                onClick={testClick}
+                id="sellButton"
+                onClick={submitHandler}
                 sx={{ width: "50%", ml: "1rem" }}
               >
                 Sell
-              </ButtonStyled2>
-              <ButtonStyled2
-                onClick={testClick}
-                sx={{ background: "red", width: "50%", ml: "1rem" }}
-              >
-                TEST
               </ButtonStyled2>
             </Stack>
             <Box sx={{ mt: "1rem", display: "flex", justifyContent: "center" }}>
@@ -312,7 +283,7 @@ const PurchaseWidget = (props) => {
                 color="blueColor.main"
                 variant="h5"
               >
-                ${priceUpdate.toFixed(2)}
+                ${pendingTransPrice.toFixed(2)}
               </Typography>
             </Box>
           </>

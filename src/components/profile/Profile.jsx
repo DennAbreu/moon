@@ -1,9 +1,6 @@
 import { Container } from "@mui/material";
-import { useAuth } from "../../firebase/firebase-config";
 import { useDispatch, useSelector } from "react-redux";
-import { logOutFB } from "../../firebase/firebase-config";
-
-import { retTotalDBStockList } from "../../firebase/databaseHandler";
+import { logOutFB, useAuth } from "../../firebase/authHandler";
 import { ButtonStyled2 } from "../../util/CustomComponents";
 import { Stack } from "@mui/system";
 import { authLogOut } from "../../features/auth/authSlice";
