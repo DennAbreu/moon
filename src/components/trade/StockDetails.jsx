@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import React from "react";
 
 import { Box, Paper, Typography, useTheme } from "@mui/material";
+import { CurrencyText } from "../../util/CustomComponents";
 
 const StockDetails = (props) => {
   const theme = useTheme();
@@ -25,9 +26,6 @@ const StockDetails = (props) => {
     padding: "0.5rem 1rem 0.5rem 1.5rem",
   });
 
-  const CurrencyText = styled(Typography)({
-    fontWeight: "bold",
-  });
   const CategoryBox = styled(Box)({
     display: "flex",
     flexDirection: "column",

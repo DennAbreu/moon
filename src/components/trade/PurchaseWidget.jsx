@@ -17,6 +17,7 @@ import {
   FabStyled,
   StyledAccordion,
   StyledDetails,
+  CurrencyText,
 } from "../../util/CustomComponents";
 import {
   purchaseStock,
@@ -32,8 +33,9 @@ import {
 } from "../../features/profile/profSlice";
 import {
   retBankAmount,
-  retInvestedAmount,
-  retTotalDBStockList,
+  retDBAvailable,
+  retDBInvested,
+  retTotalDBStocks,
 } from "../../firebase/dbHandler";
 
 const PurchaseWidget = (props) => {
@@ -54,8 +56,8 @@ const PurchaseWidget = (props) => {
   const currListDetails = retCurrStockDetails(symbol, currList);
   const stockListIndex = currListDetails.index;
   const sharesOwned = currListDetails.shares;
-  const currSharesValue = props.stockData.currPrice * sharesOwned;
   const amtInvested = currListDetails.initInvestment;
+  const currSharesValue = stockCurrPrice * sharesOwned;
   const netGain = currSharesValue - amtInvested;
   const netGainPer = (netGain / amtInvested) * 100;
   const netGainColor = netGain < 0 ? "#FF0000" : "#00ff00";
@@ -85,7 +87,7 @@ const PurchaseWidget = (props) => {
         break;
       case "plusButton":
         setNumShares(numShares + 1);
-        setPendingTransPrice(numShares * stockCurrPrice);
+        // setPendingTransPrice(numShares * stockCurrPrice);
         console.log("numShares", numShares);
         break;
       default:
@@ -95,7 +97,6 @@ const PurchaseWidget = (props) => {
 
   const submitHandler = async (e) => {
     var profSliceUpdateDetails = {};
-
     switch (e.currentTarget.id) {
       case "buyButton":
         await purchaseStock(
@@ -109,6 +110,17 @@ const PurchaseWidget = (props) => {
           currList,
           stockListIndex
         );
+        console.log("Data Sent to PurchaseStock", {
+          currUserID,
+          symbol,
+          numShares,
+          sharesOwned,
+          amtInvested,
+          availableFunds,
+          pendingTransPrice,
+          currList,
+          stockListIndex,
+        });
         setNumShares(1);
         break;
       case "sellButton":
@@ -143,18 +155,16 @@ const PurchaseWidget = (props) => {
     }
 
     profSliceUpdateDetails = {
-      stockList: await retTotalDBStockList(currUserID),
-      amountInvested: await retInvestedAmount(currUserID),
       totalBank: await retBankAmount(currUserID),
-      availableFunds:
-        profSliceUpdateDetails.totalBank -
-        profSliceUpdateDetails.amountInvested,
+      amountInvested: await retDBInvested(currUserID),
+      availableFunds: await retDBAvailable(currUserID),
+      stockList: await retTotalDBStocks(currUserID),
     };
 
-    dispatch(profSetStockList(profSliceUpdateDetails));
-    dispatch(profSetAmountInvested(profSliceUpdateDetails));
     dispatch(profSetBank(profSliceUpdateDetails));
+    dispatch(profSetAmountInvested(profSliceUpdateDetails));
     dispatch(profSetAvailableFunds(profSliceUpdateDetails));
+    dispatch(profSetStockList(profSliceUpdateDetails));
   };
 
   const expansionHandler = () => {
@@ -186,45 +196,44 @@ const PurchaseWidget = (props) => {
                 <BlueTextLabel>Available Funds:</BlueTextLabel>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
-                <GreenTextLabel>
-                  ${Number(availableFunds).toFixed(2)}
-                </GreenTextLabel>
+                <CurrencyText>${availableFunds.toFixed(2)}</CurrencyText>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
                 <BlueTextLabel>Current Price:</BlueTextLabel>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
-                <GreenTextLabel>
+                <CurrencyText>
                   ${Number(stockCurrPrice).toFixed(2)}
-                </GreenTextLabel>
+                </CurrencyText>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
                 <BlueTextLabel>Shares Owned:</BlueTextLabel>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
-                <GreenTextLabel>{sharesOwned}</GreenTextLabel>
+                <CurrencyText>{sharesOwned}</CurrencyText>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
                 <BlueTextLabel>Initial Invested: </BlueTextLabel>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
-                <GreenTextLabel>
-                  ${Number(amtInvested).toFixed(2)}
-                </GreenTextLabel>
+                <CurrencyText>${Number(amtInvested).toFixed(2)}</CurrencyText>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
                 <BlueTextLabel>Current Shares Value:</BlueTextLabel>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
-                <GreenTextLabel>
+                <CurrencyText>
                   ${Number(currSharesValue).toFixed(2)}
-                </GreenTextLabel>
+                </CurrencyText>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
                 <BlueTextLabel>Net Gain:</BlueTextLabel>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
-                <Typography sx={{ fontSize: "1.2em" }} color={netGainColor}>
+                <Typography
+                  sx={{ fontSize: "1.2em", fontWeight: "bold" }}
+                  color={netGainColor}
+                >
                   ${netGain.toFixed(2)}({netGainPer.toFixed(2)}% )
                 </Typography>
               </Grid>
@@ -265,14 +274,14 @@ const PurchaseWidget = (props) => {
               <ButtonStyled2
                 id="buyButton"
                 onClick={submitHandler}
-                sx={{ width: "50%", ml: "1rem" }}
+                sx={{ width: "25%", ml: "1rem" }}
               >
                 Buy
               </ButtonStyled2>
               <ButtonStyled2
                 id="sellButton"
                 onClick={submitHandler}
-                sx={{ width: "50%", ml: "1rem" }}
+                sx={{ width: "25%", ml: "1rem" }}
               >
                 Sell
               </ButtonStyled2>

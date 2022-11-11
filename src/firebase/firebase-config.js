@@ -1,11 +1,4 @@
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
-import { useEffect, useState } from "react";
+import { getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration

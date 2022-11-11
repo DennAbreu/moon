@@ -1,9 +1,9 @@
 import {
-  updateDBStockList,
-  updateDBInvestedAmount,
+  updateDBStocks,
+  updateDBInvested,
   retBankAmount,
   updateBankAmount,
-  updateAvailableAmount,
+  updateDBAvailable,
 } from "../firebase/dbHandler";
 
 export function isValidTransaction(availableFunds, pendingTransPrice) {
@@ -12,11 +12,21 @@ export function isValidTransaction(availableFunds, pendingTransPrice) {
   return false;
 }
 
+export function copyArray(currStockList) {
+  var newList = [];
+
+  for (const obj of currStockList) {
+    newList.push(obj);
+  }
+
+  return newList;
+}
+
 export function retCurrStockDetails(stockSymbol, stockList) {
   //calculates how many shares
   var listLen = 0 || stockList.length;
   var retDetails = {
-    index: null,
+    index: undefined,
     shares: 0,
     initInvestment: 0,
   };
@@ -54,11 +64,12 @@ export async function purchaseStock(
   currStockList,
   stockListIndex
 ) {
-  var newStockList = [...currStockList];
   var retMssg = "error";
+  var newStockList = [...currStockList];
   var newTotalInvestment;
-  var newAvailableAmount;
+  var newAvailableFunds;
   var newShares = sharesPurchased + sharesOwned;
+  var currBank = retBankAmount(uID);
   var newAmountInvested = Number(
     (amountInvested + pendingTransPrice).toFixed(2)
   );
@@ -69,9 +80,9 @@ export async function purchaseStock(
   if (!isValid) return retMssg;
 
   //Check to see if stock is owned.
-  //If Yes, replace values at index with new values in the stock list.
-  //if No, add new entry to stocklist.
-  if (sharesOwned >= 1) {
+  //Replace values if it does, push new obj if it does not.
+
+  if (sharesOwned > 0) {
     newStockList[stockListIndex] = {
       symbol: symbol,
       shares: newShares,
@@ -85,20 +96,19 @@ export async function purchaseStock(
     });
   }
 
-  //Calculate new total invested from stockList update DB with new invested amt.
-  newTotalInvestment = await calcTotalInvested(newStockList);
-  console.log("New Total Invested:", newTotalInvestment);
-  await updateDBInvestedAmount(uID, newTotalInvestment);
-
   //update DB with new stock List.
-  await updateDBStockList(uID, newStockList);
+  await updateDBStocks(uID, newStockList);
+  console.log("PurchaseFunc: NewStockList", newStockList);
+
+  //Update DB with new calculated totlal investment.
+  newTotalInvestment = Number(await calcTotalInvested(newStockList).toFixed(2));
+  await updateDBInvested(uID, newTotalInvestment);
+  console.log("PurchaseFunc: NewTotalInvested:", newTotalInvestment);
 
   //update DB Available amount
-  var currBank = retBankAmount(uID);
-  newAvailableAmount = Number((currBank - newTotalInvestment).toFixed(2));
-  console.log("New Available Amount:", newAvailableAmount);
-
-  await updateAvailableAmount(uID, newAvailableAmount);
+  newAvailableFunds = Number((currBank - newTotalInvestment).toFixed(2));
+  await updateDBAvailable(uID, newAvailableFunds);
+  console.log("PurchaseFunc: NewAvailableAmount:", newAvailableFunds);
 
   //update Profile Redux Store...
   console.log("PurchaseFunctionObj:", {
@@ -117,50 +127,57 @@ export async function sellStock(
   symbol,
   sharesSold,
   sharesOwned,
-  amtInvested,
-  availableFunds,
+  amountInvested,
   pendingTransPrice,
   currStockList,
   stockListIndex
 ) {
-  var newShares = sharesOwned - sharesSold;
-  var sharesAvailable = sharesOwned - sharesSold >= 0 ? true : false;
   //Check to see if shares are available to sell and return if not.
+  var newShares = sharesOwned - sharesSold;
+  var sharesAvailable = newShares >= 0 ? true : false;
+  var newStockList = copyArray(currStockList);
+  var pricePerStock = Number((amountInvested / sharesOwned).toFixed(2));
+  var currBank = retBankAmount(uID);
+  var newBankAmt = currBank - pricePerStock + pendingTransPrice;
+  var investedDiff;
+  var newAvailableFunds;
+  var newTotalInvestment;
+
+  //if there are no shares available, return
   if (!sharesAvailable) return;
-
-  var newStockList = [...currStockList];
-  var oldBankAmt = retBankAmount(uID);
-  var newBankAmt = oldBankAmt - amtInvested + pendingTransPrice;
-  var newTotalInvAmt;
-  var amtInvestedDiff;
-
   //if all shares are sold then the investment amount is 0
-  if (newShares === 0) {
-    amtInvestedDiff = 0;
-  } else {
-    amtInvestedDiff = pendingTransPrice - amtInvested;
-  }
+  newShares === 0
+    ? (investedDiff = 0)
+    : (investedDiff = pendingTransPrice - amountInvested);
+
   console.log("SellStock Obj", {
     pendingTransPrice,
-    amtInvested,
-    oldBankAmt,
-    amtInvestedDiff,
+    amountInvested,
+    currBank,
+    investedDiff,
   });
 
-  //update stockList
+  //update stockList with new information.
   newStockList[stockListIndex] = {
     symbol: symbol,
     shares: newShares,
-    initInvestment: amtInvestedDiff,
+    initInvestment: investedDiff,
   };
 
-  console.log("newStockList from Sales", newStockList);
   //update DB with new stock List.
-  await updateDBStockList(uID, newStockList);
+  await updateDBStocks(uID, newStockList);
+  console.log("SellFunc: NewStockList", newStockList);
+
   //Calculate new total invested from stockList update DB with new invested amt.
-  newTotalInvAmt = calcTotalInvested(newStockList);
-  console.log("NewTotalAmt", newTotalInvAmt);
-  await updateDBInvestedAmount(uID, newTotalInvAmt);
+  newTotalInvestment = await calcTotalInvested(newStockList);
+  await updateDBInvested(uID, newTotalInvestment);
+  console.log("SellFunc: NewTotalAmt", newTotalInvestment);
+
   //update DB Bank Amount after sale...
   await updateBankAmount(uID, newBankAmt);
+
+  //update DB Available Funds...
+  newAvailableFunds = Number((newBankAmt - newTotalInvestment).toFixed(2));
+  await updateDBAvailable(uID, newAvailableFunds);
+  console.log("SellFunc: NewAvailableAmount:", newAvailableFunds);
 }

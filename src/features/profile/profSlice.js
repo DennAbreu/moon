@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   retBankAmount,
   retName,
-  retInvestedAmount,
-  retTotalDBStockList,
+  retDBInvested,
+  retTotalDBStocks,
 } from "../../firebase/dbHandler";
 
 const initialState = {
@@ -52,9 +52,9 @@ function setPrevUserProfileState(state, action) {
   state.userID = action.payload;
   state.name = retName(action.payload);
   state.bankTotal = retBankAmount(action.payload);
-  state.amountInvested = retInvestedAmount(action.payload);
+  state.amountInvested = retDBInvested(action.payload);
   state.availableFunds = state.bankTotal - state.amountInvested;
-  state.stockList = retTotalDBStockList(action.payload);
+  state.stockList = retTotalDBStocks(action.payload);
 
   console.log("Set Prev ProfileState Details", {
     userID: state.userID,

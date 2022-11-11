@@ -7,6 +7,8 @@ import {
 } from "firebase/auth";
 import { auth } from "./firebase-config";
 
+//functions for firebase authentication //
+
 export function signUpFB(email, password) {
   return createUserWithEmailAndPassword(auth, email, password);
 }

@@ -16,7 +16,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import { AvatarBox, ButtonStyled, FormBox } from "../../util/CustomComponents";
 import { validationSchema } from "../../util/ValidationSchema";
 import { retUserID, signUpFB } from "../../firebase/authHandler";
-import { addNewUserDB, retTotalDBStockList } from "../../firebase/dbHandler";
+import { addNewUserDB, retTotalDBStocks } from "../../firebase/dbHandler";
 import { authLogIn } from "../../features/auth/authSlice";
 import { profSetNewUser } from "../../features/profile/profSlice";
 
@@ -45,7 +45,7 @@ const SignUp = () => {
       //Creates new user in banking database
       newUserId = retUserID();
       await addNewUserDB(newUserId, data.name, data.email);
-      currList = retTotalDBStockList(newUserId);
+      currList = retTotalDBStocks(newUserId);
       //sets data in Profile redux store
       dispatch(
         await profSetNewUser({
@@ -66,7 +66,7 @@ const SignUp = () => {
     var rNum = Math.floor(Math.random() * 100);
     var tEmail = `test${rNum}@gmail.com`;
     var tPw = 123123;
-    var tName = "Testy";
+    var tName = `TestUser#${rNum}`;
     var payLoadObj = {};
 
     try {
@@ -85,13 +85,13 @@ const SignUp = () => {
   const sameUserHandler = async (data) => {
     var tEmail = `test620@gmail.com`;
     var tPw = 123123;
-    var tName = "Test User";
+    var tName = "Dennis_Test";
 
     try {
       await signUpFB(tEmail, tPw);
       var newUserId = retUserID();
       await addNewUserDB(newUserId, tName, tEmail);
-      var currList = retTotalDBStockList(newUserId);
+      var currList = retTotalDBStocks(newUserId);
       dispatch(
         await profSetNewUser({
           name: tName,

@@ -52,14 +52,14 @@ export function retBankAmount(userID) {
   return retBankAmt;
 }
 
-export function updateDBInvestedAmount(userID, newInvtAmt) {
+export function updateDBInvested(userID, newInvtAmt) {
   // updates overall investment in DB
   update(ref(databaseRef, `Users/${userID}`), {
     invested: newInvtAmt,
   });
 }
 
-export function retInvestedAmount(userID) {
+export function retDBInvested(userID) {
   //This will return the total  invested  amount from DB.
   var retInvested;
   const invAmtRef = ref(databaseRef, `Users/${userID}`);
@@ -71,13 +71,13 @@ export function retInvestedAmount(userID) {
   return retInvested;
 }
 
-export function updateAvailableAmount(userID, newAvailableAmt) {
+export function updateDBAvailable(userID, newAvailableFunds) {
   update(ref(databaseRef, `Users/${userID}`), {
-    available: newAvailableAmt,
+    available: newAvailableFunds,
   });
 }
 
-export function retAvailableAmount(userID) {
+export function retDBAvailable(userID) {
   //This wil return the total stockList from DB.
   var availableAmt;
   const stockListRef = ref(databaseRef, `Users/${userID}`);
@@ -90,13 +90,13 @@ export function retAvailableAmount(userID) {
   return availableAmt;
 }
 
-export function updateDBStockList(userID, enteredStockList) {
+export function updateDBStocks(userID, enteredStockList) {
   update(ref(databaseRef, `Users/${userID}`), {
     stocks: enteredStockList,
   });
 }
 
-export function retTotalDBStockList(userID) {
+export function retTotalDBStocks(userID) {
   //This wil return the total stockList from DB.
   var dbStockList;
   const stockListRef = ref(databaseRef, `Users/${userID}`);

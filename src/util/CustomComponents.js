@@ -64,10 +64,10 @@ export const BlueTextLabel = styled(Typography)({
   fontSize: "1.2em",
 });
 
-export const GreenTextLabel = styled(Typography)({
+export const CurrencyText = styled(Typography)({
   color: greenColor,
   fontSize: "1.2em",
-  // fontSize: { xs: "0.5em", lg: "1.2em" },
+  fontWeight: "bold",
 });
 
 export const StyledAccordion = styled(Accordion)({
