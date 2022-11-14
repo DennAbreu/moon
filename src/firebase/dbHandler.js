@@ -107,3 +107,14 @@ export function retTotalDBStocks(userID) {
 
   return dbStockList;
 }
+
+export function retUserInfo(userID) {
+  var retAllInfo;
+  const entireDBRef = ref(databaseRef, `Users/${userID}`);
+  onValue(entireDBRef, (snapshot) => {
+    retAllInfo = snapshot.val();
+    console.log(snapshot.val());
+  });
+  console.log("retAllInfo", retAllInfo);
+  return retAllInfo;
+}

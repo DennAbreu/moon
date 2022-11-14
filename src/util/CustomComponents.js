@@ -74,7 +74,15 @@ export const StyledAccordion = styled(Accordion)({
   background: blueColor,
   marginTop: "0.5rem",
   marginBottom: "0.5rem",
-  width: "50%",
+  width: "60%",
+  borderRadius: 5,
+});
+
+export const StyledAccordionMobile = styled(Accordion)({
+  background: blueColor,
+  marginTop: "0.5rem",
+  marginBottom: "0.5rem",
+  width: "80%",
   borderRadius: 5,
 });
 

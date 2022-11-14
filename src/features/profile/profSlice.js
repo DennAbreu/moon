@@ -1,10 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  retBankAmount,
-  retName,
-  retDBInvested,
-  retTotalDBStocks,
-} from "../../firebase/dbHandler";
 
 const initialState = {
   name: "",
@@ -20,7 +14,7 @@ export const profSlice = createSlice({
   initialState,
   reducers: {
     profSetNewUser: setNewProfileState,
-    profSetPrevUser: setPrevUserProfileState,
+    profUpdateUser: updateProfileState,
     profSetName: setName,
     profSetBank: setBank,
     profSetAmountInvested: setAmountInvested,
@@ -48,15 +42,15 @@ function setNewProfileState(state, action) {
   });
 }
 
-function setPrevUserProfileState(state, action) {
-  state.userID = action.payload;
-  state.name = retName(action.payload);
-  state.bankTotal = retBankAmount(action.payload);
-  state.amountInvested = retDBInvested(action.payload);
-  state.availableFunds = state.bankTotal - state.amountInvested;
-  state.stockList = retTotalDBStocks(action.payload);
+function updateProfileState(state, action) {
+  state.userID = action.payload.userID;
+  state.name = action.payload.name;
+  state.bankTotal = action.payload.bank;
+  state.amountInvested = action.payload.invested;
+  state.availableFunds = action.payload.available;
+  state.stockList = action.payload.stocks;
 
-  console.log("Set Prev ProfileState Details", {
+  console.log("Update Profile Slice Details", {
     userID: state.userID,
     name: state.name,
     bankTotal: state.bankTotal,
@@ -67,7 +61,7 @@ function setPrevUserProfileState(state, action) {
 }
 
 function setName(state, action) {
-  state.name = retName(state.userID);
+  state.name = action.payload.name;
 }
 
 function setBank(state, action) {
@@ -96,7 +90,7 @@ function resetStore(state) {
 
 export const {
   profSetNewUser,
-  profSetPrevUser,
+  profUpdateUser,
   profSetName,
   profSetBank,
   profSetAmountInvested,

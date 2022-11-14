@@ -17,8 +17,8 @@ import Checkbox from "@mui/material/Checkbox";
 import { AvatarBox, ButtonStyled, FormBox } from "../../util/CustomComponents";
 import { logInFB, retUserID } from "../../firebase/authHandler";
 import { authLogIn } from "../../features/auth/authSlice";
-import { profSetPrevUser } from "../../features/profile/profSlice";
-import { retName } from "../../firebase/dbHandler";
+import { profUpdateUser } from "../../features/profile/profSlice";
+import { retUserInfo, retName } from "../../firebase/dbHandler";
 
 const Login = () => {
   const theme = useTheme();
@@ -64,7 +64,7 @@ const Login = () => {
       //Redux Auth Store Set.
       dispatch(authLogIn());
       //Uses userID to populate Redux Profile Store
-      dispatch(profSetPrevUser(retUserID()));
+      dispatch(profUpdateUser(retUserID()));
       //Navigates to profile
       navigate("/profile");
     } catch {
@@ -75,20 +75,20 @@ const Login = () => {
   const testClickHandler = async () => {
     const tEmail = "test620@gmail.com";
     const tPw = 123123;
-    var currUserId;
-    var testName;
+    var currUserId, currUserDetails;
     try {
       //Firebase Authentication
       await logInFB(tEmail, tPw);
       //Redux Auth Store Set.
-      dispatch(authLogIn());
+      dispatch(await authLogIn());
       //Uses userID to populate Redux Profile Store
-      currUserId = retUserID();
-      testName = retName(currUserId);
-      dispatch(await profSetPrevUser(currUserId));
+      currUserId = await retUserID();
       console.log("CurrUserID", currUserId);
+      currUserDetails = await retUserInfo(currUserId);
+      console.log("currUserDetails", currUserDetails);
+      dispatch(profUpdateUser(currUserDetails));
       //Navigates to profile
-      console.log("testName", testName);
+
       navigate("/profile");
     } catch {
       setErrorMsg("Error Logging In!");

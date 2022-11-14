@@ -17,6 +17,7 @@ import {
   StyledAccordion,
   StyledDetails,
   CurrencyText,
+  StyledAccordionMobile,
 } from "../../util/CustomComponents";
 import {
   purchaseStock,
@@ -37,7 +38,7 @@ import {
   retTotalDBStocks,
 } from "../../firebase/dbHandler";
 
-const PurchaseWidget = (props) => {
+const PurchaseWidgetMobile = (props) => {
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState(false);
   const [numShares, setNumShares] = useState(1);
@@ -71,27 +72,6 @@ const PurchaseWidget = (props) => {
 
   const onChangeHandler = (e) => {
     setNumShares(Number(e.target.value));
-  };
-
-  const onClickHandler = (e) => {
-    e.preventDefault();
-    switch (e.currentTarget.id) {
-      case "minusButton":
-        if (numShares > 1) {
-          setNumShares(numShares - 1);
-        } else {
-          setNumShares(1);
-        }
-        console.log("numShares", numShares);
-        break;
-      case "plusButton":
-        setNumShares(numShares + 1);
-        // setPendingTransPrice(numShares * stockCurrPrice);
-        console.log("numShares", numShares);
-        break;
-      default:
-        break;
-    }
   };
 
   const submitHandler = async (e) => {
@@ -153,7 +133,7 @@ const PurchaseWidget = (props) => {
   }, [numShares, stockCurrPrice]);
 
   return (
-    <StyledAccordion expanded={expanded} onChange={expansionHandler}>
+    <StyledAccordionMobile expanded={expanded} onChange={expansionHandler}>
       <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />}>
         <Typography color="white" variant="h7">
           CLICK TO TRADE
@@ -219,9 +199,16 @@ const PurchaseWidget = (props) => {
             </Grid>
             <Stack
               sx={{ mt: "1rem", display: "flex", justifyContent: "center" }}
-              direction={"row"}
+              direction={"column"}
             >
-              <Box sx={{ mr: "0.5rem", display: "flex", alignItems: "center" }}>
+              <TextField
+                id="stockReq"
+                inputProps={{ min: 0, style: { textAlign: "center" } }}
+                value={numShares}
+                onChange={onChangeHandler}
+                min={0}
+              />
+              {/* <Box sx={{ mr: "0.5rem", display: "flex", alignItems: "center" }}>
                 <FabStyled
                   id="minusButton"
                   size="small"
@@ -232,13 +219,6 @@ const PurchaseWidget = (props) => {
                   <RemoveIcon sx={{ color: "white" }} />
                 </FabStyled>
               </Box>
-              <TextField
-                id="stockReq"
-                inputProps={{ min: 0, style: { textAlign: "center" } }}
-                value={numShares}
-                onChange={onChangeHandler}
-                min={0}
-              />
               <Box sx={{ ml: "0.5rem", display: "flex", alignItems: "center" }}>
                 <FabStyled
                   id="plusButton"
@@ -249,21 +229,30 @@ const PurchaseWidget = (props) => {
                 >
                   <AddIcon sx={{ color: "white" }} />
                 </FabStyled>
-              </Box>
-              <ButtonStyled2
-                id="buyButton"
-                onClick={submitHandler}
-                sx={{ width: "25%", ml: "1rem" }}
+              </Box> */}
+              <Stack
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  marginTop: "0.5rem",
+                }}
               >
-                Buy
-              </ButtonStyled2>
-              <ButtonStyled2
-                id="sellButton"
-                onClick={submitHandler}
-                sx={{ width: "25%", ml: "1rem" }}
-              >
-                Sell
-              </ButtonStyled2>
+                <ButtonStyled2
+                  id="buyButton"
+                  onClick={submitHandler}
+                  sx={{ width: "100%", marginBottom: "0.5rem" }}
+                >
+                  Buy
+                </ButtonStyled2>
+                <ButtonStyled2
+                  id="sellButton"
+                  onClick={submitHandler}
+                  sx={{ width: "100%" }}
+                >
+                  Sell
+                </ButtonStyled2>
+              </Stack>
             </Stack>
             <Box sx={{ mt: "1rem", display: "flex", justifyContent: "center" }}>
               <Typography
@@ -277,8 +266,8 @@ const PurchaseWidget = (props) => {
           </>
         )}
       </StyledDetails>
-    </StyledAccordion>
+    </StyledAccordionMobile>
   );
 };
 
-export default PurchaseWidget;
+export default PurchaseWidgetMobile;

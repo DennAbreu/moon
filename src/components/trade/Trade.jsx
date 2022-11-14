@@ -7,16 +7,20 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { apiKey } from "../../util/helperUtil";
 import SearchBar from "./SearchBar";
 import SnapShot from "./SnapShot";
 import StockDetails from "./StockDetails";
 import StockChart from "./StockChart";
 import PurchaseWidget from "./PurchaseWidget";
+import PurchaseWidgetMobile from "./PurchaseWidgetMobile";
+import { apiKey } from "../../util/helperUtil";
+import useMediaQuery from "@mui/material/useMediaQuery";
+
 // import CompanyNews from "./CompanyNews";
 
 const Trade = () => {
   const theme = useTheme();
+  const isMatch = useMediaQuery(theme.breakpoints.down("md800"));
   const [stockSymbol, setStockSymbol] = useState(undefined);
   const [stockStats, setStockStats] = useState({
     symbol: stockSymbol,
@@ -52,10 +56,10 @@ const Trade = () => {
         display: "flex",
         width: "auto",
         justifyContent: "space-evenly",
-        background: theme.palette.blueColor.main,
+        background: theme.palette.offWhiteColor.main,
       }}
     >
-      <Typography variant="h5" color="white">
+      <Typography variant="h5" color="blueColor.main">
         Please enter a symbol in the search bar!
       </Typography>
     </Paper>
@@ -111,7 +115,12 @@ const Trade = () => {
             <PurchaseWidget stockData={stockStats} />
             <StockChart symbol={stockSymbol} />
           </Stack> */}
-          <PurchaseWidget stockData={stockStats} />
+          {!isMatch ? (
+            <PurchaseWidget stockData={stockStats} />
+          ) : (
+            <PurchaseWidgetMobile stockData={stockStats} />
+          )}
+
           <StockChart symbol={stockSymbol} />
         </TradeStack>
       )}

@@ -1,10 +1,10 @@
+import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/nav/Navbar";
 import Home from "./components/Home";
 import Trade from "./components/trade/Trade";
+import Profile from "./components/profile/Profile";
 import SignUp from "./components/signup/SignUp";
 import Login from "./components/signup/Login";
-import { Route, Routes } from "react-router-dom";
-import Profile from "./components/profile/Profile";
 // import "./App.css";
 
 function App() {

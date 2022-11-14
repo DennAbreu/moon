@@ -1,7 +1,7 @@
 import React from "react";
+import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import ReactDOM from "react-dom/client";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./util/theme";
 import { store } from "./app/store";

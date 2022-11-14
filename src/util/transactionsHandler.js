@@ -15,8 +15,10 @@ export function isValidTransaction(availableFunds, pendingTransPrice) {
 export function copyArray(currStockList) {
   var newList = [];
 
-  for (const obj of currStockList) {
-    newList.push(obj);
+  if (currStockList.length > 0) {
+    for (const obj of currStockList) {
+      newList.push(obj);
+    }
   }
 
   return newList;
@@ -58,29 +60,27 @@ export async function purchaseStock(
   symbol,
   sharesPurchased,
   sharesOwned,
-  amountInvested,
+  initAmountInvested,
   availableFunds,
   pendingTransPrice,
   currStockList,
   stockListIndex
 ) {
-  var retMssg = "error";
-  var newStockList = [...currStockList];
+  var retMssg = "Error: Transaction is not valid!";
+  var newStockList = copyArray(currStockList);
   var newTotalInvestment;
   var newAvailableFunds;
   var newShares = sharesPurchased + sharesOwned;
   var currBank = retBankAmount(uID);
   var newAmountInvested = Number(
-    (amountInvested + pendingTransPrice).toFixed(2)
+    (initAmountInvested + pendingTransPrice).toFixed(2)
   );
 
-  //Check to see if valid transaction.
-  //return if transaction is not valid
+  //Check to see if valid transaction & return error message if not.
   var isValid = isValidTransaction(availableFunds, pendingTransPrice);
   if (!isValid) return retMssg;
 
-  //Check to see if stock is owned.
-  //Replace values if it does, push new obj if it does not.
+  //Replace values if exists, push new obj if it does not.
 
   if (sharesOwned > 0) {
     newStockList[stockListIndex] = {
@@ -119,6 +119,9 @@ export async function purchaseStock(
     availableFunds,
     pendingTransPrice,
   });
+
+  //Return success message.
+  return (retMssg = "Success!");
 }
 
 //TODO: Go over math.
@@ -127,41 +130,56 @@ export async function sellStock(
   symbol,
   sharesSold,
   sharesOwned,
-  amountInvested,
+  initAmountInvested,
+  availableFunds,
   pendingTransPrice,
   currStockList,
   stockListIndex
 ) {
-  //Check to see if shares are available to sell and return if not.
+  var retMssg = "Error: Transaction is not valid!";
   var newShares = sharesOwned - sharesSold;
   var sharesAvailable = newShares >= 0 ? true : false;
   var newStockList = copyArray(currStockList);
-  var pricePerStock = Number((amountInvested / sharesOwned).toFixed(2));
+  var avgSharePrice = Number((initAmountInvested / sharesOwned).toFixed(2)); //3
+  var avgValueOfSharesSold = avgSharePrice * sharesSold; //15
   var currBank = retBankAmount(uID);
-  var newBankAmt = currBank - pricePerStock + pendingTransPrice;
-  var investedDiff;
-  var newAvailableFunds;
-  var newTotalInvestment;
+  var newInitInvestment = Number(
+    (initAmountInvested - avgValueOfSharesSold).toFixed(2)
+  ); //30-15
+  var newAvailableFunds = Number(
+    (availableFunds + pendingTransPrice).toFixed(2)
+  ); //0+30
+  var newBankAmt; //30 + 15
+  var newTotalInvestment; // 30
 
-  //if there are no shares available, return
-  if (!sharesAvailable) return;
-  //if all shares are sold then the investment amount is 0
-  newShares === 0
-    ? (investedDiff = 0)
-    : (investedDiff = pendingTransPrice - amountInvested);
+  //TODO:::::::::::
+  //:::::::::::::::
+  //1. Check to see if shares available. [X]
+  //2. if shares are available to sell continue, else return. [X]
+  //3. if selling shares drops shares to 0, delete entire entry. [X]
+  //4. NewInitInvested = oldInitInv - (pricePerStockOwned * SharesSold)[ X]
+  //5. NewAvailableFunds = currBank - newTotalInvested[ ]
+  //6. NewTotalBank = currBank - avgNewInvested + (NewAvailableFunds)[ X]
+  //:::::::::::::::
+  //:::::::::::::::
+
+  //if there are no shares available to complete transaction, return
+  if (!sharesAvailable) return retMssg;
 
   console.log("SellStock Obj", {
     pendingTransPrice,
-    amountInvested,
+    initAmountInvested,
     currBank,
-    investedDiff,
+    newInitInvestment,
   });
 
-  //update stockList with new information.
+  //update stockList with new information if at least one share remains
+  if (newShares === 0) newInitInvestment = 0;
+
   newStockList[stockListIndex] = {
     symbol: symbol,
     shares: newShares,
-    initInvestment: investedDiff,
+    initInvestment: newInitInvestment,
   };
 
   //update DB with new stock List.
@@ -171,13 +189,13 @@ export async function sellStock(
   //Calculate new total invested from stockList update DB with new invested amt.
   newTotalInvestment = await calcTotalInvested(newStockList);
   await updateDBInvested(uID, newTotalInvestment);
-  console.log("SellFunc: NewTotalAmt", newTotalInvestment);
+  console.log("SellFunc: NewTotalInvested", newTotalInvestment);
 
   //update DB Bank Amount after sale...
+  newBankAmt = newTotalInvestment + newAvailableFunds;
   await updateBankAmount(uID, newBankAmt);
 
   //update DB Available Funds...
-  newAvailableFunds = Number((newBankAmt - newTotalInvestment).toFixed(2));
   await updateDBAvailable(uID, newAvailableFunds);
-  console.log("SellFunc: NewAvailableAmount:", newAvailableFunds);
+  console.log("SellFunc: NewAvailableFunds:", newAvailableFunds);
 }
