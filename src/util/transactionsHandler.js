@@ -145,23 +145,12 @@ export async function sellStock(
   var currBank = retBankAmount(uID);
   var newInitInvestment = Number(
     (initAmountInvested - avgValueOfSharesSold).toFixed(2)
-  ); //30-15
+  );
   var newAvailableFunds = Number(
     (availableFunds + pendingTransPrice).toFixed(2)
-  ); //0+30
-  var newBankAmt; //30 + 15
-  var newTotalInvestment; // 30
-
-  //TODO:::::::::::
-  //:::::::::::::::
-  //1. Check to see if shares available. [X]
-  //2. if shares are available to sell continue, else return. [X]
-  //3. if selling shares drops shares to 0, delete entire entry. [X]
-  //4. NewInitInvested = oldInitInv - (pricePerStockOwned * SharesSold)[ X]
-  //5. NewAvailableFunds = currBank - newTotalInvested[ ]
-  //6. NewTotalBank = currBank - avgNewInvested + (NewAvailableFunds)[ X]
-  //:::::::::::::::
-  //:::::::::::::::
+  );
+  var newBankAmt;
+  var newTotalInvestment;
 
   //if there are no shares available to complete transaction, return
   if (!sharesAvailable) return retMssg;

@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Fab,
+  Paper,
   Stack,
   Typography,
 } from "@mui/material";
@@ -88,4 +89,32 @@ export const StyledAccordionMobile = styled(Accordion)({
 
 export const StyledDetails = styled(AccordionDetails)({
   background: offWhiteColor,
+});
+
+export const SnapShotBox = styled(Paper)({
+  width: "auto",
+  height: "fit-content",
+  padding: "0.5rem 1rem 0.5rem 0.5rem",
+  borderRadius: 15,
+  background: blueColor,
+});
+
+export const CenteredBox = styled(Box)({
+  display: "flex",
+  justifyContent: "center",
+});
+
+export const ProfileCategory = styled(Paper)({
+  display: "flex",
+  justifyContent: "center",
+  width: "25rem",
+  height: "fit-content",
+  padding: "0.5rem 1rem 0.5rem 0.5rem",
+  borderRadius: 15,
+  background: blueColor,
+});
+
+export const TextCentered = styled(Typography)({
+  display: "flex",
+  justifyContent: "center",
 });

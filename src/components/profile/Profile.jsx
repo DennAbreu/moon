@@ -1,10 +1,11 @@
-import { Container } from "@mui/material";
+import { Container, Stack } from "@mui/material";
+import { ButtonStyled2, CenteredBox } from "../../util/CustomComponents";
 import { useDispatch, useSelector } from "react-redux";
 import { logOutFB, useAuth } from "../../firebase/authHandler";
-import { ButtonStyled2 } from "../../util/CustomComponents";
-import { Stack } from "@mui/system";
 import { authLogOut } from "../../features/auth/authSlice";
 import { profResetStore } from "../../features/profile/profSlice";
+import BankDBStats from "./BankDBStats";
+
 const Profile = (props) => {
   const user = useAuth();
   const profName = useSelector((state) => state.prof.name);
@@ -13,11 +14,6 @@ const Profile = (props) => {
   const stockList = useSelector((state) => state.prof.stockList);
   const amtInvested = useSelector((state) => state.prof.amountInvested);
   const dispatch = useDispatch();
-
-  const testClickHandler = (e) => {
-    console.log("StockList--ProfilePage:", stockList);
-    console.log("Name--ProfilePage:", profName);
-  };
 
   const testLogOut = async () => {
     try {
@@ -29,7 +25,7 @@ const Profile = (props) => {
     }
   };
 
-  return (
+  const oldInfo = (
     <Container>
       <Stack>
         Name: {profName}
@@ -44,12 +40,7 @@ const Profile = (props) => {
         <br />
         Amt Invested: {amtInvested}
       </Stack>
-      <ButtonStyled2
-        onClick={testClickHandler}
-        sx={{ width: "50%", ml: "1rem" }}
-      >
-        PRINT
-      </ButtonStyled2>
+
       <ButtonStyled2
         onClick={testLogOut}
         sx={{ mt: "1rem", background: "teal", width: "50%", ml: "1rem" }}
@@ -57,6 +48,15 @@ const Profile = (props) => {
         Logout
       </ButtonStyled2>
     </Container>
+  );
+
+  return (
+    <>
+      {/* {oldInfo} */}
+      <Container>
+        <BankDBStats />
+      </Container>
+    </>
   );
 };
 
