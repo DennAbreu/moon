@@ -36,7 +36,7 @@ const Trade = () => {
 
   const TradeStack = styled(Stack)({
     // background: "#f5ad42",
-    marginTop: "1rem",
+    marginTop: "0.5rem",
     width: "auto",
     height: "200%",
     alignItems: "center",
@@ -115,13 +115,13 @@ const Trade = () => {
             <PurchaseWidget stockData={stockStats} />
             <StockChart symbol={stockSymbol} />
           </Stack> */}
+
+          <StockChart symbol={stockSymbol} />
           {!isMatch ? (
             <PurchaseWidget stockData={stockStats} />
           ) : (
             <PurchaseWidgetMobile stockData={stockStats} />
           )}
-
-          <StockChart symbol={stockSymbol} />
         </TradeStack>
       )}
     </Container>

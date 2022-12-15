@@ -6,6 +6,7 @@ import {
   Fab,
   Paper,
   Stack,
+  TableRow,
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/system";
@@ -37,6 +38,7 @@ export const ButtonStyled = styled(Button)({
 
 export const ButtonStyled2 = styled(Button)({
   backgroundColor: greenColor,
+  marginTop: "1rem",
   color: "white",
   fontSize: "1.5em",
   "&:hover": {
@@ -73,7 +75,7 @@ export const CurrencyText = styled(Typography)({
 
 export const StyledAccordion = styled(Accordion)({
   background: blueColor,
-  marginTop: "0.5rem",
+  marginTop: "0.15rem",
   marginBottom: "0.5rem",
   width: "60%",
   borderRadius: 5,
@@ -81,7 +83,7 @@ export const StyledAccordion = styled(Accordion)({
 
 export const StyledAccordionMobile = styled(Accordion)({
   background: blueColor,
-  marginTop: "0.5rem",
+  marginTop: "0.15rem",
   marginBottom: "0.5rem",
   width: "80%",
   borderRadius: 5,
@@ -107,7 +109,7 @@ export const CenteredBox = styled(Box)({
 export const ProfileCategory = styled(Paper)({
   display: "flex",
   justifyContent: "center",
-  width: "25rem",
+  width: "15rem",
   height: "fit-content",
   padding: "0.5rem 1rem 0.5rem 0.5rem",
   borderRadius: 15,
@@ -115,6 +117,23 @@ export const ProfileCategory = styled(Paper)({
 });
 
 export const TextCentered = styled(Typography)({
+  display: "flex",
+  justifyContent: "center",
+});
+
+export const TableRowStyled = styled(TableRow)({
+  cursor: "pointer",
+});
+
+export const PieChartContainer = styled(Paper)({
+  background: "white",
+  height: "100%",
+  width: "fit-content",
+  display: "flex",
+  justifyContent: "center",
+});
+
+export const FlexStack = styled(Stack)({
   display: "flex",
   justifyContent: "center",
 });

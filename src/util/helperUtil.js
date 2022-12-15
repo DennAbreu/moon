@@ -128,3 +128,48 @@ export const formatResponseData = (responseData) => {
 
   return resDataFormated;
 };
+
+/*
+  Formats data for stock display list
+*/
+const createRowData = (
+  name,
+  symbol,
+  shares,
+  inv,
+  currPrice,
+  currVal,
+  growth
+) => {
+  return { name, symbol, shares, inv, currPrice, currVal, growth };
+};
+
+// export const formatRowData = (entArray)=>{
+//   var retArray = [];
+
+//   entArray.map((entry)=>{
+//     retArray.push({entry.name, entry.symbol})
+//   })
+// }
+
+export function sharesBreakdown(entArr) {
+  const retMap = new Map();
+  var sharesCount = 0;
+  entArr.forEach((val, key) => {
+    retMap.set(val.symbol, val.shares);
+    sharesCount = sharesCount + val.shares;
+  });
+  retMap.set("sharesCount", sharesCount);
+  return retMap;
+}
+
+export function invBreakdown(entArr) {
+  const retMap = new Map();
+  var invCount = 0;
+  entArr.forEach((val, key) => {
+    retMap.set(val.symbol, val.initInvestment);
+    invCount = invCount + val.initInvestment;
+  });
+  retMap.set("invCount", invCount);
+  return retMap;
+}

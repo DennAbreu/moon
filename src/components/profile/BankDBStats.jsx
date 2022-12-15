@@ -1,6 +1,7 @@
 import { Stack } from "@mui/system";
 import {
   CenteredBox,
+  FlexStack,
   ProfileCategory,
   TextCentered,
 } from "../../util/CustomComponents";
@@ -15,7 +16,11 @@ const BankDBStats = () => {
   var growthChangeColor = growthPercent < 0 ? "#FF0000" : "#00ff00";
 
   return (
-    <Stack direction={"row"} spacing={5}>
+    <FlexStack
+      sx={{ display: "flex", justifyContent: "center" }}
+      direction={"row"}
+      spacing={2}
+    >
       <ProfileCategory>
         <Stack direction={"column"}>
           <TextCentered color="white" variant="h5">
@@ -77,7 +82,7 @@ const BankDBStats = () => {
           </Stack>
         </Stack>
       </ProfileCategory>
-    </Stack>
+    </FlexStack>
   );
 };
 
