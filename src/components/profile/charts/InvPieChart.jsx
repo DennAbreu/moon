@@ -2,25 +2,18 @@ import { Box, Stack, Typography, useTheme } from "@mui/material";
 import React, { useCallback, useState } from "react";
 import { PieChart, Pie, Sector } from "recharts";
 import { PieChartContainer } from "../../../util/CustomComponents";
+import { formatInvData, testStockArray } from "../../../util/helperUtil";
 
-const dummyStocks = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 250 },
-  { name: "Group D", value: 200 },
-  { name: "Group E", value: 100 },
-  { name: "Group F", value: 50 },
-  { name: "Group G", value: 330 },
-];
+// const oldTestData = [
+//   { name: "AAPL", value: 10 },
+//   { name: "GME", value: 25 },
+//   { name: "NFLX", value: 15 },
+//   { name: "GOOG", value: 5 },
+//   { name: "META", value: 2 },
+//   { name: "TSLA", value: 35 },
+// ];
 
-const data = [
-  { name: "AAPL", value: 10 },
-  { name: "GME", value: 25 },
-  { name: "NFLX", value: 15 },
-  { name: "GOOG", value: 5 },
-  { name: "META", value: 2 },
-  { name: "TSLA", value: 35 },
-];
+const data = formatInvData(testStockArray);
 
 var pieWidth = 420;
 var pieHeight = 300;
@@ -86,7 +79,7 @@ const renderActiveShape = (props) => {
         y={ey}
         textAnchor={textAnchor}
         fill="#333"
-      >{` ${value}`}</text>
+      >{` $${value}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 1}
         y={ey}

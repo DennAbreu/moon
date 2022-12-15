@@ -1,5 +1,13 @@
 const graphResolution = "D";
 export const apiKey = "cajon1iad3icpj9q6690";
+export const testStockArray = [
+  { name: "AAPL", shares: 10, initInvestment: 1476.41 },
+  { name: "GME", shares: 25, initInvestment: 1476.41 },
+  { name: "NFLX", shares: 15, initInvestment: 4205.25 },
+  { name: "GOOG", shares: 5, initInvestment: 350.25 },
+  { name: "META", shares: 2, initInvestment: 180.25 },
+  { name: "TSLA", shares: 35, initInvestment: 8750.35 },
+];
 
 export function getUnixDates() {
   const today = new Date();
@@ -172,4 +180,24 @@ export function invBreakdown(entArr) {
   });
   retMap.set("invCount", invCount);
   return retMap;
+}
+
+export function formatSharesData(entArr) {
+  var retarray = [];
+  entArr.forEach((entry) => {
+    retarray.push({ name: entry.name, value: entry.shares });
+    console.log(
+      "🚀 ~ file: helperUtil.js:181 ~ entArr.forEach ~  entry.name",
+      entry.name
+    );
+  });
+  return retarray;
+}
+
+export function formatInvData(entArr) {
+  var retarray = [];
+  entArr.forEach((entry) => {
+    retarray.push({ name: entry.name, value: entry.initInvestment });
+  });
+  return retarray;
 }

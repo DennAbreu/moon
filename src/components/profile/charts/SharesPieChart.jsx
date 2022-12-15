@@ -1,31 +1,24 @@
 import { Box, Stack, Typography, useTheme } from "@mui/material";
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { PieChart, Pie, Sector } from "recharts";
 import { PieChartContainer } from "../../../util/CustomComponents";
+import { formatSharesData, testStockArray } from "../../../util/helperUtil";
 
-const dummyStocks = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 250 },
-  { name: "Group D", value: 200 },
-  { name: "Group E", value: 100 },
-  { name: "Group F", value: 50 },
-  { name: "Group G", value: 330 },
-];
+// const oldTestData = [
+//   { name: "AAPL", value: 10 },
+//   { name: "GME", value: 25 },
+//   { name: "NFLX", value: 15 },
+//   { name: "GOOG", value: 5 },
+//   { name: "META", value: 2 },
+//   { name: "TSLA", value: 35 },
+// ];
 
-const data = [
-  { name: "AAPL", value: 10 },
-  { name: "GME", value: 25 },
-  { name: "NFLX", value: 15 },
-  { name: "GOOG", value: 5 },
-  { name: "META", value: 2 },
-  { name: "TSLA", value: 35 },
-];
+const data = formatSharesData(testStockArray);
 
-var pieWidth = 420;
-var pieHeight = 300;
-var pieCX = pieWidth / 2.2;
-var pieCY = pieHeight / 2.2;
+const pieWidth = 420;
+const pieHeight = 300;
+const pieCX = pieWidth / 2.2;
+const pieCY = pieHeight / 2.2;
 
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
