@@ -1,18 +1,14 @@
-import { Box, Stack, Typography, useTheme } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { useCallback, useState } from "react";
+import { useSelector } from "react-redux";
 import { PieChart, Pie, Sector } from "recharts";
-import { PieChartContainer } from "../../../util/CustomComponents";
+import {
+  PieChartContainer,
+  PieGraphLabel,
+} from "../../../util/CustomComponents";
 import { formatSharesData, testStockArray } from "../../../util/helperUtil";
 
-// const oldTestData = [
-//   { name: "AAPL", value: 10 },
-//   { name: "GME", value: 25 },
-//   { name: "NFLX", value: 15 },
-//   { name: "GOOG", value: 5 },
-//   { name: "META", value: 2 },
-//   { name: "TSLA", value: 35 },
-// ];
-
+//Test Data
 const data = formatSharesData(testStockArray);
 
 const pieWidth = 420;
@@ -94,7 +90,8 @@ const renderActiveShape = (props) => {
 };
 
 const SharesPieChart = () => {
-  const theme = useTheme();
+  // const currStockList = useSelector((state) => state.prof.stockList);
+  // const data = formatSharesData(currStockList);
   const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = useCallback(
     (_, index) => {
@@ -106,18 +103,9 @@ const SharesPieChart = () => {
   return (
     <PieChartContainer>
       <Stack direction={"column"}>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            height: "2.2rem",
-            borderRadius: "65",
-            color: "white",
-            background: theme.palette.blueColor.main,
-          }}
-        >
+        <PieGraphLabel>
           <Typography ml={"0.5rem"}>Shares Breakdown</Typography>
-        </Box>
+        </PieGraphLabel>
         <PieChart width={pieWidth} height={pieHeight}>
           <Pie
             activeIndex={activeIndex}

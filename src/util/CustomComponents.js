@@ -137,3 +137,20 @@ export const FlexStack = styled(Stack)({
   display: "flex",
   justifyContent: "center",
 });
+
+export const PieGraphLabel = styled(Box)({
+  background: blueColor,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "2.2rem",
+  borderRadius: "65",
+  color: "white",
+});
+
+export const GraphContainer = styled(Paper)({
+  width: "100%",
+  height: "100%",
+  marginLeft: "0em",
+  marginTop: "0rem",
+});

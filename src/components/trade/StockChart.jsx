@@ -7,6 +7,7 @@ import { getUnixDates } from "../../util/helperUtil";
 import { apiKey } from "../../util/helperUtil";
 import { Box, Paper, styled, useTheme } from "@mui/material";
 import { formatResponseData } from "../../util/helperUtil";
+import { GraphContainer } from "../../util/CustomComponents";
 
 const StockChart = (props) => {
   const theme = useTheme();
@@ -16,13 +17,6 @@ const StockChart = (props) => {
   const [stockSymbol, setStockSymbol] = useState(props.symbol);
   const [stockGraph, setStockGraph] = useState([]);
   const graphResolution = "D";
-
-  const GraphContainer = styled(Paper)({
-    width: "100%",
-    height: "100%",
-    marginLeft: "0em",
-    marginTop: "0rem",
-  });
 
   useEffect(() => {
     setStockSymbol(props.symbol);

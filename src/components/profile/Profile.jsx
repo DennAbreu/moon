@@ -12,6 +12,7 @@ import BankDBStats from "./BankDBStats";
 import StockListDisplay from "./StockListDisplay";
 import SharesPieChart from "./charts/SharesPieChart";
 import SharesLineGraph from "./charts/SharesLineGraph";
+import ComparisonChart from "./charts/ComparisonChart";
 import InvPieChart from "./charts/InvPieChart";
 
 const Profile = (props) => {
@@ -61,18 +62,19 @@ const Profile = (props) => {
   return (
     <>
       {/* {oldInfo} */}
-      <Container maxWidth="80%">
+      <Container maxWidth="90%">
         <BankDBStats />
-        <ButtonStyled2>Update Bank</ButtonStyled2>
-        <FlexStack sx={{ mt: "1rem" }} direction={"row"} spacing={3}>
+        {/* <ButtonStyled2>Update Bank</ButtonStyled2> */}
+        <FlexStack sx={{ mt: "1rem" }} direction={"row"} spacing={2}>
           <StockListDisplay />
-          <SharesPieChart />
-          <InvPieChart />
+          <FlexStack direction={"column"} spacing={1}>
+            <FlexStack direction={"row"} spacing={2}>
+              <SharesPieChart />
+              <InvPieChart />
+            </FlexStack>
+            <ComparisonChart />
+          </FlexStack>
           {/* <SharesLineGraph /> */}
-        </FlexStack>
-        <FlexStack sx={{ mt: "1rem" }} direction={"row"} spacing={10}>
-          <StockListDisplay />
-          <StockListDisplay />
         </FlexStack>
       </Container>
     </>

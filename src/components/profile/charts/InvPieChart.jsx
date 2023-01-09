@@ -1,7 +1,10 @@
 import { Box, Stack, Typography, useTheme } from "@mui/material";
 import React, { useCallback, useState } from "react";
 import { PieChart, Pie, Sector } from "recharts";
-import { PieChartContainer } from "../../../util/CustomComponents";
+import {
+  PieChartContainer,
+  PieGraphLabel,
+} from "../../../util/CustomComponents";
 import { formatInvData, testStockArray } from "../../../util/helperUtil";
 
 // const oldTestData = [
@@ -106,18 +109,9 @@ const InvPieChart = () => {
   return (
     <PieChartContainer>
       <Stack direction={"column"}>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            height: "2.2rem",
-            borderRadius: "65",
-            color: "white",
-            background: theme.palette.blueColor.main,
-          }}
-        >
+        <PieGraphLabel>
           <Typography ml={"0.5rem"}>Investment Breakdown</Typography>
-        </Box>
+        </PieGraphLabel>
         <PieChart width={pieWidth} height={pieHeight}>
           <Pie
             activeIndex={activeIndex}

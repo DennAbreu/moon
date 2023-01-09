@@ -101,8 +101,11 @@ const StockListDisplay = () => {
   };
 
   return (
-    <TableContainer sx={{ maxWidth: "50rem" }} component={Paper}>
-      <Table sx={{ height: "10rem", maxWidth: "50rem" }} size="small">
+    <TableContainer
+      sx={{ height: "100%", maxWidth: "50rem" }}
+      component={Paper}
+    >
+      <Table size="small">
         <TableHead>
           <TableRow
             sx={{
