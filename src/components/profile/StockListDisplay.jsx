@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import StockListBuyMenu from "./StockListBuyMenu";
+import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import {
   Table,
   TableBody,
@@ -12,20 +14,21 @@ import {
   Collapse,
   IconButton,
 } from "@mui/material";
-import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { TableRowStyled } from "../../util/CustomComponents";
+import { retFormatedRowData, testStockArray } from "../../util/helperUtil";
 
-const createRowData = (
-  name,
-  symbol,
-  shares,
-  initInvestment,
-  currPrice,
-  currVal,
-  growth
-) => {
-  return { name, symbol, shares, initInvestment, currPrice, currVal, growth };
-};
+// const createRowData = (
+//   name,
+//   symbol,
+//   shares,
+//   initInvestment,
+//   currPrice,
+//   currVal,
+//   growth
+// ) => {
+//   return { name, symbol, shares, initInvestment, currPrice, currVal, growth };
+// };
+
 const Row = (props) => {
   const { row, onClickRef } = props;
   const [open, setOpen] = useState(false);
@@ -70,30 +73,33 @@ const Row = (props) => {
   );
 };
 
-//createRowData(Name, Symbol, Shares, Invested, CurrPrice, CurrVal, Growth)...
-const rows = [
-  createRowData("Apple Inc.", "AAPL", 10, 1476.41, 143.16, 1431.6, 300),
-  createRowData("GameStop", "GME", 25, 143.16, 143.16, 143.16, 300),
-  createRowData("Netflix Inc", "NFLX", 15, 4205.25, 310.71, 7767.75, 300),
-  createRowData("Alphabet Inc.", "GOOG", 5, 350.25, 92.57, 462.85, 300),
-  createRowData("Meta Platforms, Inc.", "META", 2, 180.25, 113.89, 227.7, 300),
-  createRowData("Tesla, Inc.", "TSLA", 35, 8750.35, 169.42, 5929.7, 300),
-];
-
-const StockListDisplay = () => {
+const StockListDisplay = (props) => {
   const theme = useTheme();
+  // const stockList = useSelector((state) => state.prof.stockList);
   const [selSymbol, setSelSymbol] = useState();
 
-  const dummyStocks = [
-    { name: "Apple", symbol: "AAPL", shares: 1, initInvestment: 143.16 },
-    { name: "Game Stop", symbol: "GME", shares: 1, initInvestment: 143.16 },
-    {
-      name: "AMC Entertainment",
-      symbol: "AMC",
-      shares: 1,
-      initInvestment: 143.16,
-    },
-  ];
+  // const dummyStocks = [
+  //   { name: "Apple", symbol: "AAPL", shares: 1, initInvestment: 143.16 },
+  //   { name: "Game Stop", symbol: "GME", shares: 1, initInvestment: 143.16 },
+  //   {
+  //     name: "AMC Entertainment",
+  //     symbol: "AMC",
+  //     shares: 1,
+  //     initInvestment: 143.16,
+  //   },
+  // ];
+
+  //createRowData(Name, Symbol, Shares, Invested, CurrPrice, CurrVal, Growth)...
+  // const rows = [
+  //   createRowData("Apple Inc.", "AAPL", 10, 1476.41, 143.16, 1431.6, 300),
+  //   createRowData("GameStop", "GME", 25, 143.16, 143.16, 143.16, 300),
+  //   createRowData("Netflix Inc", "NFLX", 15, 4205.25, 310.71, 7767.75, 300),
+  //   createRowData("Alphabet Inc.", "GOOG", 5, 350.25, 92.57, 462.85, 300),
+  //   createRowData("Meta Platforms, Inc.", "META", 2, 180.25, 113.89, 227.7, 300),
+  //   createRowData("Tesla, Inc.", "TSLA", 35, 8750.35, 169.42, 5929.7, 300),
+  // ];
+
+  const rows = retFormatedRowData(testStockArray);
 
   const onClickHandler = (e) => {
     setSelSymbol(e.target.getAttribute("data-item"));
@@ -139,7 +145,7 @@ const StockListDisplay = () => {
               </TableCell>
              */}
           {rows.map((row) => (
-            <Row onClickRef={onClickHandler} key={row.name} row={row} />
+            <Row onClickRef={onClickHandler} key={row.symbol} row={row} />
           ))}
         </TableBody>
       </Table>

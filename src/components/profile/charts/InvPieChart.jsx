@@ -1,5 +1,6 @@
 import { Box, Stack, Typography, useTheme } from "@mui/material";
 import React, { useCallback, useState } from "react";
+import { useSelector } from "react-redux";
 import { PieChart, Pie, Sector } from "recharts";
 import {
   PieChartContainer,
@@ -15,8 +16,6 @@ import { formatInvData, testStockArray } from "../../../util/helperUtil";
 //   { name: "META", value: 2 },
 //   { name: "TSLA", value: 35 },
 // ];
-
-const data = formatInvData(testStockArray);
 
 var pieWidth = 420;
 var pieHeight = 300;
@@ -98,6 +97,8 @@ const renderActiveShape = (props) => {
 
 const InvPieChart = () => {
   const theme = useTheme();
+  // const currStockList = useSelector((state) => state.prof.stockList);
+  const data = formatInvData(testStockArray);
   const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = useCallback(
     (_, index) => {

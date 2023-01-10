@@ -7,12 +7,13 @@ const ComparisonChart = () => {
   const theme = useTheme();
 
   const options = {
-    title: {
-      text: "My stock chart",
-    },
     series: [
       {
         data: [1, 2, 1, 4, 3, 6, 7, 3, 8, 6, 9, 11],
+      },
+      {
+        data: [3, 2, 4, 8, 9, 6, 7, 3, 15, 6, 9, 11],
+        color: "green",
       },
     ],
   };

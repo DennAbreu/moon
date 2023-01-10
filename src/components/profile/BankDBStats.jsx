@@ -7,6 +7,9 @@ import {
 } from "../../util/CustomComponents";
 
 const BankDBStats = () => {
+  // const profBank = useSelector((state) => state.prof.bankTotal);
+  // const initInvestment = useSelector((state) => state.prof.amountInvested);
+  // const availableFunds = useSelector((state) => state.prof.availablefunds);
   var totalBank = 2143.16;
   var availableFunds = 2000;
   var initInvestment = 143.16;

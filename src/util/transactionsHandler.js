@@ -26,7 +26,7 @@ export function copyArray(currStockList) {
 
 export function retCurrStockDetails(stockSymbol, stockList) {
   //calculates how many shares
-  var listLen = 0 || stockList.length;
+  var listLen = stockList.length;
   var retDetails = {
     index: undefined,
     shares: 0,

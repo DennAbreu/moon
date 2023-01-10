@@ -8,9 +8,6 @@ import {
 } from "../../../util/CustomComponents";
 import { formatSharesData, testStockArray } from "../../../util/helperUtil";
 
-//Test Data
-const data = formatSharesData(testStockArray);
-
 const pieWidth = 420;
 const pieHeight = 300;
 const pieCX = pieWidth / 2.2;
@@ -92,6 +89,8 @@ const renderActiveShape = (props) => {
 const SharesPieChart = () => {
   // const currStockList = useSelector((state) => state.prof.stockList);
   // const data = formatSharesData(currStockList);
+  //Test Data
+  const data = formatSharesData(testStockArray);
   const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = useCallback(
     (_, index) => {
