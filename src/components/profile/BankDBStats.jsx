@@ -10,10 +10,11 @@ const BankDBStats = () => {
   // const profBank = useSelector((state) => state.prof.bankTotal);
   // const initInvestment = useSelector((state) => state.prof.amountInvested);
   // const availableFunds = useSelector((state) => state.prof.availablefunds);
+
   var totalBank = 2143.16;
   var availableFunds = 2000;
   var initInvestment = 143.16;
-  var currInvestmentVal = 225.15;
+  var currInvestmentVal = 225.15; //Will need func to calc current value
   var growth = Number((currInvestmentVal - initInvestment).toFixed(2));
   var growthPercent = Number(((growth / initInvestment) * 100).toFixed(2));
   var growthChangeColor = growthPercent < 0 ? "#FF0000" : "#00ff00";
