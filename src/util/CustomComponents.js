@@ -7,6 +7,7 @@ import {
   Paper,
   Stack,
   TableRow,
+  TextField,
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/system";
@@ -14,6 +15,21 @@ import { styled } from "@mui/system";
 const blueColor = "#03314b";
 const greenColor = "#1dcc98";
 const offWhiteColor = "#F7FFF7";
+
+export const TradeStack = styled(Stack)({
+  // background: "#f5ad42",
+  marginTop: "0.5rem",
+  width: "auto",
+  height: "200%",
+  alignItems: "center",
+});
+
+export const DetailStack = styled(Stack)({
+  display: "flex",
+  width: "fit-content",
+  height: "fit-content",
+  // justifyContent: "center",
+});
 
 export const FormBox = styled(Box)({
   borderRadius: 15,
@@ -51,7 +67,7 @@ export const FabStyled = styled(Fab)({
   backgroundColor: greenColor,
   color: "white",
   "&:hover": {
-    backgroundColor: "blueColor",
+    backgroundColor: blueColor,
     color: "green",
   },
 });
@@ -153,4 +169,39 @@ export const GraphContainer = styled(Paper)({
   height: "100%",
   marginLeft: "0em",
   marginTop: "0rem",
+});
+
+export const SharesTextField = styled(TextField)({
+  width: "15%",
+  borderRadius: "0",
+});
+export const CurrentTransPriceField = styled(TextField)({
+  width: "10%",
+  marginLeft: "1rem",
+  borderRadius: "0",
+});
+
+export const BuyMenuStack = styled(Stack)({
+  mt: "0.5rem",
+  marginBottom: "1rem",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  borderBottom: "1px solid black",
+});
+
+export const TransPriceContaner = styled(Paper)({
+  display: "flex",
+  fontSize: "1.5em",
+  color: "white",
+  justifyContent: "center",
+  justifyItems: "center",
+  alignItems: "center",
+  width: "fit-content",
+  height: "2rem",
+  padding: "0.5rem 1rem 0.5rem 1rem",
+  marginTop: "0.5rem",
+  marginLeft: "1rem",
+  borderRadius: 10,
+  background: blueColor,
 });

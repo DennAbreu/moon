@@ -1,34 +1,79 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useRef, useState } from "react";
-import { Box, Stack, TextField } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
+import { Box, Paper, Stack, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { ButtonStyled2, FabStyled } from "../../util/CustomComponents";
+import {
+  ButtonStyled2,
+  BuyMenuStack,
+  FabStyled,
+  SharesTextField,
+  TextCentered,
+  TransPriceContaner,
+} from "../../util/CustomComponents";
+import {
+  retBankAmount,
+  retDBAvailable,
+  retDBInvested,
+  retTotalDBStocks,
+} from "../../firebase/dbHandler";
+import {
+  profSetAmountInvested,
+  profSetAvailableFunds,
+  profSetBank,
+  profSetStockList,
+} from "../../features/profile/profSlice";
+import {
+  purchaseStock,
+  retCurrStockDetails,
+  sellStock,
+} from "../../util/transactionsHandler";
 
 const StockListBuyMenu = (props) => {
   const dispatch = useDispatch();
   const [numShares, setNumShares] = useState(1);
   const [currPrice, setCurrPrice] = useState(143.16);
+  const [pendingTransPrice, setPendingTransPrice] = useState(143.16);
   const subButtonRef = useRef();
   const addButtonRef = useRef();
 
-  //TODO: Fill these out
-  const onChangeHandler = (e) => {};
+  const currUserID = useSelector((state) => state.prof.userID);
+  const availableFunds = useSelector((state) => state.prof.availableFunds);
+  const currList = useSelector((state) => state.prof.stockList);
 
-  const onClickHandler = (e) => {};
+  //TODO: Fill these out
+  const onChangeHandler = (e) => {
+    setNumShares(Number(e.target.value));
+  };
+
+  const onClickHandler = (e) => {
+    switch (e.currentTarget.id) {
+      case "minusButton":
+        if (numShares > 1) {
+          setNumShares(numShares - 1);
+        } else {
+          setNumShares(1);
+        }
+        console.log("numShares", numShares);
+        break;
+      case "plusButton":
+        setNumShares(numShares + 1);
+        // setPendingTransPrice(numShares * stockCurrPrice);
+        console.log("numShares", numShares);
+        break;
+      default:
+        break;
+    }
+  };
 
   const submitHandler = async (e) => {};
 
+  useEffect(() => {
+    setPendingTransPrice(numShares * currPrice);
+  }, [numShares, currPrice]);
+
   return (
-    <Stack
-      sx={{
-        mt: "1rem",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-      direction={"row"}
-    >
+    <BuyMenuStack direction={"row"}>
       <Box sx={{ mr: "0.5rem", display: "flex", alignItems: "center" }}>
         <FabStyled
           id="minusButton"
@@ -40,14 +85,21 @@ const StockListBuyMenu = (props) => {
           <RemoveIcon sx={{ color: "white" }} />
         </FabStyled>
       </Box>
-      <TextField
+      <SharesTextField
         id="stockReq"
         inputProps={{ min: 0, style: { textAlign: "center" } }}
         value={numShares}
         onChange={onChangeHandler}
         min={0}
       />
-      <Box sx={{ ml: "0.5rem", display: "flex", alignItems: "center" }}>
+
+      <Box
+        sx={{
+          ml: "0.5rem",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
         <FabStyled
           id="plusButton"
           size="small"
@@ -61,18 +113,28 @@ const StockListBuyMenu = (props) => {
       <ButtonStyled2
         id="buyButton"
         onClick={submitHandler}
-        sx={{ width: "15%", ml: "1rem" }}
+        sx={{ width: "10%", mb: "0.5rem", ml: "1rem" }}
       >
         Buy
       </ButtonStyled2>
       <ButtonStyled2
         id="sellButton"
         onClick={submitHandler}
-        sx={{ height: "10", width: "15%", ml: "1rem" }}
+        sx={{ height: "10", width: "10%", mb: "0.5rem", ml: "1rem" }}
       >
         Sell
       </ButtonStyled2>
-    </Stack>
+      {/* <CurrentTransPriceField
+        id="stockReq"
+        inputProps={{ min: 0, style: { textAlign: "center" } }}
+        value={pendingTransPrice}
+        onChange={onChangeHandler}
+        min={0}
+      /> */}
+      <TransPriceContaner>
+        ${pendingTransPrice.toFixed(2).toLocaleString("en-US")}
+      </TransPriceContaner>
+    </BuyMenuStack>
   );
 };
 

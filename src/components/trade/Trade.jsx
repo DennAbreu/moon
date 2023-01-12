@@ -15,6 +15,12 @@ import PurchaseWidget from "./PurchaseWidget";
 import PurchaseWidgetMobile from "./PurchaseWidgetMobile";
 import { apiKey } from "../../util/helperUtil";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import {
+  ButtonStyled,
+  DetailStack,
+  TradeStack,
+} from "../../util/CustomComponents";
+import { fetchStockSnapShot } from "../../util/apiHandler";
 
 // import CompanyNews from "./CompanyNews";
 
@@ -34,19 +40,16 @@ const Trade = () => {
     lowPrice: 0,
   });
 
-  const TradeStack = styled(Stack)({
-    // background: "#f5ad42",
-    marginTop: "0.5rem",
-    width: "auto",
-    height: "200%",
-    alignItems: "center",
-  });
-
-  const DetailStack = styled(Stack)({
-    display: "flex",
-    width: "fit-content",
-    height: "fit-content",
-    // justifyContent: "center",
+  const [stockStats2, setStockStats2] = useState({
+    symbol: stockSymbol,
+    companyName: "",
+    currPrice: 0,
+    changeAmt: 0,
+    perChange: 0,
+    openPrice: 0,
+    closePrice: 0,
+    highPrice: 0,
+    lowPrice: 0,
   });
 
   const nullSymbolMessage = (
@@ -100,9 +103,43 @@ const Trade = () => {
     // const fetchCompanyName = async () => {};
   }, [stockSymbol]);
 
+  // const testOnClick = () => {
+  //   var retTestArray = fetchStockSnapShot("AAPL");
+  //   console.log(
+  //     "🚀 ~ file: Trade.jsx:107 ~ testOnClick ~ retTestArray",
+  //     retTestArray
+  //   );
+  // };
+
+  const searchBarHandler = (entSymbol) => {
+    var retTestArray = fetchStockSnapShot(entSymbol);
+    console.log(
+      "🚀 ~ file: Trade.jsx:107 ~ testOnClick ~ retTestArray",
+      retTestArray
+    );
+
+    setStockStats2({
+      symbol: entSymbol,
+      currPrice: retTestArray.currPrice,
+      changeAmt: retTestArray.changeAmt,
+      perChange: retTestArray.perChange,
+      openPrice: retTestArray.openPrice,
+      closePrice: retTestArray.closePrice,
+      highPrice: retTestArray.highPrice,
+      lowPrice: retTestArray.lowPrice,
+    });
+
+    console.log(stockStats2);
+  };
+
+  const printStockStats2 = () => {
+    console.log(stockStats2);
+  };
+
   return (
     <Container>
-      <SearchBar onSymbolSearch={stockSymbolHandler} />
+      <ButtonStyled onClick={printStockStats2}>Test</ButtonStyled>
+      <SearchBar onSymbolSearch={searchBarHandler} />
       {stockSymbol === undefined ? (
         nullSymbolMessage
       ) : (
