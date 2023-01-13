@@ -50,6 +50,10 @@ export const formatResponseData = (responseData) => {
   // console.log("stockGraphData Length", stockGraphData.length);
   // console.log("stockGraphData ", stockGraphData);
 
+  console.log(
+    "🚀 ~ file: helperUtil.js:55 ~ formatResponseData ~ resDataFormated",
+    resDataFormated
+  );
   return resDataFormated;
 };
 

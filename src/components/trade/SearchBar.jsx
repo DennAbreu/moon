@@ -12,7 +12,7 @@ const SearchBar = (props) => {
 
   const clickHandler = (e) => {
     e.preventDefault();
-    var returnedRef = searchBarRef.current.value.toUpperCase();
+    var returnedRef = searchBarRef.current.value.toUpperCase(); //formats the input
     props.onSymbolSearch(returnedRef);
   };
 
@@ -40,15 +40,6 @@ const SearchBar = (props) => {
           ),
         }}
       />
-      {/* <Button
-          sx={{ borderRadius: "0px" }}
-          variant="contained"
-          color="greenColor"
-          size="small"
-          onClick={clickHandler}
-        >
-          <SearchIcon />
-        </Button> */}
     </SearchBarContainer>
   );
 };

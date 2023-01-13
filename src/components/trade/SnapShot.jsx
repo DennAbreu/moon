@@ -6,12 +6,12 @@ import { CenteredBox, SnapShotBox } from "../../util/CustomComponents";
 const SnapShot = (props) => {
   const theme = useTheme();
   const companyName = props.stockData.symbol;
-  const currPrice = props.stockData.currPrice.toFixed(2);
-  const perChange = props.stockData.perChange.toFixed(2);
+  const currPrice = props.stockData.currPrice;
+  const perChange = props.stockData.perChange;
   const perChangeColor = perChange < 0 ? "#FF0000" : "#00ff00";
 
   const colorChangePercent = (
-    <Typography color={perChangeColor}>{perChange}%</Typography>
+    <Typography color={perChangeColor}>{perChange?.toFixed(2)}%</Typography>
   );
 
   const snapShotContent = (
@@ -55,7 +55,7 @@ const SnapShot = (props) => {
             spacing={1}
           >
             <Typography variant="h4" color="white">
-              ${currPrice}
+              ${currPrice?.toFixed(2)}
             </Typography>
             <sub>{colorChangePercent}</sub>
           </Stack>

@@ -1,53 +1,21 @@
 /* eslint-disable no-unused-vars */
 
+import { useState, useEffect } from "react";
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
-import { useState, useEffect } from "react";
-import { getUnixDates } from "../../util/helperUtil";
-import { apiKey } from "../../util/helperUtil";
-import { Box, Paper, styled, useTheme } from "@mui/material";
-import { formatResponseData } from "../../util/helperUtil";
+import { useTheme } from "@mui/material";
+
 import { GraphContainer } from "../../util/CustomComponents";
 
 const StockChart = (props) => {
   const theme = useTheme();
-  const unixDates = getUnixDates();
-  const currDate = unixDates.currDate;
-  const prevDate = unixDates.prevDate;
-  const [stockSymbol, setStockSymbol] = useState(props.symbol);
-  const [stockGraph, setStockGraph] = useState([]);
-  const graphResolution = "D";
+  const [stockSymbol, setStockSymbol] = useState(props.stockData.symbol);
+  const [stockGraph, setStockGraph] = useState(props.stockData.graph);
 
   useEffect(() => {
-    setStockSymbol(props.symbol);
-
-    if (stockSymbol) {
-      const fetchCandleChart = async () => {
-        const response = await fetch(
-          `https://finnhub.io/api/v1/stock/candle?symbol=${stockSymbol}&resolution=${graphResolution}&from=${prevDate}&to=${currDate}&token=${apiKey}`
-        );
-
-        if (!response.ok) {
-          throw new Error(
-            "Something went wrong with the request in StockChart.jsx"
-          );
-        }
-
-        const responseData = await response.json();
-        setStockGraph(formatResponseData(responseData));
-      };
-
-      fetchCandleChart().catch((error) => {
-        console.log(error);
-      });
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stockSymbol]);
-
-  // console.log("TestData ", testData);
-  // console.log("TestData Len", testData.length);
-  // console.log("Final StockGraphData", stockGraph);
+    setStockSymbol(props.stockData.symbol);
+    setStockGraph(props.stockData.graph);
+  }, [props]);
 
   var ohlc = [],
     volume = [],

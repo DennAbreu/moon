@@ -6,12 +6,12 @@ import { CurrencyText } from "../../util/CustomComponents";
 
 const StockDetails = (props) => {
   const theme = useTheme();
-  const currPrice = 0 || props.stockData.currPrice.toFixed(2);
-  const changePrice = 0 || props.stockData.changeAmt.toFixed(2);
-  const highPrice = 0 || props.stockData.highPrice.toFixed(2);
-  const lowPrice = 0 || props.stockData.lowPrice.toFixed(2);
-  const openPrice = 0 || props.stockData.openPrice.toFixed(2);
-  const closePrice = 0 || props.stockData.closePrice.toFixed(2);
+  const currPrice = props.stockData.currPrice;
+  const changePrice = props.stockData.changeAmt;
+  const highPrice = props.stockData.highPrice;
+  const lowPrice = props.stockData.lowPrice;
+  const openPrice = props.stockData.openPrice;
+  const closePrice = props.stockData.closePrice;
   var colorChangeHandler = changePrice < 0 ? "#FF0000" : "#1dcc98";
 
   const StockDetailsCard = styled(Paper)({
@@ -36,7 +36,7 @@ const StockDetails = (props) => {
 
   const changePriceHandler = (
     <CurrencyText color={colorChangeHandler} variant="h6">
-      ${changePrice}
+      ${changePrice?.toFixed(2)}
     </CurrencyText>
   );
 
@@ -46,7 +46,7 @@ const StockDetails = (props) => {
         Current
       </Typography>
       <CurrencyText color="greenColor.main" variant="h6">
-        ${currPrice}
+        ${currPrice?.toFixed(2)}
       </CurrencyText>
     </CategoryBox>
   );
@@ -66,7 +66,7 @@ const StockDetails = (props) => {
         Open
       </Typography>
       <CurrencyText color="greenColor.main" variant="h6">
-        ${openPrice}
+        ${openPrice?.toFixed(2)}
       </CurrencyText>
     </CategoryBox>
   );
@@ -77,7 +77,7 @@ const StockDetails = (props) => {
         Close
       </Typography>
       <CurrencyText color="greenColor.main" variant="h6">
-        ${closePrice}
+        ${closePrice?.toFixed(2)}
       </CurrencyText>
     </CategoryBox>
   );
@@ -88,7 +88,7 @@ const StockDetails = (props) => {
         High
       </Typography>
       <CurrencyText color="greenColor.main" variant="h6">
-        ${highPrice}
+        ${highPrice?.toFixed(2)}
       </CurrencyText>
     </CategoryBox>
   );
@@ -99,7 +99,7 @@ const StockDetails = (props) => {
         Low
       </Typography>
       <CurrencyText color="greenColor.main" variant="h6">
-        ${lowPrice}
+        ${lowPrice?.toFixed(2)}
       </CurrencyText>
     </CategoryBox>
   );
