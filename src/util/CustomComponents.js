@@ -139,6 +139,10 @@ export const TextCentered = styled(Typography)({
 
 export const TableRowStyled = styled(TableRow)({
   cursor: "pointer",
+  background: offWhiteColor,
+  "&:hover": {
+    background: greenColor,
+  },
 });
 
 export const PieChartContainer = styled(Paper)({

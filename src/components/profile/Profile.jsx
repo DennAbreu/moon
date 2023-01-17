@@ -17,7 +17,7 @@ const Profile = (props) => {
 
   return (
     <>
-      <Container maxWidth="90%">
+      <Container maxWidth="100%">
         <BankDBStats />
         {/* <ButtonStyled2>Update Bank</ButtonStyled2> */}
         <FlexStack sx={{ mt: "1rem" }} direction={"row"} spacing={2}>

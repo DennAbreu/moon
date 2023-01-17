@@ -1,3 +1,5 @@
+import { fetchAllStockCurrPrice } from "./apiHandler";
+
 //Constant values.
 const graphResolution = "D";
 export const apiKey = "cajon1iad3icpj9q6690";
@@ -45,10 +47,6 @@ export const formatResponseData = (responseData) => {
       responseData.v[i], //volume
     ]);
   }
-  // console.log("ResponseData Length", rDataLen);
-  // console.log("ResponseData", responseData);
-  // console.log("stockGraphData Length", stockGraphData.length);
-  // console.log("stockGraphData ", stockGraphData);
 
   console.log(
     "🚀 ~ file: helperUtil.js:55 ~ formatResponseData ~ resDataFormated",
@@ -100,12 +98,28 @@ export const retFormatedRowData = (enteredList) => {
         enteredList[i].symbol,
         enteredList[i].shares,
         enteredList[i].initInvestment,
-        143.16,
-        143.16,
+        100,
+        200,
         300
       )
     );
   }
 
   return row;
+};
+
+export const newTempArray = async (enteredList) => {
+  var retList = [];
+
+  enteredList.forEach((entry) => {
+    retList.push({
+      symbol: entry.symbol,
+      shares: entry.shares,
+      initInvestment: entry.initInvestment,
+      currPrice: 200,
+      currVal: 200 * entry.shares,
+    });
+  });
+
+  return retList;
 };

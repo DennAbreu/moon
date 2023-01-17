@@ -3,18 +3,21 @@ import { formatResponseData } from "./helperUtil";
 const graphResolution = "D";
 export const finnHubKey = "cajon1iad3icpj9q6690";
 
-export const populateProfileData = async (entList) => {};
+export const populateProfileData = async (entList) => {
+  //Create Map with Symbol + Current Data
+};
 
-export const fetchStockCurrPrice = async (symbol) => {
-  var retCurrPrice;
+export const fetchAllStockCurrPrice = async (entList) => {
+  const retCurrPriceArr = [];
 
-  /*
-        TODO: Single API call that returns current Stock Price for entered
-        symbol.
+  //API calls for current price for each stock symbol.
+  entList.forEach(async (entry) => {
+    var stockTemp = await fetchStockSnapShot(entry.symbol);
+    var entryCurrPrice = retCurrPrice(stockTemp);
+    retCurrPriceArr.push({ symbol: entry.symbol, currPrice: entryCurrPrice });
+  });
 
-        TODO: Can make it so that it returns price history for past year
-        incluing current price
-    */
+  return retCurrPriceArr;
 };
 
 export const fetchStockPriceHistory = async (entSymbol, prevDate, currDate) => {
@@ -35,20 +38,12 @@ export const fetchStockPriceHistory = async (entSymbol, prevDate, currDate) => {
   );
 
   retPriceHistory = formatResponseData(responseData);
-  console.log(
-    "🚀 ~ file: apiHandler.js:34 ~ fetchStockPriceHistory ~ retPriceHistory",
-    retPriceHistory
-  );
 
   return retPriceHistory;
 };
 
-export const retCurrPrices = (entList) => {
-  /*
-        Todo: Takes entered array from Redux and returns current stock price
-        for every synbol using fetchStockCurrPrice function.
-        
-    */
+export const retCurrPrice = (entPromise) => {
+  return entPromise.currPrice;
 };
 
 export const fetchStockSnapShot = async (entSymbol) => {
@@ -74,7 +69,7 @@ export const fetchStockSnapShot = async (entSymbol) => {
   };
 
   console.log(
-    "🚀 ~ file: apiHandler.js:52 ~ fetchStockStats ~ retCurrPrice",
+    "🚀 ~ file: apiHandler.js:52 ~ fetchStockSnapShot ~ retCurrPrice",
     retCurrPrice
   );
 

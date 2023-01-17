@@ -13,7 +13,7 @@ import StockDetails from "./StockDetails";
 import StockChart from "./StockChart";
 import PurchaseWidget from "./PurchaseWidget";
 import PurchaseWidgetMobile from "./PurchaseWidgetMobile";
-import { getUnixDates } from "../../util/helperUtil";
+import { getUnixDates, testStockArray } from "../../util/helperUtil";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {
   ButtonStyled,
@@ -21,6 +21,7 @@ import {
   TradeStack,
 } from "../../util/CustomComponents";
 import {
+  fetchAllStockCurrPrice,
   fetchStockPriceHistory,
   fetchStockSnapShot,
 } from "../../util/apiHandler";
@@ -95,18 +96,31 @@ const Trade = () => {
     });
   };
 
-  const printCheck = () => {
-    console.log("🚀 ~ file: Trade.jsx:68 ~ Trade ~ stockStats", stockStats);
+  // const printCheck = () => {
+  //   console.log("🚀 ~ file: Trade.jsx:68 ~ Trade ~ stockStats", stockStats);
 
-    console.log(
-      "🚀 ~ file: Trade.jsx:45 ~ Trade ~ stockGraphStats",
-      stockGraphStats
-    );
-  };
+  //   console.log(
+  //     "🚀 ~ file: Trade.jsx:45 ~ Trade ~ stockGraphStats",
+  //     stockGraphStats
+  //   );
+  // };
+
+  // const apiTest = async () => {
+  //   // var applHist = fetchStockPriceHistory("AAPL", prevDate, currDate);
+  //   // console.log("🚀 ~ file: Trade.jsx:109 ~ apiTest ~ applHist", applHist);
+  //   var apiTestArray = await fetchAllStockCurrPrice(testStockArray);
+  //   console.log(
+  //     "🚀 ~ file: Trade.jsx:112 ~ apiTest ~ apiTestArray",
+  //     apiTestArray
+  //   );
+  // };
 
   return (
     <Container>
-      <ButtonStyled onClick={printCheck}>Test</ButtonStyled>
+      {/* <ButtonStyled onClick={printCheck}>Print</ButtonStyled>
+      <br />
+      <br />
+      <ButtonStyled onClick={apiTest}>API--Test</ButtonStyled> */}
       <SearchBar onSymbolSearch={searchBarHandler} />
       {stockSymbol === undefined ? (
         nullSymbolMessage

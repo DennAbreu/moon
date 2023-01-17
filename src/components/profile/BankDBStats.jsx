@@ -31,7 +31,7 @@ const BankDBStats = () => {
             Bank
           </TextCentered>
           <TextCentered color={"greenColor.main"} variant="h5">
-            ${totalBank}
+            ${totalBank?.toFixed(2)}
           </TextCentered>
         </Stack>
       </ProfileCategory>
@@ -43,7 +43,7 @@ const BankDBStats = () => {
             </TextCentered>
           </CenteredBox>
           <TextCentered color={"greenColor.main"} variant="h5">
-            ${availableFunds}
+            ${availableFunds?.toFixed(2)}
           </TextCentered>
         </Stack>
       </ProfileCategory>
@@ -53,7 +53,7 @@ const BankDBStats = () => {
             Invested
           </TextCentered>
           <TextCentered color={"greenColor.main"} variant="h5">
-            ${initInvestment}
+            ${initInvestment?.toFixed(2)}
           </TextCentered>
         </Stack>
       </ProfileCategory>
@@ -63,7 +63,7 @@ const BankDBStats = () => {
             Value
           </TextCentered>
           <TextCentered color={"greenColor.main"} variant="h5">
-            ${currInvestmentVal}
+            ${currInvestmentVal?.toFixed(2)}
           </TextCentered>
         </Stack>
       </ProfileCategory>
@@ -78,10 +78,10 @@ const BankDBStats = () => {
             spacing={1}
           >
             <TextCentered color={growthChangeColor} variant="h5">
-              ${growth}
+              ${growth?.toFixed(2)}
             </TextCentered>
             <TextCentered color={growthChangeColor}>
-              <sub>{growthPercent}%</sub>
+              <sub>{growthPercent?.toFixed(2)}%</sub>
             </TextCentered>
           </Stack>
         </Stack>
