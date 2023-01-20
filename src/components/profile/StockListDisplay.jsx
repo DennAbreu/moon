@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import StockListBuyMenu from "./StockListBuyMenu";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
@@ -15,7 +15,11 @@ import {
   IconButton,
 } from "@mui/material";
 import { TableRowStyled } from "../../util/CustomComponents";
-import { retFormatedRowData, testStockArray } from "../../util/helperUtil";
+import {
+  modifyStockList,
+  retFormatedRowData,
+  testStockArray,
+} from "../../util/helperUtil";
 import { fetchAllStockCurrPrice } from "../../util/apiHandler";
 
 // const createRowData = (
@@ -56,9 +60,15 @@ const Row = (props) => {
           {row.symbol} ({row.name})
         </TableCell>
         <TableCell align="right">{row.shares}</TableCell>
-        <TableCell align="right">{row.initInvestment}</TableCell>
-        <TableCell align="right">{row.currPrice}</TableCell>
-        <TableCell align="right">{row.currVal}</TableCell>
+        <TableCell align="right">
+          ${row.initInvestment.toLocaleString("en-US")}
+        </TableCell>
+        <TableCell align="right">
+          {row.currVal.toLocaleString("en-US")}
+        </TableCell>
+        <TableCell align="right">
+          {row.currPrice.toLocaleString("en-US")}
+        </TableCell>
         {/* <TableCell colSpan={1} align="right">
           {row.growth}
         </TableCell> */}
@@ -70,7 +80,7 @@ const Row = (props) => {
       >
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <StockListBuyMenu />
+            <StockListBuyMenu currentPrice={Number(row.currPrice)} />
           </Collapse>
         </TableCell>
       </TableRow>
@@ -90,7 +100,11 @@ const StockListDisplay = (props) => {
     --modifiedStockListArray
   */
 
-  const rows = retFormatedRowData(testStockArray);
+  const rows = retFormatedRowData(props.stockList);
+  console.log(
+    "🚀 ~ file: StockListDisplay.jsx:98 ~ StockListDisplay ~ props.stockList",
+    props.stockList
+  );
 
   const onClickHandler = (e) => {
     setSelSymbol(e.target.getAttribute("data-item"));
@@ -119,10 +133,10 @@ const StockListDisplay = (props) => {
               Invested
             </TableCell>
             <TableCell sx={{ color: "white" }} align="right">
-              Current Price
+              Current Value
             </TableCell>
             <TableCell sx={{ color: "white" }} align="right">
-              Current Value
+              Current Price
             </TableCell>
             {/* <TableCell sx={{ color: "white" }} align="right">
               Growth

@@ -32,8 +32,10 @@ import {
 const StockListBuyMenu = (props) => {
   const dispatch = useDispatch();
   const [numShares, setNumShares] = useState(1);
-  const [currPrice, setCurrPrice] = useState(143.16);
-  const [pendingTransPrice, setPendingTransPrice] = useState(143.16);
+  // const [currPrice, setCurrPrice] = useState(props.currentPrice);
+  const [pendingTransPrice, setPendingTransPrice] = useState(
+    props.currentPrice
+  );
   const subButtonRef = useRef();
   const addButtonRef = useRef();
 
@@ -69,8 +71,13 @@ const StockListBuyMenu = (props) => {
   const submitHandler = async (e) => {};
 
   useEffect(() => {
-    setPendingTransPrice(numShares * currPrice);
-  }, [numShares, currPrice]);
+    setPendingTransPrice(numShares * props.currentPrice);
+  }, [numShares, props.currentPrice]);
+
+  console.log(
+    "🚀 ~ file: StockListBuyMenu.jsx:74 ~ useEffect ~ props.currentPrice",
+    props.currentPrice
+  );
 
   return (
     <BuyMenuStack direction={"row"}>

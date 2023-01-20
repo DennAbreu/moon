@@ -173,14 +173,14 @@ const PurchaseWidget = (props) => {
                 <BlueTextLabel>Available Funds:</BlueTextLabel>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
-                <CurrencyText>${availableFunds.toFixed(2)}</CurrencyText>
+                <CurrencyText>${availableFunds?.toFixed(2)}</CurrencyText>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
                 <BlueTextLabel>Current Price:</BlueTextLabel>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
                 <CurrencyText>
-                  ${Number(stockCurrPrice).toFixed(2)}
+                  ${Number(stockCurrPrice)?.toFixed(2)}
                 </CurrencyText>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
@@ -194,7 +194,7 @@ const PurchaseWidget = (props) => {
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
                 <CurrencyText>
-                  ${Number(initInvestment).toFixed(2)}
+                  ${Number(initInvestment)?.toFixed(2)}
                 </CurrencyText>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
@@ -202,7 +202,7 @@ const PurchaseWidget = (props) => {
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
                 <CurrencyText>
-                  ${Number(currSharesValue).toFixed(2)}
+                  ${Number(currSharesValue)?.toFixed(2)}
                 </CurrencyText>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
@@ -213,7 +213,7 @@ const PurchaseWidget = (props) => {
                   sx={{ fontSize: "1.2em", fontWeight: "bold" }}
                   color={netGainColor}
                 >
-                  ${netGain.toFixed(2)}({netGainPer.toFixed(2)}% )
+                  ${netGain.toFixed(2)}({netGainPer?.toFixed(2)}% )
                 </Typography>
               </Grid>
             </Grid>

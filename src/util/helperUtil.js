@@ -1,18 +1,65 @@
-import { fetchAllStockCurrPrice } from "./apiHandler";
+import { fetchSingleCurrPrice } from "./apiHandler";
 
 //Constant values.
-const graphResolution = "D";
 export const apiKey = "cajon1iad3icpj9q6690";
+
+/*
+Test Info To Delte..
+*/
+
 export const testStockArray = [
-  { symbol: "AAPL", shares: 10, initInvestment: 1476.41 },
-  { symbol: "GME", shares: 25, initInvestment: 1476.41 },
-  { symbol: "NFLX", shares: 15, initInvestment: 4205.25 },
-  { symbol: "GOOG", shares: 5, initInvestment: 350.25 },
-  { symbol: "META", shares: 2, initInvestment: 180.25 },
-  { symbol: "TSLA", shares: 35, initInvestment: 8750.35 },
+  {
+    symbol: "AAPL",
+    companyName: "Apple Inc",
+    shares: 10,
+    initInvestment: 1476.41,
+    currPrice: 0,
+    currVal: 0,
+  },
+  {
+    symbol: "GME",
+    companyName: "GameStop Corp.",
+    shares: 25,
+    initInvestment: 1476.41,
+    currPrice: 0,
+    currVal: 0,
+  },
+  {
+    symbol: "NFLX",
+    companyName: "Netflix Inc",
+    shares: 15,
+    initInvestment: 4205.25,
+    currPrice: 0,
+    currVal: 0,
+  },
+  {
+    symbol: "GOOG",
+    companyName: "Alphabet Inc Class C ",
+    shares: 25,
+    initInvestment: 350.25,
+    currPrice: 0,
+    currVal: 0,
+  },
+  {
+    symbol: "META",
+    companyName: "Meta Platforms Inc",
+    shares: 2,
+    initInvestment: 180.25,
+    currPrice: 0,
+    currVal: 0,
+  },
+  {
+    symbol: "TSLA",
+    companyName: "Tesla Inc",
+    shares: 35,
+    initInvestment: 8750.35,
+    currPrice: 0,
+    currVal: 0,
+  },
 ];
 
-//Returns formated UnixDates
+//Formated UnixDates to return currDate and prevDate from a year ago.
+
 export function getUnixDates() {
   const today = new Date();
 
@@ -30,7 +77,7 @@ export function getUnixDates() {
   return retUnixDates;
 }
 
-// Formats data for stock display list
+// Formats data for stock display list component that uses High Charts
 
 export const formatResponseData = (responseData) => {
   var resDataFormated = [];
@@ -94,12 +141,12 @@ export const retFormatedRowData = (enteredList) => {
   for (let i = 0; i < enteredList.length; i++) {
     row.push(
       createRowData(
-        "--",
+        enteredList[i].companyName,
         enteredList[i].symbol,
         enteredList[i].shares,
         enteredList[i].initInvestment,
-        100,
-        200,
+        enteredList[i].currPrice,
+        enteredList[i].currVal,
         300
       )
     );
@@ -108,18 +155,27 @@ export const retFormatedRowData = (enteredList) => {
   return row;
 };
 
-export const newTempArray = async (enteredList) => {
-  var retList = [];
-
-  enteredList.forEach((entry) => {
+export const modifyStockList = (enteredList) => {
+  const retList = [];
+  enteredList.forEach(async (entry) => {
+    var tempCurrPrice = await fetchSingleCurrPrice(entry.symbol);
     retList.push({
       symbol: entry.symbol,
       shares: entry.shares,
       initInvestment: entry.initInvestment,
-      currPrice: 200,
-      currVal: 200 * entry.shares,
+      currPrice: tempCurrPrice,
+      currVal: entry.shares * tempCurrPrice,
     });
   });
 
   return retList;
+};
+
+export const retTotalValue = (enteredList) => {
+  let retTotal = 0;
+  enteredList.forEach((entry) => {
+    retTotal += entry.currVal;
+  });
+
+  return retTotal;
 };

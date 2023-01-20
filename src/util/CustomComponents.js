@@ -169,10 +169,11 @@ export const PieGraphLabel = styled(Box)({
 });
 
 export const GraphContainer = styled(Paper)({
-  width: "100%",
+  maxWidth: "100%",
   height: "100%",
   marginLeft: "0em",
   marginTop: "0rem",
+  border: "0.25px solid black",
 });
 
 export const SharesTextField = styled(TextField)({
@@ -208,4 +209,12 @@ export const TransPriceContaner = styled(Paper)({
   marginLeft: "1rem",
   borderRadius: 10,
   background: blueColor,
+});
+
+export const ErrorMessage = styled(Paper)({
+  marginTop: "0.5rem",
+  display: "flex",
+  width: "auto",
+  justifyContent: "center",
+  background: offWhiteColor,
 });

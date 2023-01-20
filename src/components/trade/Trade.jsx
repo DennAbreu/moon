@@ -1,30 +1,24 @@
-import { useEffect, useState } from "react";
-import {
-  Container,
-  Paper,
-  Stack,
-  styled,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { useState } from "react";
+import { Container, Paper, Typography, useTheme } from "@mui/material";
 import SearchBar from "./SearchBar";
 import SnapShot from "./SnapShot";
 import StockDetails from "./StockDetails";
 import StockChart from "./StockChart";
 import PurchaseWidget from "./PurchaseWidget";
 import PurchaseWidgetMobile from "./PurchaseWidgetMobile";
-import { getUnixDates, testStockArray } from "../../util/helperUtil";
+import { getUnixDates } from "../../util/helperUtil";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {
-  ButtonStyled,
   DetailStack,
+  ErrorMessage,
   TradeStack,
 } from "../../util/CustomComponents";
 import {
-  fetchAllStockCurrPrice,
   fetchStockPriceHistory,
+  fetchStockQuote,
   fetchStockSnapShot,
 } from "../../util/apiHandler";
+import { Stack } from "@mui/system";
 
 /*
 TODO: Delete extra variables and clean up file!!!
@@ -40,9 +34,10 @@ const Trade = () => {
   const [stockSymbol, setStockSymbol] = useState(undefined);
   const [stockGraphStats, setStockGraphStats] = useState({
     symbol: stockSymbol,
+    companyName: "",
     graph: [],
   });
-  const [stockStats, setStockStats] = useState({
+  const [stockQuote, setStockQuote] = useState({
     symbol: stockSymbol,
     companyName: "",
     currPrice: 0,
@@ -53,32 +48,31 @@ const Trade = () => {
     highPrice: 0,
     lowPrice: 0,
   });
-
   const nullSymbolMessage = (
-    <Paper
-      sx={{
-        marginTop: "1rem",
-        display: "flex",
-        width: "auto",
-        justifyContent: "space-evenly",
-        background: theme.palette.offWhiteColor.main,
-      }}
-    >
-      <Typography variant="h5" color="blueColor.main">
+    <ErrorMessage>
+      <Typography variant="h6" color="blueColor.main">
         Please enter a symbol in the search bar!
       </Typography>
-    </Paper>
+    </ErrorMessage>
   );
 
   const searchBarHandler = async (entSymbol) => {
     setStockSymbol(entSymbol);
+    //Company Name, News, Etc.
 
+    /*
+      When Limit is reached for API change value of miscData..
+    */
+    // var miscData = await fetchStockQuote(entSymbol);
+
+    var miscData = { name: "Reached API Call Limits" };
+    //Stock Quote --- Current, High, Low, etc...
     var retSnapShotArray = await fetchStockSnapShot(entSymbol);
     console.log(
       "🚀 ~ file: Trade.jsx:116 ~ searchBarHandler ~ retSnapShotArray",
       retSnapShotArray
     );
-
+    //Stock Price history
     var retPriceHistory = await fetchStockPriceHistory(
       entSymbol,
       prevDate,
@@ -88,55 +82,33 @@ const Trade = () => {
       "🚀 ~ file: Trade.jsx:135 ~ searchBarHandler ~ retPriceHistory",
       retPriceHistory
     );
-
-    setStockStats(retSnapShotArray);
+    setStockQuote(retSnapShotArray);
     setStockGraphStats({
       symbol: entSymbol,
+      companyName: miscData.name,
       graph: retPriceHistory,
     });
   };
 
-  // const printCheck = () => {
-  //   console.log("🚀 ~ file: Trade.jsx:68 ~ Trade ~ stockStats", stockStats);
-
-  //   console.log(
-  //     "🚀 ~ file: Trade.jsx:45 ~ Trade ~ stockGraphStats",
-  //     stockGraphStats
-  //   );
-  // };
-
-  // const apiTest = async () => {
-  //   // var applHist = fetchStockPriceHistory("AAPL", prevDate, currDate);
-  //   // console.log("🚀 ~ file: Trade.jsx:109 ~ apiTest ~ applHist", applHist);
-  //   var apiTestArray = await fetchAllStockCurrPrice(testStockArray);
-  //   console.log(
-  //     "🚀 ~ file: Trade.jsx:112 ~ apiTest ~ apiTestArray",
-  //     apiTestArray
-  //   );
-  // };
-
   return (
-    <Container>
-      {/* <ButtonStyled onClick={printCheck}>Print</ButtonStyled>
-      <br />
-      <br />
-      <ButtonStyled onClick={apiTest}>API--Test</ButtonStyled> */}
+    <Container maxWidth="100%">
       <SearchBar onSymbolSearch={searchBarHandler} />
       {stockSymbol === undefined ? (
         nullSymbolMessage
       ) : (
         <TradeStack direction={"column"} spacing={2}>
-          <DetailStack direction={{ md: "column", lg: "row" }} spacing={1}>
-            <SnapShot stockData={stockStats} />
-            <StockDetails stockData={stockStats} />
+          <DetailStack direction={"row"} spacing={1}>
+            <SnapShot stockData={stockQuote} />
+            <StockDetails stockData={stockQuote} />
           </DetailStack>
-
-          {!isMatch ? (
-            <PurchaseWidget stockData={stockStats} />
-          ) : (
-            <PurchaseWidgetMobile stockData={stockStats} />
-          )}
-          <StockChart stockData={stockGraphStats} />
+          <Stack maxWidth="60%" direction={"row"} spacing={1}>
+            {!isMatch ? (
+              <PurchaseWidget stockData={stockQuote} />
+            ) : (
+              <PurchaseWidgetMobile stockData={stockQuote} />
+            )}
+            <StockChart stockData={stockGraphStats} />
+          </Stack>
         </TradeStack>
       )}
     </Container>

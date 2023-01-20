@@ -26,7 +26,7 @@ export function copyArray(currStockList) {
 
 export function retCurrStockDetails(stockSymbol, stockList) {
   //calculates how many shares
-  var listLen = stockList.length;
+  var listLen = stockList?.length;
   var retDetails = {
     index: undefined,
     shares: 0,
@@ -54,6 +54,13 @@ export function calcTotalInvested(currList) {
   console.log("TotalInvAmt", totalInvAmt);
   return totalInvAmt;
 }
+
+/*
+TODO: 
+-Include Company Name with New Stocks.
+-Include Company Website With New Stocks
+
+*/
 
 export async function purchaseStock(
   uID,

@@ -10,11 +10,13 @@ import { GraphContainer } from "../../util/CustomComponents";
 const StockChart = (props) => {
   const theme = useTheme();
   const [stockSymbol, setStockSymbol] = useState(props.stockData.symbol);
+  const [compName, setCompName] = useState(props.stockData.companyName);
   const [stockGraph, setStockGraph] = useState(props.stockData.graph);
 
   useEffect(() => {
     setStockSymbol(props.stockData.symbol);
     setStockGraph(props.stockData.graph);
+    setCompName(props.stockData.companyName);
   }, [props]);
 
   var ohlc = [],
@@ -53,7 +55,7 @@ const StockChart = (props) => {
     },
 
     title: {
-      text: stockSymbol,
+      text: compName,
     },
 
     yAxis: [
@@ -93,7 +95,7 @@ const StockChart = (props) => {
     series: [
       {
         type: "candlestick",
-        name: stockSymbol,
+        name: compName,
         data: ohlc,
         dataGrouping: {
           units: groupingUnits,
@@ -110,7 +112,7 @@ const StockChart = (props) => {
       },
     ],
     accessibility: {
-      enabled: false,
+      enabled: true,
     },
   };
 

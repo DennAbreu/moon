@@ -6,7 +6,7 @@ import {
   TextCentered,
 } from "../../util/CustomComponents";
 
-const BankDBStats = () => {
+const BankDBStats = (props) => {
   // const profBank = useSelector((state) => state.prof.bankTotal);
   // const initInvestment = useSelector((state) => state.prof.amountInvested);
   // const availableFunds = useSelector((state) => state.prof.availablefunds);
@@ -14,7 +14,7 @@ const BankDBStats = () => {
   var totalBank = 2143.16;
   var availableFunds = 2000;
   var initInvestment = 143.16;
-  var currInvestmentVal = 225.15; //Will need func to calc current value
+  var currInvestmentVal = props.totalStockValue; //Will need func to calc current value
   var growth = Number((currInvestmentVal - initInvestment).toFixed(2));
   var growthPercent = Number(((growth / initInvestment) * 100).toFixed(2));
   var growthChangeColor = growthPercent < 0 ? "#FF0000" : "#00ff00";
@@ -31,7 +31,7 @@ const BankDBStats = () => {
             Bank
           </TextCentered>
           <TextCentered color={"greenColor.main"} variant="h5">
-            ${totalBank?.toFixed(2)}
+            ${totalBank?.toLocaleString("en-US")}
           </TextCentered>
         </Stack>
       </ProfileCategory>
@@ -43,7 +43,7 @@ const BankDBStats = () => {
             </TextCentered>
           </CenteredBox>
           <TextCentered color={"greenColor.main"} variant="h5">
-            ${availableFunds?.toFixed(2)}
+            ${availableFunds?.toLocaleString("en-US")}
           </TextCentered>
         </Stack>
       </ProfileCategory>
@@ -53,7 +53,7 @@ const BankDBStats = () => {
             Invested
           </TextCentered>
           <TextCentered color={"greenColor.main"} variant="h5">
-            ${initInvestment?.toFixed(2)}
+            ${initInvestment?.toLocaleString("en-US")}
           </TextCentered>
         </Stack>
       </ProfileCategory>
@@ -63,7 +63,7 @@ const BankDBStats = () => {
             Value
           </TextCentered>
           <TextCentered color={"greenColor.main"} variant="h5">
-            ${currInvestmentVal?.toFixed(2)}
+            ${currInvestmentVal?.toLocaleString("en-US")}
           </TextCentered>
         </Stack>
       </ProfileCategory>
@@ -81,7 +81,7 @@ const BankDBStats = () => {
               ${growth?.toFixed(2)}
             </TextCentered>
             <TextCentered color={growthChangeColor}>
-              <sub>{growthPercent?.toFixed(2)}%</sub>
+              <sub>{growthPercent?.toLocaleString("en-US")}%</sub>
             </TextCentered>
           </Stack>
         </Stack>
