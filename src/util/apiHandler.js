@@ -3,12 +3,13 @@ import { formatResponseData } from "./helperUtil";
 //Finnhub API Keys
 const graphResolution = "D";
 const finnHubKey = "cajon1iad3icpj9q6690";
+const xRapidKey = "91f01e34a5mshe7b3ff972fd2800p1acd6ajsn5e85e17ebeea";
 
 //Headers for Real-Time Finance Data API
 const RTFD_Options = {
   method: "GET",
   headers: {
-    "X-RapidAPI-Key": "91f01e34a5mshe7b3ff972fd2800p1acd6ajsn5e85e17ebeea",
+    "X-RapidAPI-Key": `${xRapidKey}`,
     "X-RapidAPI-Host": "real-time-finance-data.p.rapidapi.com",
   },
 };
@@ -17,25 +18,41 @@ const RTFD_Options = {
 const RealStonks_Options = {
   method: "GET",
   headers: {
-    "X-RapidAPI-Key": "91f01e34a5mshe7b3ff972fd2800p1acd6ajsn5e85e17ebeea",
+    "X-RapidAPI-Key": `${xRapidKey}`,
     "X-RapidAPI-Host": "realstonks.p.rapidapi.com",
   },
 };
 
-export const populateProfileData = async (entList) => {
-  //Create Map with Symbol + Current Data
+/*----------------------FinnHub API ----------------------
+https://finnhub.io/docs/api/introduction
+
+--60 calls/minute
+--30 calls/sec
+--unlimited/month
+---------------------------------------------------------*/
+
+//Returns company profile, website, logo, etc...
+
+export const fetchCompanyProfile = async (entSymbol) => {
+  var retCompProfile = {};
+  const response = await fetch(
+    `https://finnhub.io/api/v1/stock/profile2?symbol=${entSymbol}&token=${finnHubKey}`
+  );
+
+  if (!response.ok) {
+    throw new Error("Error with fetchCompanyProfile -- apiHandler.js");
+  }
+
+  const responseData = await response.json();
+  retCompProfile = {
+    symbol: responseData.ticker,
+    name: responseData.name,
+    logo: responseData.logo,
+    url: responseData.weburl,
+  };
+
+  return retCompProfile;
 };
-
-/*
-  ----------------------FinnHub API ----------------------
-  https://finnhub.io/docs/api/introduction
-
-  --60 calls/minute
-
-
-  
-  ---------------------------------------------------------
-*/
 
 export const fetchAllStockCurrPrice = async (entList) => {
   const retCurrPriceArr = [];
@@ -58,7 +75,7 @@ export const fetchStockPriceHistory = async (entSymbol, prevDate, currDate) => {
   );
 
   if (!response.ok) {
-    throw new Error("Something went wrong with the request in StockChart.jsx");
+    throw new Error("Error with fetchStockPriceHistory -- apiHandler.js");
   }
 
   const responseData = await response.json();
@@ -82,13 +99,13 @@ export const fetchStockSnapShot = async (entSymbol) => {
     `https://finnhub.io/api/v1/quote?symbol=${entSymbol}&token=${finnHubKey}`
   );
   if (!response.ok) {
-    throw new Error("Something went wrong with the request");
+    throw new Error("Error with fetchStockSnapShot -- apiHandler.js");
   }
   const responseData = await response.json();
 
   retCurrPrice = {
     symbol: entSymbol,
-    companyName: "---",
+    companyName: "",
     currPrice: responseData.c,
     changeAmt: responseData.d,
     perChange: responseData.dp,
@@ -110,14 +127,10 @@ export const fetchSingleCurrPrice = async (entSymbol) => {
   return retObj.currPrice;
 };
 
-/*
-  -------------------Real-Time Finance Data -------------------
+/* -------------------Real-Time Finance Data -------------------
   https://rapidapi.com/letscrape-6bRBa3QguO5/api/real-time-finance-data
   --Limited to 100 Calls Per Day on 'Freemium Plan'.
-
-
-  -------------------------------------------------------------
-*/
+  -------------------------------------------------------------*/
 
 export const fetchStockQuote = async (entSymbol) => {
   var retObj = "empty";
@@ -126,9 +139,7 @@ export const fetchStockQuote = async (entSymbol) => {
     RTFD_Options
   );
   if (!response.ok) {
-    throw new Error(
-      `Something went wrong with the request for Fetch Request...`
-    );
+    throw new Error("Error with fetchStockQuote -- apiHandler.js");
   }
   const responseData = await response.json();
   console.log(
@@ -138,15 +149,11 @@ export const fetchStockQuote = async (entSymbol) => {
   return (retObj = responseData.data);
 };
 
-/*
-  -------------------RealStonks API-------------------
-
+/*-------------------RealStonks API-------------------
   https://rapidapi.com/amansharma2910/api/realstonks/details
   --100K Free API Calls Per Month.
   --Used for singular current price checks. 
-
-  ----------------------------------------------------
-*/
+  ----------------------------------------------------*/
 
 export const fetchCurrentPrice = async (entSymbol) => {
   const response = await fetch(
@@ -155,7 +162,7 @@ export const fetchCurrentPrice = async (entSymbol) => {
   );
 
   if (!response.ok) {
-    throw new Error(`Something went wrong with the request`);
+    throw new Error("Error with fetchCurrentPrice -- apiHandler.js");
   }
   const responseData = await response.json();
   return responseData.price;

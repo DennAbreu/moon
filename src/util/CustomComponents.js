@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Fab,
+  Grid,
   Paper,
   Stack,
   TableRow,
@@ -15,6 +16,9 @@ import { styled } from "@mui/system";
 const blueColor = "#03314b";
 const greenColor = "#1dcc98";
 const offWhiteColor = "#F7FFF7";
+
+//---------------------Stack---------------------
+//----------------------------------------------
 
 export const TradeStack = styled(Stack)({
   // background: "#f5ad42",
@@ -28,8 +32,29 @@ export const DetailStack = styled(Stack)({
   display: "flex",
   width: "fit-content",
   height: "fit-content",
-  // justifyContent: "center",
 });
+
+export const BuyMenuStack = styled(Stack)({
+  mt: "0.5rem",
+  marginBottom: "1rem",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  borderBottom: "1px solid black",
+});
+export const FlexStack = styled(Stack)({
+  display: "flex",
+  justifyContent: "center",
+});
+
+export const AvatarBox = styled(Stack)({
+  marginBottom: "1rem",
+  display: "flex",
+  alignItems: "center",
+});
+
+//---------------------Box---------------------
+//---------------------------------------------
 
 export const FormBox = styled(Box)({
   borderRadius: 15,
@@ -42,6 +67,24 @@ export const FormBox = styled(Box)({
   width: "50%",
   padding: "0px 15px 15px 15px",
 });
+
+export const CenteredBox = styled(Box)({
+  display: "flex",
+  justifyContent: "center",
+});
+
+export const PieGraphLabel = styled(Box)({
+  background: blueColor,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "2.2rem",
+  borderRadius: "65",
+  color: "white",
+});
+
+//---------------------Button ---------------------
+//------------------------------------------------
 
 export const ButtonStyled = styled(Button)({
   backgroundColor: "#1dcc98",
@@ -72,28 +115,13 @@ export const FabStyled = styled(Fab)({
   },
 });
 
-export const AvatarBox = styled(Stack)({
-  marginBottom: "1rem",
-  display: "flex",
-  alignItems: "center",
-});
-
-export const BlueTextLabel = styled(Typography)({
-  color: blueColor,
-  fontSize: "1.2em",
-});
-
-export const CurrencyText = styled(Typography)({
-  color: greenColor,
-  fontSize: "1.2em",
-  fontWeight: "bold",
-});
+//---------------------Accordion---------------------
+//---------------------------------------------------
 
 export const StyledAccordion = styled(Accordion)({
   background: blueColor,
-  marginTop: "0.15rem",
-  marginBottom: "0.5rem",
-  width: "60%",
+  width: "40%",
+  height: "fit-content",
   borderRadius: 5,
 });
 
@@ -109,17 +137,15 @@ export const StyledDetails = styled(AccordionDetails)({
   background: offWhiteColor,
 });
 
-export const SnapShotBox = styled(Paper)({
+//---------------------Paper---------------------
+//-----------------------------------------------
+
+export const SnapShotContainer = styled(Paper)({
   width: "auto",
   height: "fit-content",
   padding: "0.5rem 1rem 0.5rem 0.5rem",
   borderRadius: 15,
   background: blueColor,
-});
-
-export const CenteredBox = styled(Box)({
-  display: "flex",
-  justifyContent: "center",
 });
 
 export const ProfileCategory = styled(Paper)({
@@ -132,19 +158,6 @@ export const ProfileCategory = styled(Paper)({
   background: blueColor,
 });
 
-export const TextCentered = styled(Typography)({
-  display: "flex",
-  justifyContent: "center",
-});
-
-export const TableRowStyled = styled(TableRow)({
-  cursor: "pointer",
-  background: offWhiteColor,
-  "&:hover": {
-    background: greenColor,
-  },
-});
-
 export const PieChartContainer = styled(Paper)({
   background: "white",
   height: "100%",
@@ -153,46 +166,12 @@ export const PieChartContainer = styled(Paper)({
   justifyContent: "center",
 });
 
-export const FlexStack = styled(Stack)({
-  display: "flex",
-  justifyContent: "center",
-});
-
-export const PieGraphLabel = styled(Box)({
-  background: blueColor,
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "2.2rem",
-  borderRadius: "65",
-  color: "white",
-});
-
 export const GraphContainer = styled(Paper)({
   maxWidth: "100%",
   height: "100%",
   marginLeft: "0em",
   marginTop: "0rem",
   border: "0.25px solid black",
-});
-
-export const SharesTextField = styled(TextField)({
-  width: "15%",
-  borderRadius: "0",
-});
-export const CurrentTransPriceField = styled(TextField)({
-  width: "10%",
-  marginLeft: "1rem",
-  borderRadius: "0",
-});
-
-export const BuyMenuStack = styled(Stack)({
-  mt: "0.5rem",
-  marginBottom: "1rem",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  borderBottom: "1px solid black",
 });
 
 export const TransPriceContaner = styled(Paper)({
@@ -217,4 +196,52 @@ export const ErrorMessage = styled(Paper)({
   width: "auto",
   justifyContent: "center",
   background: offWhiteColor,
+});
+
+//---------------------Text---------------------
+//----------------------------------------------
+
+export const TextCentered = styled(Typography)({
+  display: "flex",
+  justifyContent: "center",
+});
+
+export const SharesTextField = styled(TextField)({
+  width: "15%",
+  borderRadius: "0",
+});
+export const CurrentTransPriceField = styled(TextField)({
+  width: "10%",
+  marginLeft: "1rem",
+  borderRadius: "0",
+});
+
+export const BlueTextLabel = styled(Typography)({
+  color: blueColor,
+  fontSize: "1.2em",
+});
+
+export const CurrencyText = styled(Typography)({
+  color: greenColor,
+  fontSize: "1.2em",
+  fontWeight: "bold",
+});
+
+//---------------------Table---------------------
+//-----------------------------------------------
+
+export const TableRowStyled = styled(TableRow)({
+  cursor: "pointer",
+  background: offWhiteColor,
+  "&:hover": {
+    background: greenColor,
+  },
+});
+
+//---------------------Grid---------------------
+//----------------------------------------------
+
+export const PurchaseGrid = styled(Grid)({
+  display: "flex",
+  justifyContent: "center",
 });

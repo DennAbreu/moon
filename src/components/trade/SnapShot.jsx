@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Box, Paper, Stack, styled, Typography, useTheme } from "@mui/material";
-import { CenteredBox, SnapShotBox } from "../../util/CustomComponents";
+import { CenteredBox, SnapShotContainer } from "../../util/CustomComponents";
 
 const SnapShot = (props) => {
   const theme = useTheme();
@@ -41,7 +41,7 @@ const SnapShot = (props) => {
     </Stack>
   );
   return (
-    <SnapShotBox>
+    <SnapShotContainer>
       <Stack direction={"column"}>
         <CenteredBox>
           <Typography color={"greenColor.main"} variant="h5">
@@ -61,7 +61,7 @@ const SnapShot = (props) => {
           </Stack>
         )}
       </Stack>
-    </SnapShotBox>
+    </SnapShotContainer>
   );
 };
 export default SnapShot;

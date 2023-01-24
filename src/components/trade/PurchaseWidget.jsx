@@ -17,6 +17,8 @@ import {
   StyledAccordion,
   StyledDetails,
   CurrencyText,
+  PurchaseGrid,
+  ButtonStyled,
 } from "../../util/CustomComponents";
 import {
   purchaseStock,
@@ -40,6 +42,7 @@ import {
 const PurchaseWidget = (props) => {
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState(false);
+
   const [numShares, setNumShares] = useState(1);
   const [pendingTransPrice, setPendingTransPrice] = useState(
     props.stockData.currPrice
@@ -156,19 +159,16 @@ const PurchaseWidget = (props) => {
     <StyledAccordion expanded={expanded} onChange={expansionHandler}>
       <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />}>
         <Typography color="white" variant="h7">
-          CLICK TO TRADE
+          Click To Open
         </Typography>
       </AccordionSummary>
+
       <StyledDetails>
         {!currUser ? (
           "No User Is Signed In."
         ) : (
           <>
-            <Grid
-              sx={{ display: "flex", justifyContent: "center" }}
-              container
-              spacing={0}
-            >
+            <PurchaseGrid container>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
                 <BlueTextLabel>Available Funds:</BlueTextLabel>
               </Grid>
@@ -198,7 +198,7 @@ const PurchaseWidget = (props) => {
                 </CurrencyText>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
-                <BlueTextLabel>Current Shares Value:</BlueTextLabel>
+                <BlueTextLabel>Total Shares Value:</BlueTextLabel>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
                 <CurrencyText>
@@ -213,10 +213,10 @@ const PurchaseWidget = (props) => {
                   sx={{ fontSize: "1.2em", fontWeight: "bold" }}
                   color={netGainColor}
                 >
-                  ${netGain.toFixed(2)}({netGainPer?.toFixed(2)}% )
+                  ${netGain?.toFixed(2)}({netGainPer?.toFixed(2)}% )
                 </Typography>
               </Grid>
-            </Grid>
+            </PurchaseGrid>
             <Stack
               sx={{ mt: "1rem", display: "flex", justifyContent: "center" }}
               direction={"row"}
@@ -271,12 +271,15 @@ const PurchaseWidget = (props) => {
                 color="blueColor.main"
                 variant="h5"
               >
-                ${pendingTransPrice.toFixed(2)}
+                ${pendingTransPrice?.toFixed(2)}
               </Typography>
             </Box>
           </>
         )}
       </StyledDetails>
+      <Typography color="white" variant="h7">
+        Place Holder -- Insider Sentiment
+      </Typography>
     </StyledAccordion>
   );
 };

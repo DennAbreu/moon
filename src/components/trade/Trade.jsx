@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, Paper, Typography, useTheme } from "@mui/material";
+import { Container, Typography, useTheme } from "@mui/material";
 import SearchBar from "./SearchBar";
 import SnapShot from "./SnapShot";
 import StockDetails from "./StockDetails";
@@ -14,15 +14,16 @@ import {
   TradeStack,
 } from "../../util/CustomComponents";
 import {
+  fetchCompanyProfile,
   fetchStockPriceHistory,
-  fetchStockQuote,
   fetchStockSnapShot,
 } from "../../util/apiHandler";
 import { Stack } from "@mui/system";
 
 /*
 TODO: Delete extra variables and clean up file!!!
-
+TODO: Save Time Series in some format to use in profile page.
+TODO: Save Company in stock database
 */
 
 const Trade = () => {
@@ -57,35 +58,24 @@ const Trade = () => {
   );
 
   const searchBarHandler = async (entSymbol) => {
-    setStockSymbol(entSymbol);
     //Company Name, News, Etc.
+    var retCompanyProfile = await fetchCompanyProfile(entSymbol);
 
-    /*
-      When Limit is reached for API change value of miscData..
-    */
-    // var miscData = await fetchStockQuote(entSymbol);
-
-    var miscData = { name: "Reached API Call Limits" };
     //Stock Quote --- Current, High, Low, etc...
     var retSnapShotArray = await fetchStockSnapShot(entSymbol);
-    console.log(
-      "🚀 ~ file: Trade.jsx:116 ~ searchBarHandler ~ retSnapShotArray",
-      retSnapShotArray
-    );
+
     //Stock Price history
     var retPriceHistory = await fetchStockPriceHistory(
       entSymbol,
       prevDate,
       currDate
     );
-    console.log(
-      "🚀 ~ file: Trade.jsx:135 ~ searchBarHandler ~ retPriceHistory",
-      retPriceHistory
-    );
+
+    setStockSymbol(entSymbol);
     setStockQuote(retSnapShotArray);
     setStockGraphStats({
       symbol: entSymbol,
-      companyName: miscData.name,
+      companyName: retCompanyProfile.name,
       graph: retPriceHistory,
     });
   };

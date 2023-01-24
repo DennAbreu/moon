@@ -8,6 +8,7 @@ const SearchBar = (props) => {
   const SearchBarContainer = styled(Box)({
     display: "flex",
     justifyContent: "center",
+    width: "auto",
   });
 
   const clickHandler = (e) => {
@@ -19,7 +20,7 @@ const SearchBar = (props) => {
   return (
     <SearchBarContainer>
       <TextField
-        sx={{ borderRadius: "0px", background: "white" }}
+        sx={{ borderRadius: "0px", background: "white", width: "20rem" }}
         key="textField_one"
         id="outlined-controlled"
         label="Enter Stock Symbol"
@@ -29,7 +30,7 @@ const SearchBar = (props) => {
         InputProps={{
           endAdornment: (
             <Button
-              sx={{ borderRadius: "0px" }}
+              sx={{ borderRadius: "0px", width: "50%" }}
               variant="contained"
               color="greenColor"
               size="large"
