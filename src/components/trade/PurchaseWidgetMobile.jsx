@@ -48,8 +48,8 @@ const PurchaseWidgetMobile = (props) => {
   const subButtonRef = useRef();
   const addButtonRef = useRef();
 
-  const symbol = props.stockData.symbol;
-  const stockCurrPrice = props.stockData.currPrice;
+  const { symbol, companyName, currPrice } = props.stockData;
+
   const currUserID = useSelector((state) => state.prof.userID);
   const availableFunds = useSelector((state) => state.prof.availableFunds);
   const currList = useSelector((state) => state.prof.stockList);
@@ -57,7 +57,7 @@ const PurchaseWidgetMobile = (props) => {
   const stockListIndex = currListDetails.index;
   const sharesOwned = currListDetails.shares;
   const initInvestment = currListDetails.initInvestment;
-  const currSharesValue = stockCurrPrice * sharesOwned;
+  const currSharesValue = currPrice * sharesOwned;
   const netGain = currSharesValue - initInvestment;
   const netGainPer = (netGain / initInvestment) * 100;
   const netGainColor = netGain < 0 ? "#FF0000" : "#00ff00";
@@ -81,6 +81,7 @@ const PurchaseWidgetMobile = (props) => {
         await purchaseStock(
           currUserID,
           symbol,
+          companyName,
           numShares,
           sharesOwned,
           initInvestment,
@@ -96,6 +97,7 @@ const PurchaseWidgetMobile = (props) => {
         await sellStock(
           currUserID,
           symbol,
+          companyName,
           numShares,
           sharesOwned,
           initInvestment,
@@ -129,8 +131,8 @@ const PurchaseWidgetMobile = (props) => {
   };
 
   useEffect(() => {
-    setPendingTransPrice(numShares * stockCurrPrice);
-  }, [numShares, stockCurrPrice]);
+    setPendingTransPrice(numShares * currPrice);
+  }, [numShares, currPrice]);
 
   return (
     <StyledAccordionMobile expanded={expanded} onChange={expansionHandler}>
@@ -159,9 +161,7 @@ const PurchaseWidgetMobile = (props) => {
                 <BlueTextLabel>Current Price:</BlueTextLabel>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
-                <CurrencyText>
-                  ${Number(stockCurrPrice)?.toFixed(2)}
-                </CurrencyText>
+                <CurrencyText>${Number(currPrice)?.toFixed(2)}</CurrencyText>
               </Grid>
               <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
                 <BlueTextLabel>Shares Owned:</BlueTextLabel>

@@ -1,5 +1,3 @@
-import { fetchSingleCurrPrice } from "./apiHandler";
-
 //Constant values.
 export const apiKey = "cajon1iad3icpj9q6690";
 
@@ -87,10 +85,10 @@ export const formatResponseData = (responseData) => {
   for (let i = 0; i < rDataLen; i++) {
     resDataFormated.push([
       responseData.t[i] * 1000, //date: Convert UNIX timestop from seconds to milliseconds.
-      Number(responseData.o[i].toFixed(2)), //open -- convert string back to number
-      Number(responseData.h[i].toFixed(2)), //high -- convert string back to number
-      Number(responseData.l[i].toFixed(2)), //low -- convert string back to number
-      Number(responseData.c[i].toFixed(2)), //close -- convert string back to number
+      Number(responseData.o[i]?.toFixed(2)), //open -- convert string back to number
+      Number(responseData.h[i]?.toFixed(2)), //high -- convert string back to number
+      Number(responseData.l[i]?.toFixed(2)), //low -- convert string back to number
+      Number(responseData.c[i]?.toFixed(2)), //close -- convert string back to number
       responseData.v[i], //volume
     ]);
   }
@@ -125,7 +123,7 @@ export function formatInvData(entArr) {
 
 //createRowData(Name, Symbol, Shares, Invested, CurrPrice, CurrVal, Growth)...
 const createRowData = (
-  name,
+  companyName,
   symbol,
   shares,
   initInvestment,
@@ -133,7 +131,15 @@ const createRowData = (
   currVal,
   growth
 ) => {
-  return { name, symbol, shares, initInvestment, currPrice, currVal, growth };
+  return {
+    companyName,
+    symbol,
+    shares,
+    initInvestment,
+    currPrice,
+    currVal,
+    growth,
+  };
 };
 
 export const retFormatedRowData = (enteredList) => {
@@ -157,24 +163,37 @@ export const retFormatedRowData = (enteredList) => {
 
 export const modifyStockList = (enteredList) => {
   const retList = [];
+  //TODO: Work on API Logic.
+  // enteredList.forEach(async (entry) => {
+  //   var tempCurrPrice = await fetchSingleCurrPrice(entry.symbol);
+  //   retList.push({
+  //     symbol: entry.symbol,
+  //     shares: entry.shares,
+  //     initInvestment: entry.initInvestment,
+  //     currPrice: tempCurrPrice,
+  //     currVal: entry.shares * tempCurrPrice,
+  //   });
+  // });
   enteredList.forEach(async (entry) => {
-    var tempCurrPrice = await fetchSingleCurrPrice(entry.symbol);
+    var tempCurrPrice = Math.random() * (Math.random() * 100);
     retList.push({
       symbol: entry.symbol,
       shares: entry.shares,
+      companyName: entry.companyName,
       initInvestment: entry.initInvestment,
       currPrice: tempCurrPrice,
       currVal: entry.shares * tempCurrPrice,
     });
   });
-
   return retList;
 };
 
 export const retTotalValue = (enteredList) => {
   let retTotal = 0;
   enteredList.forEach((entry) => {
-    retTotal += entry.currVal;
+    //TODO: In final build use entry.currVal
+    //retTotal += entry.currVal;
+    retTotal += 100;
   });
 
   return retTotal;

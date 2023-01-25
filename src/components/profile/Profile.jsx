@@ -15,21 +15,12 @@ import {
 } from "../../util/helperUtil";
 
 const Profile = (props) => {
-  //----------------------------
+  const profName = useSelector((state) => state.prof.name);
+  const profID = useSelector((state) => state.prof.userID);
 
-  // const profName = useSelector((state) => state.prof.name);
-  // const profID = useSelector((state) => state.prof.userID);
-  // const profBank = useSelector((state) => state.prof.bankTotal);
-  // const amtInvested = useSelector((state) => state.prof.amountInvested);
   const stockList = useSelector((state) => state.prof.stockList);
 
-  // const [modifiedList, setModifiedList] = useState(
-  //   modifyStockList(testStockArray)
-  // );
-
-  // -------------------------------
-
-  const totalStockListValue = retTotalValue(testStockArray);
+  const totalStockListValue = retTotalValue(stockList);
 
   console.log(
     "🚀 ~ file: Profile.jsx:19 ~ totalStockListValue",
@@ -42,7 +33,7 @@ const Profile = (props) => {
         <BankDBStats totalStockValue={totalStockListValue} />
         {/* <ButtonStyled2>Update Bank</ButtonStyled2> */}
         <FlexStack sx={{ mt: "1rem" }} direction={"row"} spacing={2}>
-          <StockListDisplay stockList={testStockArray} />
+          <StockListDisplay stockList={stockList} />
           <FlexStack direction={"column"} spacing={1}>
             <FlexStack direction={"row"} spacing={2}>
               <SharesPieChart />

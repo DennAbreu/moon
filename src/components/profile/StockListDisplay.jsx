@@ -57,17 +57,17 @@ const Row = (props) => {
           </IconButton>
         </TableCell>
         <TableCell data-item={row.symbol} component="th" scope="row">
-          {row.symbol} ({row.name})
+          {row.symbol} ({row.companyName})
         </TableCell>
         <TableCell align="right">{row.shares}</TableCell>
         <TableCell align="right">
-          ${row.initInvestment.toLocaleString("en-US")}
+          ${row.initInvestment?.toLocaleString("en-US")}
         </TableCell>
         <TableCell align="right">
-          {row.currVal.toLocaleString("en-US")}
+          {row.currVal?.toLocaleString("en-US")}
         </TableCell>
         <TableCell align="right">
-          {row.currPrice.toLocaleString("en-US")}
+          {row.currPrice?.toLocaleString("en-US")}
         </TableCell>
         {/* <TableCell colSpan={1} align="right">
           {row.growth}
@@ -80,7 +80,7 @@ const Row = (props) => {
       >
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <StockListBuyMenu currentPrice={Number(row.currPrice)} />
+            <StockListBuyMenu stockData={row} />
           </Collapse>
         </TableCell>
       </TableRow>
@@ -97,10 +97,10 @@ const StockListDisplay = (props) => {
     TODO: Get Stock List with Symbol, Shares, Amount Invested, API Current Price,
     And Current Value (API Curr Price * Shares);
     
-    --modifiedStockListArray
+    TODO: modifiedStockListArray
   */
-
-  const rows = retFormatedRowData(props.stockList);
+  var modifiedList = modifyStockList(props.stockList);
+  const rows = retFormatedRowData(modifiedList);
   console.log(
     "🚀 ~ file: StockListDisplay.jsx:98 ~ StockListDisplay ~ props.stockList",
     props.stockList

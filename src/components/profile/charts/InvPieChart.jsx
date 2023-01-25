@@ -97,8 +97,8 @@ const renderActiveShape = (props) => {
 
 const InvPieChart = () => {
   const theme = useTheme();
-  // const currStockList = useSelector((state) => state.prof.stockList);
-  const data = formatInvData(testStockArray);
+  const stockList = useSelector((state) => state.prof.stockList);
+  const data = formatInvData(stockList);
   const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = useCallback(
     (_, index) => {

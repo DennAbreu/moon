@@ -15,7 +15,7 @@ export function isValidTransaction(availableFunds, pendingTransPrice) {
 export function copyArray(currStockList) {
   var newList = [];
 
-  if (currStockList.length > 0) {
+  if (currStockList?.length > 0) {
     for (const obj of currStockList) {
       newList.push(obj);
     }
@@ -65,6 +65,7 @@ TODO:
 export async function purchaseStock(
   uID,
   symbol,
+  companyName,
   sharesPurchased,
   sharesOwned,
   initAmountInvested,
@@ -79,9 +80,7 @@ export async function purchaseStock(
   var newAvailableFunds;
   var newShares = sharesPurchased + sharesOwned;
   var currBank = retBankAmount(uID);
-  var newAmountInvested = Number(
-    (initAmountInvested + pendingTransPrice).toFixed(2)
-  );
+  var newAmountInvested = Number(initAmountInvested + pendingTransPrice);
 
   //Check to see if valid transaction & return error message if not.
   var isValid = isValidTransaction(availableFunds, pendingTransPrice);
@@ -92,12 +91,14 @@ export async function purchaseStock(
   if (sharesOwned > 0) {
     newStockList[stockListIndex] = {
       symbol: symbol,
+      companyName: companyName,
       shares: newShares,
       initInvestment: newAmountInvested,
     };
   } else {
     newStockList.push({
       symbol: symbol,
+      companyName: companyName,
       shares: sharesPurchased,
       initInvestment: pendingTransPrice,
     });
@@ -108,12 +109,14 @@ export async function purchaseStock(
   console.log("PurchaseFunc: NewStockList", newStockList);
 
   //Update DB with new calculated totlal investment.
-  newTotalInvestment = Number(await calcTotalInvested(newStockList).toFixed(2));
+  newTotalInvestment = Number(
+    await calcTotalInvested(newStockList)?.toFixed(2)
+  );
   await updateDBInvested(uID, newTotalInvestment);
   console.log("PurchaseFunc: NewTotalInvested:", newTotalInvestment);
 
   //update DB Available amount
-  newAvailableFunds = Number((currBank - newTotalInvestment).toFixed(2));
+  newAvailableFunds = Number((currBank - newTotalInvestment)?.toFixed(2));
   await updateDBAvailable(uID, newAvailableFunds);
   console.log("PurchaseFunc: NewAvailableAmount:", newAvailableFunds);
 
@@ -135,6 +138,7 @@ export async function purchaseStock(
 export async function sellStock(
   uID,
   symbol,
+  companyName,
   sharesSold,
   sharesOwned,
   initAmountInvested,
@@ -147,14 +151,14 @@ export async function sellStock(
   var newShares = sharesOwned - sharesSold;
   var sharesAvailable = newShares >= 0 ? true : false;
   var newStockList = copyArray(currStockList);
-  var avgSharePrice = Number((initAmountInvested / sharesOwned).toFixed(2)); //3
+  var avgSharePrice = Number((initAmountInvested / sharesOwned)?.toFixed(2)); //3
   var avgValueOfSharesSold = avgSharePrice * sharesSold; //15
   var currBank = retBankAmount(uID);
   var newInitInvestment = Number(
-    (initAmountInvested - avgValueOfSharesSold).toFixed(2)
+    (initAmountInvested - avgValueOfSharesSold)?.toFixed(2)
   );
   var newAvailableFunds = Number(
-    (availableFunds + pendingTransPrice).toFixed(2)
+    (availableFunds + pendingTransPrice)?.toFixed(2)
   );
   var newBankAmt;
   var newTotalInvestment;
@@ -169,11 +173,12 @@ export async function sellStock(
     newInitInvestment,
   });
 
-  //update stockList with new information if at least one share remains
+  //TODO: Fix logic so stock is deleted at 0 shares.
   if (newShares === 0) newInitInvestment = 0;
 
   newStockList[stockListIndex] = {
     symbol: symbol,
+    companyName: companyName,
     shares: newShares,
     initInvestment: newInitInvestment,
   };

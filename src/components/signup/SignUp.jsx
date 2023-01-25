@@ -61,27 +61,6 @@ const SignUp = () => {
     }
   };
 
-  const testClickHandler = async (data) => {
-    console.log("Test Button Clicked");
-    var rNum = Math.floor(Math.random() * 100);
-    var tEmail = `test${rNum}@gmail.com`;
-    var tPw = 123123;
-    var tName = `TestUser#${rNum}`;
-    var payLoadObj = {};
-
-    try {
-      await signUpFB(tEmail, tPw);
-      var newUserId = retUserID();
-      await addNewUserDB(newUserId, tName, tEmail);
-      dispatch(await authLogIn());
-      payLoadObj = { name: `Test${rNum}`, id: newUserId };
-      dispatch(await profSetNewUser(payLoadObj));
-      navigate("/profile");
-    } catch {
-      setErrorMsg("Error Signing Up!");
-    }
-  };
-
   const sameUserHandler = async (data) => {
     var tEmail = `test620@gmail.com`;
     var tPw = 123123;
@@ -91,7 +70,7 @@ const SignUp = () => {
       await signUpFB(tEmail, tPw);
       var newUserId = retUserID();
       await addNewUserDB(newUserId, tName, tEmail);
-      var currList = retTotalDBStocks(newUserId);
+      var currList = await retTotalDBStocks(newUserId);
       dispatch(
         await profSetNewUser({
           name: tName,
@@ -209,18 +188,7 @@ const SignUp = () => {
             >
               Sign Up
             </ButtonStyled>
-            <ButtonStyled
-              sx={{
-                mt: "1rem",
-                background: "red",
-                fontSize: "1.1rem",
-                width: "100%",
-              }}
-              variant="contained"
-              onClick={testClickHandler}
-            >
-              TEST
-            </ButtonStyled>
+
             <ButtonStyled
               sx={{
                 mt: "1rem",

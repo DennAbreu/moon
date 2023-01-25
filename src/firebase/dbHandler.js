@@ -7,8 +7,15 @@ export const databaseRef = getDatabase(app);
 //Initial amounts when creating new entry in database.
 var bank = 2143.16;
 var invested = 143.16;
-var available = Number((bank - invested).toFixed(2));
-var stocks = [{ symbol: "AAPL", shares: 1, initInvestment: 143.16 }];
+var available = Number((bank - invested)?.toFixed(2));
+var stocks = [
+  {
+    symbol: "AAPL",
+    companyName: "Apple Inc",
+    shares: 1,
+    initInvestment: 143.16,
+  },
+];
 
 //New User: write to database for the first time
 export function addNewUserDB(userID, name, email) {

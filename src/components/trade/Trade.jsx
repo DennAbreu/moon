@@ -72,7 +72,17 @@ const Trade = () => {
     );
 
     setStockSymbol(entSymbol);
-    setStockQuote(retSnapShotArray);
+    setStockQuote({
+      symbol: entSymbol,
+      companyName: retCompanyProfile.name,
+      currPrice: retSnapShotArray.currPrice,
+      changeAmt: retSnapShotArray.changeAmt,
+      perChange: retSnapShotArray.perChange,
+      openPrice: retSnapShotArray.openPrice,
+      closePrice: retSnapShotArray.closePrice,
+      highPrice: retSnapShotArray.highPrice,
+      lowPrice: retSnapShotArray.lowPrice,
+    });
     setStockGraphStats({
       symbol: entSymbol,
       companyName: retCompanyProfile.name,

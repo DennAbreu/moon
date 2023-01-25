@@ -87,10 +87,8 @@ const renderActiveShape = (props) => {
 };
 
 const SharesPieChart = () => {
-  // const currStockList = useSelector((state) => state.prof.stockList);
-  // const data = formatSharesData(currStockList);
-  //Test Data
-  const data = formatSharesData(testStockArray);
+  const stockList = useSelector((state) => state.prof.stockList);
+  const data = formatSharesData(stockList);
   const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = useCallback(
     (_, index) => {
