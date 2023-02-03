@@ -1,3 +1,5 @@
+import { fetchCurrentPrice } from "./apiHandler";
+
 //Constant values.
 export const apiKey = "cajon1iad3icpj9q6690";
 
@@ -174,8 +176,30 @@ export const modifyStockList = (enteredList) => {
   //     currVal: entry.shares * tempCurrPrice,
   //   });
   // });
+  enteredList.forEach((entry) => {
+    // var testCurrPrice = fetchCurrentPrice(entry.symbol);
+    var pricePerStock = entry.initInvestment / entry.shares;
+    var newCurrPrice = 0.1 * pricePerStock + pricePerStock;
+    retList.push({
+      symbol: entry.symbol,
+      shares: entry.shares,
+      companyName: entry.companyName,
+      initInvestment: entry.initInvestment,
+      currPrice: newCurrPrice,
+      currVal: newCurrPrice * entry.shares,
+    });
+  });
+  return retList;
+};
+
+export const testModifyStockList = async (enteredList) => {
+  const retList = [];
   enteredList.forEach(async (entry) => {
-    var tempCurrPrice = Math.random() * (Math.random() * 100);
+    var tempCurrPrice = await fetchCurrentPrice(entry.symbol);
+    console.log(
+      "🚀 ~ file: helperUtil.js:198 ~ enteredList.forEach ~ tempCurrPrice",
+      tempCurrPrice
+    );
     retList.push({
       symbol: entry.symbol,
       shares: entry.shares,
@@ -189,11 +213,11 @@ export const modifyStockList = (enteredList) => {
 };
 
 export const retTotalValue = (enteredList) => {
-  let retTotal = 0;
+  var retTotal = 0;
   enteredList.forEach((entry) => {
     //TODO: In final build use entry.currVal
     //retTotal += entry.currVal;
-    retTotal += 100;
+    retTotal += entry.initInvestment;
   });
 
   return retTotal;

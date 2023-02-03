@@ -180,13 +180,6 @@ const StockListBuyMenu = (props) => {
       >
         Sell
       </ButtonStyled2>
-      {/* <CurrentTransPriceField
-        id="stockReq"
-        inputProps={{ min: 0, style: { textAlign: "center" } }}
-        value={pendingTransPrice}
-        onChange={onChangeHandler}
-        min={0}
-      /> */}
       <TransPriceContaner>
         ${pendingTransPrice?.toFixed(2).toLocaleString("en-US")}
       </TransPriceContaner>

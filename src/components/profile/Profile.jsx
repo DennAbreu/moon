@@ -1,6 +1,15 @@
 import { useSelector } from "react-redux";
-import { Container } from "@mui/material";
-import { FlexStack } from "../../util/CustomComponents";
+import { AccordionSummary, Container, Stack, Typography } from "@mui/material";
+import {
+  BankAccordionDetails,
+  BankEditCategory,
+  CurrencyText,
+  EditBankAccordion,
+  FlexStack,
+  StyledAccordion,
+  StyledAccordionMobile,
+  TextCentered,
+} from "../../util/CustomComponents";
 import BankDBStats from "./BankDBStats";
 import StockListDisplay from "./StockListDisplay";
 import SharesPieChart from "./charts/SharesPieChart";
@@ -13,14 +22,15 @@ import {
   retTotalValue,
   testStockArray,
 } from "../../util/helperUtil";
+import EditBank from "./EditBank";
 
 const Profile = (props) => {
   const profName = useSelector((state) => state.prof.name);
   const profID = useSelector((state) => state.prof.userID);
-
   const stockList = useSelector((state) => state.prof.stockList);
+  var modifiedList = modifyStockList(testStockArray);
 
-  const totalStockListValue = retTotalValue(stockList);
+  const totalStockListValue = retTotalValue(modifiedList);
 
   console.log(
     "🚀 ~ file: Profile.jsx:19 ~ totalStockListValue",
@@ -31,9 +41,8 @@ const Profile = (props) => {
     <>
       <Container maxWidth="100%">
         <BankDBStats totalStockValue={totalStockListValue} />
-        {/* <ButtonStyled2>Update Bank</ButtonStyled2> */}
         <FlexStack sx={{ mt: "1rem" }} direction={"row"} spacing={2}>
-          <StockListDisplay stockList={stockList} />
+          <StockListDisplay stockList={modifiedList} />
           <FlexStack direction={"column"} spacing={1}>
             <FlexStack direction={"row"} spacing={2}>
               <SharesPieChart />

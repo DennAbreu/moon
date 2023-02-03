@@ -28,7 +28,6 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState("");
-
   const label = { inputProps: { "aria-label": "controlled" } };
   const checkHandler = (event) => {
     setChecked(event.target.checked);

@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/system";
+import { Pointer } from "highcharts";
 
 const blueColor = "#03314b";
 const greenColor = "#1dcc98";
@@ -137,6 +138,18 @@ export const StyledDetails = styled(AccordionDetails)({
   background: offWhiteColor,
 });
 
+export const EditBankAccordion = styled(Accordion)({
+  marginTop: "0.5rem",
+  background: blueColor,
+  width: "10%",
+  height: "fit-content",
+  borderRadius: 5,
+});
+
+export const BankAccordionDetails = styled(AccordionDetails)({
+  background: offWhiteColor,
+});
+
 //---------------------Paper---------------------
 //-----------------------------------------------
 
@@ -156,6 +169,22 @@ export const ProfileCategory = styled(Paper)({
   padding: "0.5rem 1rem 0.5rem 0.5rem",
   borderRadius: 15,
   background: blueColor,
+});
+
+export const BankEditCategory = styled(Paper)({
+  display: "flex",
+  justifyContent: "center",
+  width: "10rem",
+  height: "fit-content",
+  padding: "0.5rem 1rem 0.5rem 0.5rem",
+  borderRadius: 10,
+  background: blueColor,
+  color: "white",
+  cursor: "pointer",
+  "&:hover": {
+    background: greenColor,
+    color: blueColor,
+  },
 });
 
 export const PieChartContainer = styled(Paper)({
@@ -224,6 +253,12 @@ export const BlueTextLabel = styled(Typography)({
 export const CurrencyText = styled(Typography)({
   color: greenColor,
   fontSize: "1.2em",
+  fontWeight: "bold",
+});
+
+export const EditBankText = styled(Typography)({
+  color: greenColor,
+  fontSize: "1em",
   fontWeight: "bold",
 });
 

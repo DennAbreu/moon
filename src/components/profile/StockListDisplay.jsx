@@ -18,9 +18,13 @@ import { TableRowStyled } from "../../util/CustomComponents";
 import {
   modifyStockList,
   retFormatedRowData,
+  testModifyStockList,
   testStockArray,
 } from "../../util/helperUtil";
-import { fetchAllStockCurrPrice } from "../../util/apiHandler";
+import {
+  fetchAllStockCurrPrice,
+  fetchCurrentPrice,
+} from "../../util/apiHandler";
 
 // const createRowData = (
 //   name,
@@ -99,8 +103,9 @@ const StockListDisplay = (props) => {
     
     TODO: modifiedStockListArray
   */
-  var modifiedList = modifyStockList(props.stockList);
-  const rows = retFormatedRowData(modifiedList);
+
+  const rows = retFormatedRowData(props.stockList);
+
   console.log(
     "🚀 ~ file: StockListDisplay.jsx:98 ~ StockListDisplay ~ props.stockList",
     props.stockList
