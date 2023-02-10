@@ -15,28 +15,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { TableRowStyled } from "../../util/CustomComponents";
-import {
-  modifyStockList,
-  retFormatedRowData,
-  testModifyStockList,
-  testStockArray,
-} from "../../util/helperUtil";
-import {
-  fetchAllStockCurrPrice,
-  fetchCurrentPrice,
-} from "../../util/apiHandler";
-
-// const createRowData = (
-//   name,
-//   symbol,
-//   shares,
-//   initInvestment,
-//   currPrice,
-//   currVal,
-//   growth
-// ) => {
-//   return { name, symbol, shares, initInvestment, currPrice, currVal, growth };
-// };
+import { testStockArray } from "../../util/helperUtil";
 
 const Row = (props) => {
   const { row } = props;
@@ -73,9 +52,6 @@ const Row = (props) => {
         <TableCell align="right">
           {row.currPrice?.toLocaleString("en-US")}
         </TableCell>
-        {/* <TableCell colSpan={1} align="right">
-          {row.growth}
-        </TableCell> */}
       </TableRowStyled>
       <TableRow
         sx={{
@@ -93,23 +69,12 @@ const Row = (props) => {
 };
 
 const StockListDisplay = (props) => {
+  const stockList = useSelector((state) => state.prof.stockList);
   const theme = useTheme();
-  // const stockList = useSelector((state) => state.prof.stockList);
   const [selSymbol, setSelSymbol] = useState();
+  // const [rows, setRows] = useState(props.stockList);
 
-  /*
-    TODO: Get Stock List with Symbol, Shares, Amount Invested, API Current Price,
-    And Current Value (API Curr Price * Shares);
-    
-    TODO: modifiedStockListArray
-  */
-
-  const rows = retFormatedRowData(props.stockList);
-
-  console.log(
-    "🚀 ~ file: StockListDisplay.jsx:98 ~ StockListDisplay ~ props.stockList",
-    props.stockList
-  );
+  const rows = props.stockList;
 
   const onClickHandler = (e) => {
     setSelSymbol(e.target.getAttribute("data-item"));
@@ -149,11 +114,6 @@ const StockListDisplay = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {/*
-              <TableCell colSpan={1} align="left">
-                300
-              </TableCell>
-             */}
           {rows.map((row) => (
             <Row onClickRef={onClickHandler} key={row.symbol} row={row} />
           ))}

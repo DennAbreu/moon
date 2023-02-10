@@ -1,40 +1,66 @@
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { AccordionSummary, Container, Stack, Typography } from "@mui/material";
-import {
-  BankAccordionDetails,
-  BankEditCategory,
-  CurrencyText,
-  EditBankAccordion,
-  FlexStack,
-  StyledAccordion,
-  StyledAccordionMobile,
-  TextCentered,
-} from "../../util/CustomComponents";
-import BankDBStats from "./BankDBStats";
+import { Container } from "@mui/material";
+import { FlexStack } from "../../util/CustomComponents";
 import StockListDisplay from "./StockListDisplay";
 import SharesPieChart from "./charts/SharesPieChart";
 import InvPieChart from "./charts/InvPieChart";
 import ComparisonChart from "./charts/ComparisonChart";
 import SharesLineGraph from "./charts/SharesLineGraph";
-import { useEffect, useState } from "react";
+import BankDBStats from "./BankDBStats";
+import EditBank from "./EditBank";
 import {
-  modifyStockList,
+  appendCurrPrice,
   retTotalValue,
   testStockArray,
 } from "../../util/helperUtil";
-import EditBank from "./EditBank";
+import { fetchCurrentPrice, RealStonks_Options } from "../../util/apiHandler";
 
 const Profile = (props) => {
   const profName = useSelector((state) => state.prof.name);
   const profID = useSelector((state) => state.prof.userID);
   const stockList = useSelector((state) => state.prof.stockList);
-  var modifiedList = modifyStockList(testStockArray);
+  const [isLoading, setIsLoading] = useState(false);
+  const [modifiedList, setModifiedList] = useState(
+    appendCurrPrice(testStockArray)
+  );
 
   const totalStockListValue = retTotalValue(modifiedList);
 
+  useEffect(() => {
+    const retList = [];
+    const updateCurrPrice = async () => {
+      testStockArray.forEach(async (entry) => {
+        const response = await fetch(
+          `https://realstonks.p.rapidapi.com/${entry.symbol}`,
+          RealStonks_Options
+        );
+
+        if (!response.ok) {
+          throw new Error("Error with fetchCurrentPrice -- apiHandler.js");
+        }
+        const responseData = await response.json();
+        var currPrice = responseData.price;
+        retList.push({
+          symbol: entry.symbol,
+          shares: entry.shares,
+          companyName: entry.companyName,
+          initInvestment: entry.initInvestment,
+          currPrice: currPrice,
+          currVal: entry.shares * currPrice,
+        });
+      });
+    };
+
+    updateCurrPrice().catch((error) => {
+      return;
+    });
+
+    setModifiedList(retList);
+  }, []);
   console.log(
-    "🚀 ~ file: Profile.jsx:19 ~ totalStockListValue",
-    totalStockListValue
+    "🚀 ~ file: Profile.jsx:27 ~ Profile ~ modifiedList",
+    modifiedList
   );
 
   return (

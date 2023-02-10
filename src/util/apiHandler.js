@@ -15,7 +15,7 @@ const RTFD_Options = {
 };
 
 //Headers for Real Stonks API
-const RealStonks_Options = {
+export const RealStonks_Options = {
   method: "GET",
   headers: {
     "X-RapidAPI-Key": `${xRapidKey}`,

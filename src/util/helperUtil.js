@@ -147,23 +147,22 @@ const createRowData = (
 export const retFormatedRowData = (enteredList) => {
   const row = [];
   for (let i = 0; i < enteredList.length; i++) {
-    row.push(
-      createRowData(
-        enteredList[i].companyName,
-        enteredList[i].symbol,
-        enteredList[i].shares,
-        enteredList[i].initInvestment,
-        enteredList[i].currPrice,
-        enteredList[i].currVal,
-        300
-      )
-    );
+    row.push({
+      companyName: enteredList[i].companyName,
+      symbol: enteredList[i].symbol,
+      shares: enteredList[i].shares,
+      initInvestment: enteredList[i].initInvestment,
+      currPrice: enteredList[i].currPrice,
+      currVal: enteredList[i].currVal,
+      growth: 300,
+    });
   }
 
   return row;
 };
 
-export const modifyStockList = (enteredList) => {
+//Adds currPrice and CurrVal element to the stocklist from the Redux Store.
+export const appendCurrPrice = (enteredList) => {
   const retList = [];
   //TODO: Work on API Logic.
   // enteredList.forEach(async (entry) => {
@@ -192,14 +191,10 @@ export const modifyStockList = (enteredList) => {
   return retList;
 };
 
-export const testModifyStockList = async (enteredList) => {
+export const testAppendCurrPrice = async (enteredList) => {
   const retList = [];
   enteredList.forEach(async (entry) => {
     var tempCurrPrice = await fetchCurrentPrice(entry.symbol);
-    console.log(
-      "🚀 ~ file: helperUtil.js:198 ~ enteredList.forEach ~ tempCurrPrice",
-      tempCurrPrice
-    );
     retList.push({
       symbol: entry.symbol,
       shares: entry.shares,
