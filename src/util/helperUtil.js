@@ -1,4 +1,4 @@
-import { fetchCurrentPrice } from "./apiHandler";
+import { fetchCurrentPrice, RealStonks_Options } from "./apiHandler";
 
 //Constant values.
 export const apiKey = "cajon1iad3icpj9q6690";
@@ -161,51 +161,51 @@ export const retFormatedRowData = (enteredList) => {
   return row;
 };
 
-//Adds currPrice and CurrVal element to the stocklist from the Redux Store.
-export const appendCurrPrice = (enteredList) => {
-  const retList = [];
-  //TODO: Work on API Logic.
-  // enteredList.forEach(async (entry) => {
-  //   var tempCurrPrice = await fetchSingleCurrPrice(entry.symbol);
-  //   retList.push({
-  //     symbol: entry.symbol,
-  //     shares: entry.shares,
-  //     initInvestment: entry.initInvestment,
-  //     currPrice: tempCurrPrice,
-  //     currVal: entry.shares * tempCurrPrice,
-  //   });
-  // });
-  enteredList.forEach((entry) => {
-    // var testCurrPrice = fetchCurrentPrice(entry.symbol);
-    var pricePerStock = entry.initInvestment / entry.shares;
-    var newCurrPrice = 0.1 * pricePerStock + pricePerStock;
-    retList.push({
-      symbol: entry.symbol,
-      shares: entry.shares,
-      companyName: entry.companyName,
-      initInvestment: entry.initInvestment,
-      currPrice: newCurrPrice,
-      currVal: newCurrPrice * entry.shares,
-    });
-  });
-  return retList;
-};
+// //Adds currPrice and CurrVal element to the stocklist from the Redux Store.
+// export const appendCurrPrice = (enteredList) => {
+//   const retList = [];
+//   //TODO: Work on API Logic.
+//   // enteredList.forEach(async (entry) => {
+//   //   var tempCurrPrice = await fetchSingleCurrPrice(entry.symbol);
+//   //   retList.push({
+//   //     symbol: entry.symbol,
+//   //     shares: entry.shares,
+//   //     initInvestment: entry.initInvestment,
+//   //     currPrice: tempCurrPrice,
+//   //     currVal: entry.shares * tempCurrPrice,
+//   //   });
+//   // });
+//   enteredList.forEach((entry) => {
+//     // var testCurrPrice = fetchCurrentPrice(entry.symbol);
+//     var pricePerStock = entry.initInvestment / entry.shares;
+//     var newCurrPrice = 0.1 * pricePerStock + pricePerStock;
+//     retList.push({
+//       symbol: entry.symbol,
+//       shares: entry.shares,
+//       companyName: entry.companyName,
+//       initInvestment: entry.initInvestment,
+//       currPrice: newCurrPrice,
+//       currVal: newCurrPrice * entry.shares,
+//     });
+//   });
+//   return retList;
+// };
 
-export const testAppendCurrPrice = async (enteredList) => {
-  const retList = [];
-  enteredList.forEach(async (entry) => {
-    var tempCurrPrice = await fetchCurrentPrice(entry.symbol);
-    retList.push({
-      symbol: entry.symbol,
-      shares: entry.shares,
-      companyName: entry.companyName,
-      initInvestment: entry.initInvestment,
-      currPrice: tempCurrPrice,
-      currVal: entry.shares * tempCurrPrice,
-    });
-  });
-  return retList;
-};
+// export const testAppendCurrPrice = async (enteredList) => {
+//   const retList = [];
+//   enteredList.forEach(async (entry) => {
+//     var tempCurrPrice = await fetchCurrentPrice(entry.symbol);
+//     retList.push({
+//       symbol: entry.symbol,
+//       shares: entry.shares,
+//       companyName: entry.companyName,
+//       initInvestment: entry.initInvestment,
+//       currPrice: tempCurrPrice,
+//       currVal: entry.shares * tempCurrPrice,
+//     });
+//   });
+//   return retList;
+// };
 
 export const retTotalValue = (enteredList) => {
   var retTotal = 0;
@@ -216,4 +216,48 @@ export const retTotalValue = (enteredList) => {
   });
 
   return retTotal;
+};
+
+export const retPromiseArray = (entList) => {
+  const promiseArray = [];
+  const symbolMap = new Map();
+  const retArray = [];
+
+  entList.forEach((entry, index) => {
+    symbolMap.set(entry.symbol, index);
+    promiseArray.push(
+      fetch(
+        `https://realstonks.p.rapidapi.com/${entry.symbol}`,
+        RealStonks_Options
+      )
+    );
+  });
+
+  return promiseArray;
+};
+
+export const retSymbolMap = (entList) => {
+  const retMap = new Map();
+  entList.forEach((entry, index) => {
+    retMap.set(index, entry.symbol);
+  });
+
+  return retMap;
+};
+
+export const testAppend = (enteredList, enteredMap) => {
+  const retList = [];
+  enteredList.forEach((entry) => {
+    var currPrice = enteredMap.get(entry.symbol);
+    retList.push({
+      symbol: entry.symbol,
+      companyName: entry.companyName,
+      shares: entry.shares,
+      initInvestment: entry.initInvestment,
+      currPrice: currPrice,
+      currVal: currPrice * entry.shares,
+    });
+  });
+
+  return retList;
 };

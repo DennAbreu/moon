@@ -15,7 +15,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { TableRowStyled } from "../../util/CustomComponents";
-import { testStockArray } from "../../util/helperUtil";
+import { testAppend, testStockArray } from "../../util/helperUtil";
 
 const Row = (props) => {
   const { row } = props;
@@ -69,12 +69,15 @@ const Row = (props) => {
 };
 
 const StockListDisplay = (props) => {
-  const stockList = useSelector((state) => state.prof.stockList);
+  // const stockList = useSelector((state) => state.prof.stockList);
+  const stockList = testStockArray;
   const theme = useTheme();
   const [selSymbol, setSelSymbol] = useState();
   // const [rows, setRows] = useState(props.stockList);
+  // const testList = testAppend(props.stockList, props.priceMap);
 
-  const rows = props.stockList;
+  // const rows = props.stockList;
+  const rows = stockList;
 
   const onClickHandler = (e) => {
     setSelSymbol(e.target.getAttribute("data-item"));

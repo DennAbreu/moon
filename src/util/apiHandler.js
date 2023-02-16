@@ -178,19 +178,3 @@ export const fetchAllCurrentPrices = async (entList) => {
 
   return retCurrPriceArr;
 };
-
-//uses this free API to verify stock symbol.
-export const symbolVerify = async (entSymbol) => {
-  var retValue = true;
-  const response = await fetch(
-    `https://realstonks.p.rapidapi.com/${entSymbol}`,
-    RealStonks_Options
-  );
-
-  if (!response.ok) {
-    retValue = false;
-    throw new Error(`Something went wrong with the request`);
-  }
-
-  return retValue;
-};

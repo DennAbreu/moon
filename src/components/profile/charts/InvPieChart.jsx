@@ -8,15 +8,6 @@ import {
 } from "../../../util/CustomComponents";
 import { formatInvData, testStockArray } from "../../../util/helperUtil";
 
-// const oldTestData = [
-//   { name: "AAPL", value: 10 },
-//   { name: "GME", value: 25 },
-//   { name: "NFLX", value: 15 },
-//   { name: "GOOG", value: 5 },
-//   { name: "META", value: 2 },
-//   { name: "TSLA", value: 35 },
-// ];
-
 var pieWidth = 420;
 var pieHeight = 300;
 var pieCX = pieWidth / 2.2;
@@ -97,7 +88,8 @@ const renderActiveShape = (props) => {
 
 const InvPieChart = () => {
   const theme = useTheme();
-  const stockList = useSelector((state) => state.prof.stockList);
+  // const stockList = useSelector((state) => state.prof.stockList);
+  const stockList = testStockArray;
   const data = formatInvData(stockList);
   const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = useCallback(
