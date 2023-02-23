@@ -168,13 +168,31 @@ export const fetchCurrentPrice = async (entSymbol) => {
   return responseData.price;
 };
 
-export const fetchAllCurrentPrices = async (entList) => {
-  const retCurrPriceArr = [];
-  //API calls for current price for each stock symbol.
+export const retPricesArray = (entList) => {
+  const retArray = [];
   entList.forEach(async (entry) => {
-    var tempPrice = await fetchCurrentPrice(entry.symbol);
-    retCurrPriceArr.push({ symbol: entry.symbol, currPrice: tempPrice });
+    var newPrice = await fetchCurrentPrice(entry.symbol);
+    // retArray.push(await fetchCurrentPrice(entry.symbol));
+    retArray.push({
+      symbol: entry.symbol,
+      companyName: entry.companyName,
+      shares: entry.shares,
+      initInvestment: entry.initInvestment,
+      currPrice: newPrice,
+      currVal: newPrice * entry.shares,
+    });
   });
 
-  return retCurrPriceArr;
+  return retArray;
 };
+
+// export const fetchAllCurrentPrices = async (entList) => {
+//   const retCurrPriceArr = [];
+//   //API calls for current price for each stock symbol.
+//   entList.forEach(async (entry) => {
+//     var tempPrice = await fetchCurrentPrice(entry.symbol);
+//     retCurrPriceArr.push({ symbol: entry.symbol, currPrice: tempPrice });
+//   });
+
+//   return retCurrPriceArr;
+// };

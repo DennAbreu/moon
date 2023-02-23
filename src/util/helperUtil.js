@@ -207,25 +207,20 @@ export const retFormatedRowData = (enteredList) => {
 //   return retList;
 // };
 
-export const retTotalValue = (enteredList) => {
+export const retTotalValue = (entMap, entList) => {
   var retTotal = 0;
-  enteredList.forEach((entry) => {
-    //TODO: In final build use entry.currVal
-    //retTotal += entry.currVal;
-    retTotal += entry.initInvestment;
-  });
+  var size = entList?.length() - 1;
 
+  for (let i = 0; i <= size; i++) {
+    retTotal += entMap.get(i) * entList[i].shares;
+  }
   return retTotal;
 };
 
 export const retPromiseArray = (entList) => {
-  const promiseArray = [];
-  const symbolMap = new Map();
   const retArray = [];
-
-  entList.forEach((entry, index) => {
-    symbolMap.set(entry.symbol, index);
-    promiseArray.push(
+  entList.forEach((entry) => {
+    retArray.push(
       fetch(
         `https://realstonks.p.rapidapi.com/${entry.symbol}`,
         RealStonks_Options
@@ -233,7 +228,7 @@ export const retPromiseArray = (entList) => {
     );
   });
 
-  return promiseArray;
+  return retArray;
 };
 
 export const retSymbolMap = (entList) => {
@@ -245,17 +240,17 @@ export const retSymbolMap = (entList) => {
   return retMap;
 };
 
-export const testAppend = (enteredList, enteredMap) => {
+export const updateStockList = (enteredList, enteredMap) => {
   const retList = [];
   enteredList.forEach((entry) => {
-    var currPrice = enteredMap.get(entry.symbol);
+    var currPrice = enteredMap?.get(entry.symbol);
     retList.push({
       symbol: entry.symbol,
       companyName: entry.companyName,
       shares: entry.shares,
       initInvestment: entry.initInvestment,
-      currPrice: currPrice,
-      currVal: currPrice * entry.shares,
+      currPrice: Number(currPrice),
+      currVal: Number(currPrice) * entry.shares,
     });
   });
 

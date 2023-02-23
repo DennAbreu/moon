@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import StockListBuyMenu from "./StockListBuyMenu";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
@@ -15,7 +15,15 @@ import {
   IconButton,
 } from "@mui/material";
 import { TableRowStyled } from "../../util/CustomComponents";
-import { testAppend, testStockArray } from "../../util/helperUtil";
+import {
+  retPromiseArray,
+  retSymbolMap,
+  updateStockList,
+  testStockArray,
+} from "../../util/helperUtil";
+import { app } from "../../firebase/firebase-config";
+import { fetchCurrentPrice } from "../../util/apiHandler";
+import LoaderDiv from "../../util/LoaderDiv";
 
 const Row = (props) => {
   const { row } = props;
@@ -47,10 +55,10 @@ const Row = (props) => {
           ${row.initInvestment?.toLocaleString("en-US")}
         </TableCell>
         <TableCell align="right">
-          {row.currVal?.toLocaleString("en-US")}
+          ${row.currVal?.toLocaleString("en-US")}
         </TableCell>
         <TableCell align="right">
-          {row.currPrice?.toLocaleString("en-US")}
+          ${row.currPrice?.toLocaleString("en-US")}
         </TableCell>
       </TableRowStyled>
       <TableRow
@@ -70,18 +78,18 @@ const Row = (props) => {
 
 const StockListDisplay = (props) => {
   // const stockList = useSelector((state) => state.prof.stockList);
-  const stockList = testStockArray;
+  const { stockList } = props;
   const theme = useTheme();
   const [selSymbol, setSelSymbol] = useState();
-  // const [rows, setRows] = useState(props.stockList);
-  // const testList = testAppend(props.stockList, props.priceMap);
 
-  // const rows = props.stockList;
   const rows = stockList;
 
   const onClickHandler = (e) => {
     setSelSymbol(e.target.getAttribute("data-item"));
-    console.log("Click!", selSymbol);
+    console.log(
+      "🚀 ~ file: StockListDisplay.jsx:82 ~ StockListDisplay ~ selSymbol",
+      selSymbol
+    );
   };
 
   return (
@@ -116,8 +124,9 @@ const StockListDisplay = (props) => {
             </TableCell> */}
           </TableRow>
         </TableHead>
+
         <TableBody>
-          {rows.map((row) => (
+          {rows?.map((row) => (
             <Row onClickRef={onClickHandler} key={row.symbol} row={row} />
           ))}
         </TableBody>

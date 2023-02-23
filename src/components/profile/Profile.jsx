@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { Container } from "@mui/material";
 import { FlexStack } from "../../util/CustomComponents";
@@ -13,68 +13,81 @@ import {
   retPromiseArray,
   retSymbolMap,
   retTotalValue,
-  testStockArray as stockList,
+  updateStockList,
   testStockArray,
 } from "../../util/helperUtil";
-import { fetchCurrentPrice, RealStonks_Options } from "../../util/apiHandler";
-import { PriceChange } from "@mui/icons-material";
+import { RealStonks_Options } from "../../util/apiHandler";
+import LoaderDiv from "../../util/LoaderDiv";
 
 const Profile = (props) => {
   const profName = useSelector((state) => state.prof.name);
   const profID = useSelector((state) => state.prof.userID);
+
   // const stockList = useSelector((state) => state.prof.stockList);
   const stockList = testStockArray;
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [currPriceMap, setCurrPriceMap] = useState(undefined);
-
+  // const [stockList, setStockList] = useState(testStockArray);
+  const [isLoading, setIsLoading] = useState(true);
+  // const [currPriceMap, setCurrPriceMap] = useState(undefined);
+  const [updatedList, setUpdatedList] = useState(undefined);
+  const [totalValue, setTotalValue] = useState(null);
   const totalStockListValue = retTotalValue(stockList);
 
   useEffect(() => {
-    const priceMap = new Map();
-    const promiseArray = retPromiseArray(stockList);
-    const symbolMap = retSymbolMap(stockList);
-    console.log("🚀 ~ file: Profile.jsx:35 ~ useEffect ~ symbolMap", symbolMap);
-    setIsLoading(true);
+    const getAllCurrentPrices = async () => {
+      const symbolMap = retSymbolMap(stockList);
+      const priceMap = new Map();
+      const promiseArray = [];
 
-    Promise.all(promiseArray)
-      .then(function (responses) {
-        // Get a JSON object from each of the responses
-        return Promise.all(
-          responses.map(function (response) {
-            return response.json();
-          })
+      stockList.forEach((entry) => {
+        promiseArray.push(
+          fetch(
+            `https://realstonks.p.rapidapi.com/${entry.symbol}`,
+            RealStonks_Options
+          )
         );
-      })
-      .then(function (data) {
-        // Log the data to the console
-        // You would do something with both sets of data here
-        for (let i = 0; i <= data.length - 1; i++) {
-          var price = data[i].price;
-          priceMap.set(symbolMap.get(i), price);
-        }
-
-        console.log(data);
-      })
-      .catch(function (error) {
-        // if there's an error, log it
-        console.log(error);
       });
+      Promise.all(promiseArray)
+        .then((responses) => {
+          return Promise.all(responses.map((res) => res.json()));
+        })
+        .then((responses) => {
+          responses.forEach((val, index) => {
+            priceMap.set(symbolMap.get(index), val.price);
+          });
+          console.log(
+            "🚀 ~ file: Profile.jsx:57 ~ responses.forEach ~ priceMap:",
+            priceMap
+          );
+        })
+        .then(() => {
+          setUpdatedList(updateStockList(stockList, priceMap));
+        })
+        .then(() => {
+          setTotalValue(retTotalValue(updatedList));
+        })
 
-    setCurrPriceMap(priceMap);
+        .catch((e) => {
+          console.log("caught!");
+          console.log(e);
+        });
+    };
+
+    getAllCurrentPrices();
     setIsLoading(false);
-
-    console.log("🚀 ~ file: Profile.jsx:62 ~ Profile ~ priceMap", priceMap);
+    console.log(
+      "🚀 ~ file: Profile.jsx:69 ~ .then ~ updatedList:",
+      updatedList
+    );
   }, [stockList]);
 
   return (
     <>
       <Container maxWidth="100%">
-        <BankDBStats totalStockValue={totalStockListValue} />
+        <BankDBStats loadingState={isLoading} totalStockValue={totalValue} />
         <FlexStack sx={{ mt: "1rem" }} direction={"row"} spacing={2}>
-          {!isLoading && (
-            <StockListDisplay stockList={stockList} priceMap={currPriceMap} />
-          )}
+          <StockListDisplay stockList={updatedList} />
+
           <FlexStack direction={"column"} spacing={1}>
             <FlexStack direction={"row"} spacing={2}>
               <SharesPieChart />
