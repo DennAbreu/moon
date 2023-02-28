@@ -29,12 +29,13 @@ export const theme = createTheme({
   },
   breakpoints: {
     values: {
-      xs: 0,
-      sm: 700, //Default: 600.
+      xs: 350,
+      sm: 600, //Default: 600.
       md800: 800,
-      md: 900,
-      lg: 1200,
-      xl: 1536,
+      md: 950,
+      lg1400: 1400,
+      lg: 1600,
+      xl: 1800,
     },
   },
 });

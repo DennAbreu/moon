@@ -3,6 +3,7 @@ import {
   AccordionDetails,
   Box,
   Button,
+  Container,
   Fab,
   Grid,
   Paper,
@@ -18,9 +19,8 @@ const blueColor = "#03314b";
 const greenColor = "#1dcc98";
 const offWhiteColor = "#F7FFF7";
 
-//---------------------Stack---------------------
+//---------------------Trade---------------------
 //----------------------------------------------
-
 export const TradeStack = styled(Stack)({
   // background: "#f5ad42",
   marginTop: "0.5rem",
@@ -31,8 +31,8 @@ export const TradeStack = styled(Stack)({
 
 export const DetailStack = styled(Stack)({
   display: "flex",
-  width: "fit-content",
-  height: "fit-content",
+  width: "100%",
+  justifyContent: "center",
 });
 
 export const BuyMenuStack = styled(Stack)({
@@ -43,6 +43,27 @@ export const BuyMenuStack = styled(Stack)({
   justifyContent: "center",
   borderBottom: "1px solid black",
 });
+
+export const PurchaseWidgetContainer = styled(Paper)({
+  background: offWhiteColor,
+  border: "0.25px solid black",
+  width: "50%",
+  maxWidth: "fit-content",
+  borderRadius: 5,
+});
+
+export const FabStyled = styled(Fab)({
+  backgroundColor: greenColor,
+  color: "white",
+  "&:hover": {
+    backgroundColor: blueColor,
+    color: "green",
+  },
+});
+
+//---------------------Stack---------------------
+//----------------------------------------------
+
 export const FlexStack = styled(Stack)({
   display: "flex",
   justifyContent: "center",
@@ -107,15 +128,6 @@ export const ButtonStyled2 = styled(Button)({
   },
 });
 
-export const FabStyled = styled(Fab)({
-  backgroundColor: greenColor,
-  color: "white",
-  "&:hover": {
-    backgroundColor: blueColor,
-    color: "green",
-  },
-});
-
 //---------------------Accordion---------------------
 //---------------------------------------------------
 
@@ -155,7 +167,8 @@ export const BankAccordionDetails = styled(AccordionDetails)({
 
 export const SnapShotContainer = styled(Paper)({
   width: "auto",
-  height: "fit-content",
+  maxWidth: "20rem",
+  height: "auto",
   padding: "0.5rem 1rem 0.5rem 0.5rem",
   borderRadius: 15,
   background: blueColor,
@@ -196,10 +209,8 @@ export const PieChartContainer = styled(Paper)({
 });
 
 export const GraphContainer = styled(Paper)({
-  maxWidth: "100%",
+  width: "80%",
   height: "100%",
-  marginLeft: "0em",
-  marginTop: "0rem",
   border: "0.25px solid black",
 });
 
@@ -219,10 +230,10 @@ export const TransPriceContaner = styled(Paper)({
   background: blueColor,
 });
 
-export const ErrorMessage = styled(Paper)({
-  marginTop: "0.5rem",
+export const ErrorMessage = styled(Container)({
+  marginTop: "1.5rem",
   display: "flex",
-  width: "auto",
+  width: "fit-content",
   justifyContent: "center",
   background: offWhiteColor,
 });
@@ -247,7 +258,7 @@ export const CurrentTransPriceField = styled(TextField)({
 
 export const BlueTextLabel = styled(Typography)({
   color: blueColor,
-  fontSize: "1.2em",
+  fontSize: "1.1em",
 });
 
 export const CurrencyText = styled(Typography)({
@@ -277,6 +288,23 @@ export const TableRowStyled = styled(TableRow)({
 //----------------------------------------------
 
 export const PurchaseGrid = styled(Grid)({
+  display: "flex",
+  paddingTop: "0.5rem",
+  paddingLeft: "0.5rem",
+  justifyContent: "flex-start",
+  maxWidth: "fit-content",
+});
+
+export const TradeGrid = styled(Grid)({
+  display: "flex",
+  justifyContent: "center",
+  justifyItems: "center",
+  alignContent: "center",
+  alignItems: "center",
+  width: "auto",
+});
+
+export const TradeGridItem = styled(Grid)({
   display: "flex",
   justifyContent: "center",
 });

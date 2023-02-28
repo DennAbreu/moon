@@ -2,7 +2,7 @@ import { ThreeDots } from "react-loader-spinner";
 
 const LoaderDiv = () => {
   return (
-    <div>
+    <>
       <ThreeDots
         height="80"
         width="80"
@@ -13,7 +13,7 @@ const LoaderDiv = () => {
         wrapperClassName=""
         visible={true}
       />
-    </div>
+    </>
   );
 };
 

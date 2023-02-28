@@ -151,44 +151,44 @@ const PurchaseWidgetMobile = (props) => {
               container
               spacing={0}
             >
-              <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
+              <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
                 <BlueTextLabel>Available Funds:</BlueTextLabel>
               </Grid>
-              <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
+              <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
                 <CurrencyText>${availableFunds?.toFixed(2)}</CurrencyText>
               </Grid>
-              <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
+              <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
                 <BlueTextLabel>Current Price:</BlueTextLabel>
               </Grid>
-              <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
+              <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
                 <CurrencyText>${Number(currPrice)?.toFixed(2)}</CurrencyText>
               </Grid>
-              <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
+              <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
                 <BlueTextLabel>Shares Owned:</BlueTextLabel>
               </Grid>
-              <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
+              <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
                 <CurrencyText>{sharesOwned}</CurrencyText>
               </Grid>
-              <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
+              <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
                 <BlueTextLabel>Initial Invested: </BlueTextLabel>
               </Grid>
-              <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
+              <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
                 <CurrencyText>
                   ${Number(initInvestment)?.toFixed(2)}
                 </CurrencyText>
               </Grid>
-              <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
+              <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
                 <BlueTextLabel>Current Shares Value:</BlueTextLabel>
               </Grid>
-              <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
+              <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
                 <CurrencyText>
                   ${Number(currSharesValue)?.toFixed(2)}
                 </CurrencyText>
               </Grid>
-              <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
+              <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
                 <BlueTextLabel>Net Gain:</BlueTextLabel>
               </Grid>
-              <Grid item xs={gridSpacingXS} lg={gridSpacingLG}>
+              <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
                 <Typography
                   sx={{ fontSize: "1.2em", fontWeight: "bold" }}
                   color={netGainColor}

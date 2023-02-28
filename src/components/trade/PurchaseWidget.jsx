@@ -6,6 +6,7 @@ import {
   AccordionSummary,
   Box,
   Grid,
+  Paper,
   Stack,
   TextField,
   Typography,
@@ -18,6 +19,7 @@ import {
   StyledDetails,
   CurrencyText,
   PurchaseGrid,
+  PurchaseWidgetContainer,
 } from "../../util/CustomComponents";
 import {
   purchaseStock,
@@ -67,7 +69,10 @@ const PurchaseWidget = (props) => {
   const currUser = true;
   //
   //
+  const gridSpacingXL = 5;
   const gridSpacingLG = 5;
+  const gridSpacingMD = 5;
+  const gridSpacingSM = 12;
   const gridSpacingXS = 12;
 
   const onChangeHandler = (e) => {
@@ -154,7 +159,248 @@ const PurchaseWidget = (props) => {
   }, [numShares, currPrice]);
 
   return (
-    <StyledAccordion expanded={expanded} onChange={expansionHandler}>
+    <PurchaseWidgetContainer>
+      <PurchaseGrid container>
+        <Grid
+          item
+          xs={gridSpacingXS}
+          sm={gridSpacingSM}
+          md={gridSpacingMD}
+          lg={gridSpacingLG}
+          xl={gridSpacingXL}
+        >
+          <BlueTextLabel>Available Funds:</BlueTextLabel>
+        </Grid>
+        <Grid
+          item
+          xs={gridSpacingXS}
+          sm={gridSpacingSM}
+          md={gridSpacingMD}
+          lg={gridSpacingLG}
+          xl={gridSpacingXL}
+        >
+          <CurrencyText>${availableFunds?.toFixed(2)}</CurrencyText>
+        </Grid>
+        <Grid
+          item
+          xs={gridSpacingXS}
+          sm={gridSpacingSM}
+          md={gridSpacingMD}
+          lg={gridSpacingLG}
+          xl={gridSpacingXL}
+        >
+          <BlueTextLabel>Current Price:</BlueTextLabel>
+        </Grid>
+        <Grid
+          item
+          xs={gridSpacingXS}
+          sm={gridSpacingSM}
+          md={gridSpacingMD}
+          lg={gridSpacingLG}
+          xl={gridSpacingXL}
+        >
+          <CurrencyText>${Number(currPrice)?.toFixed(2)}</CurrencyText>
+        </Grid>
+        <Grid
+          item
+          xs={gridSpacingXS}
+          sm={gridSpacingSM}
+          md={gridSpacingMD}
+          lg={gridSpacingLG}
+          xl={gridSpacingXL}
+        >
+          <BlueTextLabel>Shares Owned:</BlueTextLabel>
+        </Grid>
+        <Grid
+          item
+          xs={gridSpacingXS}
+          sm={gridSpacingSM}
+          md={gridSpacingMD}
+          lg={gridSpacingLG}
+          xl={gridSpacingXL}
+        >
+          <CurrencyText>{sharesOwned}</CurrencyText>
+        </Grid>
+        <Grid
+          item
+          xs={gridSpacingXS}
+          sm={gridSpacingSM}
+          md={gridSpacingMD}
+          lg={gridSpacingLG}
+          xl={gridSpacingXL}
+        >
+          <BlueTextLabel>Initial Invested: </BlueTextLabel>
+        </Grid>
+        <Grid
+          item
+          xs={gridSpacingXS}
+          sm={gridSpacingSM}
+          md={gridSpacingMD}
+          lg={gridSpacingLG}
+          xl={gridSpacingXL}
+        >
+          <CurrencyText>${Number(initInvestment)?.toFixed(2)}</CurrencyText>
+        </Grid>
+        <Grid
+          item
+          xs={gridSpacingXS}
+          sm={gridSpacingSM}
+          md={gridSpacingMD}
+          lg={gridSpacingLG}
+          xl={gridSpacingXL}
+        >
+          <BlueTextLabel>Total Shares Value:</BlueTextLabel>
+        </Grid>
+        <Grid
+          item
+          xs={gridSpacingXS}
+          sm={gridSpacingSM}
+          md={gridSpacingMD}
+          lg={gridSpacingLG}
+          xl={gridSpacingXL}
+        >
+          <CurrencyText>${Number(currSharesValue)?.toFixed(2)}</CurrencyText>
+        </Grid>
+        <Grid
+          item
+          xs={gridSpacingXS}
+          sm={gridSpacingSM}
+          md={gridSpacingMD}
+          lg={gridSpacingLG}
+          xl={gridSpacingXL}
+        >
+          <BlueTextLabel>Net Gain:</BlueTextLabel>
+        </Grid>
+        <Grid
+          item
+          xs={gridSpacingXS}
+          sm={gridSpacingSM}
+          md={gridSpacingMD}
+          lg={gridSpacingLG}
+          xl={gridSpacingXL}
+        >
+          <Typography
+            sx={{ fontSize: "1.2em", fontWeight: "bold" }}
+            color={netGainColor}
+          >
+            ${netGain?.toFixed(2)}({netGainPer?.toFixed(2)}% )
+          </Typography>
+        </Grid>
+      </PurchaseGrid>
+      <Stack
+        sx={{
+          mt: "2.0rem",
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: {
+            sm: "column",
+            md: "column",
+            lg: "column",
+            xl: "column",
+          },
+        }}
+      >
+        <Stack
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+          direction={"row"}
+        >
+          <Box
+            sx={{
+              // background: "blue",
+              // height: "fit-content",
+              mr: "0.5rem",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              alignContent: "center",
+            }}
+          >
+            <FabStyled
+              id="minusButton"
+              size="small"
+              aria-label="sub"
+              ref={subButtonRef}
+              fullWidth={false}
+              onClick={onClickHandler}
+            >
+              <RemoveIcon sx={{ color: "white" }} />
+            </FabStyled>
+          </Box>
+          <TextField
+            id="stockReq"
+            size="small"
+            inputProps={{ min: 0, style: { textAlign: "center" } }}
+            value={numShares}
+            onChange={onChangeHandler}
+            min={0}
+          />
+          <Box sx={{ ml: "0.5rem", display: "flex", alignItems: "center" }}>
+            <FabStyled
+              id="plusButton"
+              size="small"
+              aria-label="add"
+              ref={addButtonRef}
+              onClick={onClickHandler}
+            >
+              <AddIcon sx={{ color: "white" }} />
+            </FabStyled>
+          </Box>
+        </Stack>
+        <Stack
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+          direction={"row"}
+        >
+          <ButtonStyled2
+            id="buyButton"
+            onClick={submitHandler}
+            sx={{ width: "15%", ml: "1rem" }}
+          >
+            Buy
+          </ButtonStyled2>
+          <ButtonStyled2
+            id="sellButton"
+            onClick={submitHandler}
+            sx={{ width: "15%", ml: "1rem" }}
+          >
+            Sell
+          </ButtonStyled2>
+        </Stack>
+      </Stack>
+      <Box sx={{ mt: "1rem", display: "flex", justifyContent: "center" }}>
+        <Typography
+          sx={{ fontWeight: "bold" }}
+          color="greenColor.main"
+          variant="h5"
+        >
+          ${pendingTransPrice?.toFixed(2)}
+        </Typography>
+      </Box>
+    </PurchaseWidgetContainer>
+  );
+};
+
+export default PurchaseWidget;
+
+/*
+
+
+
+
+
+
+
+
+
+
+
+
+<StyledAccordion expanded={expanded} onChange={expansionHandler}>
       <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />}>
         <Typography color="white" variant="h7">
           Click To Open
@@ -277,7 +523,16 @@ const PurchaseWidget = (props) => {
         Place Holder -- Insider Sentiment
       </Typography>
     </StyledAccordion>
-  );
-};
 
-export default PurchaseWidget;
+
+
+
+
+
+
+
+
+
+
+
+*/

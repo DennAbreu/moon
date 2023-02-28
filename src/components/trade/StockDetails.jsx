@@ -31,7 +31,7 @@ const StockDetails = (props) => {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    paddingRight: "2rem",
+    paddingRight: "1.0rem",
   });
 
   const changePriceHandler = (

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, Typography, useTheme } from "@mui/material";
+import { Box, Container, Grid, Typography, useTheme } from "@mui/material";
 import SearchBar from "./SearchBar";
 import SnapShot from "./SnapShot";
 import StockDetails from "./StockDetails";
@@ -11,6 +11,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import {
   DetailStack,
   ErrorMessage,
+  TradeGridItem,
+  TradeGrid,
   TradeStack,
 } from "../../util/CustomComponents";
 import {
@@ -28,7 +30,7 @@ TODO: Save Company in stock database
 
 const Trade = () => {
   const theme = useTheme();
-  const isMatch = useMediaQuery(theme.breakpoints.down("md800"));
+  const isMatch = useMediaQuery(theme.breakpoints.down("xs"));
   const unixDates = getUnixDates();
   const currDate = unixDates.currDate;
   const prevDate = unixDates.prevDate;
@@ -51,8 +53,8 @@ const Trade = () => {
   });
   const nullSymbolMessage = (
     <ErrorMessage>
-      <Typography variant="h6" color="blueColor.main">
-        Please enter a symbol in the search bar!
+      <Typography variant="h5" color="blueColor.main">
+        Enter a symbol for lookup.
       </Typography>
     </ErrorMessage>
   );
@@ -89,30 +91,77 @@ const Trade = () => {
       graph: retPriceHistory,
     });
   };
-
+  //direction={"row"}
   return (
-    <Container maxWidth="100%">
+    <Box>
       <SearchBar onSymbolSearch={searchBarHandler} />
       {stockSymbol === undefined ? (
         nullSymbolMessage
       ) : (
-        <TradeStack direction={"column"} spacing={2}>
-          <DetailStack direction={"row"} spacing={1}>
+        <TradeStack direction={"column"} spacing={1}>
+          <DetailStack
+            sx={{
+              alignItems: "center",
+              flexDirection: {
+                sm: "column",
+                md: "row",
+                lg: "row",
+                xl: "row",
+              },
+              gap: 1,
+            }}
+          >
             <SnapShot stockData={stockQuote} />
             <StockDetails stockData={stockQuote} />
           </DetailStack>
-          <Stack maxWidth="60%" direction={"row"} spacing={1}>
+          <Stack
+            sx={{
+              maxWidth: {
+                xl: "100%",
+              },
+              alignItems: "center",
+              flexDirection: {
+                sm: "column",
+                md: "column",
+                lg1400: "column",
+                lg: "column",
+                xl: "row",
+              },
+              gap: { sm: 1, md: 1, lg: 2, xl: 3 },
+            }}
+          >
+            <StockChart stockData={stockGraphStats} />
             {!isMatch ? (
               <PurchaseWidget stockData={stockQuote} />
             ) : (
               <PurchaseWidgetMobile stockData={stockQuote} />
             )}
-            <StockChart stockData={stockGraphStats} />
           </Stack>
         </TradeStack>
       )}
-    </Container>
+    </Box>
   );
 };
 
 export default Trade;
+
+// <>
+//   <SearchBar onSymbolSearch={searchBarHandler} />
+//   <p />
+//   <TradeGrid container>
+//     <TradeGridItem item xs={12} sm={12} md={2} lg={3} xl={2}>
+//       <SnapShot stockData={stockQuote} />
+//     </TradeGridItem>
+//     <TradeGridItem item xs={12} sm={12} md={4} lg={4} xl={4}>
+//       <StockDetails stockData={stockQuote} />
+//     </TradeGridItem>
+//   </TradeGrid>
+//   <TradeGrid container spacing={5}>
+//     <TradeGridItem item xs={12} sm={12} md={4} lg={4} xl={6}>
+//       <StockChart stockData={stockGraphStats} />
+//     </TradeGridItem>
+//     <TradeGridItem item xs={12} sm={12} md={6} lg={6} xl={4}>
+//       <PurchaseWidget stockData={stockQuote} />
+//     </TradeGridItem>
+//   </TradeGrid>
+// </>

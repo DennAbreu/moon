@@ -18,7 +18,7 @@ import { AvatarBox, ButtonStyled, FormBox } from "../../util/CustomComponents";
 import { logInFB, retUserID } from "../../firebase/authHandler";
 import { authLogIn } from "../../features/auth/authSlice";
 import { profUpdateUser } from "../../features/profile/profSlice";
-import { retUserInfo, retName } from "../../firebase/dbHandler";
+import { retUserInfo } from "../../firebase/dbHandler";
 
 const Login = () => {
   const theme = useTheme();
@@ -113,7 +113,7 @@ const Login = () => {
           </Typography>
         </AvatarBox>
         <Grid container spacing={2}>
-          <Grid item xs={12}>
+          <Grid item md={12}>
             <TextField
               name="email"
               id="email"
@@ -124,7 +124,7 @@ const Login = () => {
               inputRef={emailRef}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item md={12}>
             <TextField
               name="password"
               type="password"
@@ -135,14 +135,14 @@ const Login = () => {
               inputRef={passwordRef}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item md={12}>
             {ForgotPassword}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item md={12} md={6}>
             <FormControlLabel label="Remember me.." control={checkBox} />
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item md={12}>
             <ButtonStyled
               sx={{ fontSize: "1.1rem", width: "100%" }}
               variant="contained"

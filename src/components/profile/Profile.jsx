@@ -62,11 +62,9 @@ const Profile = (props) => {
         })
         .then(() => {
           setUpdatedList(updateStockList(stockList, priceMap));
+          setTotalValue(retTotalValue(priceMap, stockList));
+          setIsLoading(false);
         })
-        .then(() => {
-          setTotalValue(retTotalValue(updatedList));
-        })
-
         .catch((e) => {
           console.log("caught!");
           console.log(e);
@@ -74,7 +72,7 @@ const Profile = (props) => {
     };
 
     getAllCurrentPrices();
-    setIsLoading(false);
+
     console.log(
       "🚀 ~ file: Profile.jsx:69 ~ .then ~ updatedList:",
       updatedList

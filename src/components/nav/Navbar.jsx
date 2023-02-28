@@ -21,7 +21,7 @@ const Navbar = () => {
   const linkFontSize = "1.2rem";
   const userLoginSize = "1.1rem";
   const theme = useTheme();
-  const isMatch = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMatch = useMediaQuery(theme.breakpoints.down("md800"));
 
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.authStatus);

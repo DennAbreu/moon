@@ -105,7 +105,7 @@ const SignUp = () => {
           </Typography>
         </AvatarBox>
         <Grid container spacing={2}>
-          <Grid item xs={12}>
+          <Grid item sm={12}>
             <TextField
               id="name"
               name="name"
@@ -120,7 +120,7 @@ const SignUp = () => {
               {errors.name?.message}
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item sm={12} sm={6}>
             <TextField
               id="email"
               name="email"
@@ -134,7 +134,7 @@ const SignUp = () => {
               {errors.email?.message}
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item sm={12} sm={6}>
             <TextField
               id="confirmEmail"
               name="confirmEmail"
@@ -148,7 +148,7 @@ const SignUp = () => {
               {errors.confirmEmail?.message}
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item sm={12} sm={6}>
             <TextField
               id="password"
               name="password"
@@ -163,7 +163,7 @@ const SignUp = () => {
               {errors.password?.message}
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item sm={12} sm={6}>
             <TextField
               id="confirmPassowrd"
               name="confirmPassword"
@@ -178,7 +178,7 @@ const SignUp = () => {
               {errors.confirmPassword?.message}
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item sm={12}>
             <ButtonStyled
               component={Link}
               to={"/profile"}
@@ -203,7 +203,7 @@ const SignUp = () => {
               SameUser
             </ButtonStyled>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item sm={12}>
             <Box
               sx={{ display: "flex", justifyContent: "center", mt: "0.1rem" }}
             >
