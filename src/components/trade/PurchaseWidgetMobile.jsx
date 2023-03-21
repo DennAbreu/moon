@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import {
-  BlueTextLabel,
+  TextLabel,
   ButtonStyled2,
   FabStyled,
   StyledAccordion,
@@ -152,25 +152,25 @@ const PurchaseWidgetMobile = (props) => {
               spacing={0}
             >
               <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
-                <BlueTextLabel>Available Funds:</BlueTextLabel>
+                <TextLabel>Available Funds:</TextLabel>
               </Grid>
               <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
                 <CurrencyText>${availableFunds?.toFixed(2)}</CurrencyText>
               </Grid>
               <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
-                <BlueTextLabel>Current Price:</BlueTextLabel>
+                <TextLabel>Current Price:</TextLabel>
               </Grid>
               <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
                 <CurrencyText>${Number(currPrice)?.toFixed(2)}</CurrencyText>
               </Grid>
               <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
-                <BlueTextLabel>Shares Owned:</BlueTextLabel>
+                <TextLabel>Shares Owned:</TextLabel>
               </Grid>
               <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
                 <CurrencyText>{sharesOwned}</CurrencyText>
               </Grid>
               <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
-                <BlueTextLabel>Initial Invested: </BlueTextLabel>
+                <TextLabel>Initial Invested: </TextLabel>
               </Grid>
               <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
                 <CurrencyText>
@@ -178,7 +178,7 @@ const PurchaseWidgetMobile = (props) => {
                 </CurrencyText>
               </Grid>
               <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
-                <BlueTextLabel>Current Shares Value:</BlueTextLabel>
+                <TextLabel>Current Shares Value:</TextLabel>
               </Grid>
               <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
                 <CurrencyText>
@@ -186,7 +186,7 @@ const PurchaseWidgetMobile = (props) => {
                 </CurrencyText>
               </Grid>
               <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
-                <BlueTextLabel>Net Gain:</BlueTextLabel>
+                <TextLabel>Net Gain:</TextLabel>
               </Grid>
               <Grid item md={gridSpacingXS} xl={gridSpacingLG}>
                 <Typography

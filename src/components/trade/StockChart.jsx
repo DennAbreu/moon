@@ -5,7 +5,11 @@ import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 import { useTheme } from "@mui/material";
 
-import { GraphContainer } from "../../util/CustomComponents";
+import {
+  GraphContainer,
+  GraphContainer2,
+  HighChartsContainer,
+} from "../../util/CustomComponents";
 
 const StockChart = (props) => {
   const theme = useTheme();
@@ -117,13 +121,14 @@ const StockChart = (props) => {
   };
 
   return (
-    <GraphContainer>
+    <HighChartsContainer>
       <HighchartsReact
         highcharts={Highcharts}
+        containerProps={{ style: { width: "100%" } }}
         constructorType={"stockChart"}
         options={options}
       />
-    </GraphContainer>
+    </HighChartsContainer>
   );
 };
 export default StockChart;

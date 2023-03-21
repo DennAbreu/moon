@@ -5,15 +5,14 @@ import {
   Button,
   Container,
   Fab,
-  Grid,
   Paper,
   Stack,
   TableRow,
   TextField,
   Typography,
 } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { styled } from "@mui/system";
-import { Pointer } from "highcharts";
 
 const blueColor = "#03314b";
 const greenColor = "#1dcc98";
@@ -22,17 +21,15 @@ const offWhiteColor = "#F7FFF7";
 //---------------------Trade---------------------
 //----------------------------------------------
 export const TradeStack = styled(Stack)({
-  // background: "#f5ad42",
   marginTop: "0.5rem",
   width: "auto",
-  height: "200%",
-  alignItems: "center",
+  height: "100%",
 });
 
 export const DetailStack = styled(Stack)({
   display: "flex",
-  width: "100%",
   justifyContent: "center",
+  alignItems: "center",
 });
 
 export const BuyMenuStack = styled(Stack)({
@@ -45,11 +42,20 @@ export const BuyMenuStack = styled(Stack)({
 });
 
 export const PurchaseWidgetContainer = styled(Paper)({
-  background: offWhiteColor,
+  background: blueColor,
   border: "0.25px solid black",
-  width: "50%",
-  maxWidth: "fit-content",
+  width: "24rem",
+  minWidth: "20rem",
   borderRadius: 5,
+});
+
+export const PurchaseGrid = styled(Grid)({
+  // background: "yellow",
+  display: "flex",
+  paddingTop: "0.5rem",
+  paddingLeft: "0.5rem",
+  justifyContent: "flex-start",
+  maxWidth: "100%",
 });
 
 export const FabStyled = styled(Fab)({
@@ -59,6 +65,20 @@ export const FabStyled = styled(Fab)({
     backgroundColor: blueColor,
     color: "green",
   },
+});
+
+export const TradeGrid = styled(Grid)({
+  display: "flex",
+  justifyContent: "center",
+  justifyItems: "center",
+  alignContent: "center",
+  alignItems: "center",
+  width: "auto",
+});
+
+export const TradeGridItem = styled(Grid)({
+  display: "flex",
+  justifyContent: "center",
 });
 
 //---------------------Stack---------------------
@@ -100,7 +120,8 @@ export const PieGraphLabel = styled(Box)({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  height: "2.2rem",
+  // height: "10%",
+  // width: "100%",
   borderRadius: "65",
   color: "white",
 });
@@ -203,14 +224,25 @@ export const BankEditCategory = styled(Paper)({
 export const PieChartContainer = styled(Paper)({
   background: "white",
   height: "100%",
-  width: "fit-content",
+  maxWidth: "fit-content",
+  minWidth: "50%",
+  width: "auto",
   display: "flex",
   justifyContent: "center",
 });
 
+export const HighChartsContainer = styled(Paper)({
+  display: "flex",
+  justifyContent: "center",
+  width: "auto",
+  maxWidth: "50rem",
+  height: "fit-content",
+  border: "0.25px solid black",
+});
 export const GraphContainer = styled(Paper)({
-  width: "80%",
-  height: "100%",
+  maxWidth: "auto",
+  width: "auto",
+  height: "fit-content",
   border: "0.25px solid black",
 });
 
@@ -256,14 +288,14 @@ export const CurrentTransPriceField = styled(TextField)({
   borderRadius: "0",
 });
 
-export const BlueTextLabel = styled(Typography)({
-  color: blueColor,
+export const TextLabel = styled(Typography)({
+  color: "White",
   fontSize: "1.1em",
 });
 
 export const CurrencyText = styled(Typography)({
   color: greenColor,
-  fontSize: "1.2em",
+  fontSize: "1.1em",
   fontWeight: "bold",
 });
 
@@ -286,25 +318,3 @@ export const TableRowStyled = styled(TableRow)({
 
 //---------------------Grid---------------------
 //----------------------------------------------
-
-export const PurchaseGrid = styled(Grid)({
-  display: "flex",
-  paddingTop: "0.5rem",
-  paddingLeft: "0.5rem",
-  justifyContent: "flex-start",
-  maxWidth: "fit-content",
-});
-
-export const TradeGrid = styled(Grid)({
-  display: "flex",
-  justifyContent: "center",
-  justifyItems: "center",
-  alignContent: "center",
-  alignItems: "center",
-  width: "auto",
-});
-
-export const TradeGridItem = styled(Grid)({
-  display: "flex",
-  justifyContent: "center",
-});

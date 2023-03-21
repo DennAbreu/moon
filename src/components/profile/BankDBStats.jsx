@@ -13,8 +13,8 @@ const BankDBStats = (props) => {
   const totalBank = useSelector((state) => state.prof.bankTotal);
   const initInvestment = useSelector((state) => state.prof.amountInvested);
   const availableFunds = useSelector((state) => state.prof.availableFunds);
-  const stockList = useSelector((state) => state.prof.stockList);
-
+  // const stockList = useSelector((state) => state.prof.stockList);
+  const stockList = testStockArray;
   // var totalBank = 2143.16;
   // var availableFunds = 2000;
   // var initInvestment = 143.16;
@@ -24,7 +24,7 @@ const BankDBStats = (props) => {
   var growthChangeColor = growthPercent < 0 ? "#FF0000" : "#00ff00";
 
   return (
-    <FlexStack direction={"row"} spacing={2}>
+    <FlexStack direction={"row"} spacing={1}>
       <ProfileCategory>
         <Stack direction={"column"}>
           <TextCentered color="white" variant="h5">

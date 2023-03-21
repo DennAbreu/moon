@@ -29,10 +29,10 @@ export const theme = createTheme({
   },
   breakpoints: {
     values: {
-      xs: 350,
+      xs: 450,
       sm: 600, //Default: 600.
       md800: 800,
-      md: 950,
+      md: 1000,
       lg1400: 1400,
       lg: 1600,
       xl: 1800,

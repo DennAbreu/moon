@@ -81,13 +81,33 @@ const Profile = (props) => {
 
   return (
     <>
-      <Container maxWidth="100%">
+      <Container maxWidth={true}>
         <BankDBStats loadingState={isLoading} totalStockValue={totalValue} />
-        <FlexStack sx={{ mt: "1rem" }} direction={"row"} spacing={2}>
+        <FlexStack
+          sx={{
+            mt: "1rem",
+            flexDirection: {
+              sm: "column",
+              md800: "column",
+              lg: "row",
+              xl: "row",
+            },
+          }}
+          gap={2}
+        >
           <StockListDisplay stockList={updatedList} />
-
           <FlexStack direction={"column"} spacing={1}>
-            <FlexStack direction={"row"} spacing={2}>
+            <FlexStack
+              sx={{
+                flexDirection: {
+                  sm: "column",
+                  md800: "column",
+                  lg: "row",
+                  xl: "row",
+                },
+              }}
+              gap={2}
+            >
               <SharesPieChart />
               <InvPieChart />
             </FlexStack>

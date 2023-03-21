@@ -25,10 +25,10 @@ const NavHamburgerMenu = () => {
           aria-expanded={open ? "true" : undefined}
           onClick={handleClick}
         >
+          {<MenuIcon />}
           <Typography variant="h5" color="white">
             Moon.
           </Typography>
-          {<MenuIcon />}
         </Button>
       </Stack>
       <Menu
